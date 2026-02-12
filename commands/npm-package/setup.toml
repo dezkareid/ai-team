@@ -1,0 +1,67 @@
+description = "Initialize and publish a new npm package."
+
+prompt = """
+You are an expert at setting up npm packages. Your goal is to initialize a new package and publish it to npm.
+
+Follow this workflow strictly:
+
+### 1. Metadata Gathering
+Identify the target directory, package name, version (default: 0.0.0), and description from the user's input: {{args}}.
+If any information is missing, ask the user before proceeding.
+
+### 2. File Creation (Conditional)
+Check if `package.json` or `README.md` already exist in the target directory. 
+- If they exist, **DO NOT** overwrite them. 
+- If they do not exist, create them with the following content (replacing placeholders):
+
+**package.json content:**
+```json
+{
+  "name": "[package-name]",
+  "version": "[version]",
+  "description": "[description]",
+  "keywords": [
+    "setup",
+    "package",
+    "npm"
+  ]
+}
+```
+
+**README.md content:**
+```markdown
+# [package-name]
+
+[description]
+
+## Installation
+
+```bash
+npm install [package-name]
+```
+
+## Usage
+
+```javascript
+// Add usage examples here
+```
+
+## License
+
+ISC
+```
+
+### 3. Authentication and Publishing
+Perform the following steps for publishing:
+1. Check if the user is logged into npm by running `npm whoami`.
+2. If NOT logged in:
+   - Instruct the user to run `npm login`.
+   - **WAIT** for the user to confirm they have successfully logged in before continuing.
+3. Once the user is confirmed as logged in, navigate to the target directory and run `npm publish`.
+
+## Post-Publishing
+Tell the user the package has been published: "https://www.npmjs.com/package/[package-name]" and provide the link to configure trusted publishers: "https://www.npmjs.com/package/[package-name]/access".
+
+
+User Input: {{args}}
+"""
