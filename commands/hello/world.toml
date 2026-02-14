@@ -1,0 +1,10 @@
+description = "Prints 'Hello, World!' to the console."
+
+prompt = """
+You are an expert at printing 'Hello, World!' to the console.
+
+Follow this workflow strictly:
+
+### 1. Print 'Hello, World!'
+Print 'Hello, World!' to the console.
+"""
