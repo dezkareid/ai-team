@@ -1,0 +1,33 @@
+{
+  "name": "@dezkareid/ai-team",
+  "version": "0.0.4",
+  "description": "Repository for AI Team",
+  "main": "index.js",
+  "scripts": {
+    "sync-version": "node scripts/sync-version.js",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "files": [
+    "README.md",
+    "gemini-extension.json"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dezkareid/ai-team.git"
+  },
+  "author": "Joel Humberto Gomez Paredes <elmaildeldezkareid@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dezkareid/ai-team/issues"
+  },
+  "homepage": "https://github.com/dezkareid/ai-team#readme",
+  "packageManager": "pnpm@10.30.1",
+  "devDependencies": {
+    "vitest": "4.0.18"
+  }
+}

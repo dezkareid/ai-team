@@ -1,0 +1,39 @@
+name: "Semantic release"
+description: "Release a package"
+branding:
+  icon: "cloud"
+  color: "green"
+inputs:
+  working-directory:
+    description: "Directory where is located the package to release"
+    required: true
+  tag-format:
+    description: "Tag format will be used to release"
+    required: true
+  github-token:
+    description: "Github token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Release
+      uses: cycjimmy/semantic-release-action@v6
+      with:
+        semantic_version: 25.0.3
+        branches: |
+          [
+            '+([0-9])?(.{+([0-9]),x}).x',
+            'main',
+            'next',
+            {name: 'beta', prerelease: true},
+            {name: 'alpha', prerelease: true}
+          ]
+        extra_plugins: |
+          @anolilab/semantic-release-pnpm@5.0.0
+          @semantic-release/changelog@6.0.3
+          @semantic-release/git@10.0.1
+          @semantic-release/exec@7.10.1
+        working_directory: ${{ inputs.working-directory }}
+        tag_format: ${{ inputs.tag-format }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
