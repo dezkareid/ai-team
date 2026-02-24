@@ -1,17 +1,17 @@
-name: 'Semantic release'
-description: 'Release a package'
+name: "Semantic release"
+description: "Release a package"
 branding:
   icon: "cloud"
   color: "green"
 inputs:
   working-directory:
-    description: 'Directory where is located the package to release'
+    description: "Directory where is located the package to release"
     required: true
   tag-format:
-    description: 'Tag format will be used to release'
+    description: "Tag format will be used to release"
     required: true
   github-token:
-    description: 'Github token'
+    description: "Github token"
     required: true
 runs:
   using: "composite"
@@ -32,6 +32,7 @@ runs:
           @anolilab/semantic-release-pnpm@5.0.0
           @semantic-release/changelog@6.0.3
           @semantic-release/git@10.0.1
+          @semantic-release/exec@7.10.1
         working_directory: ${{ inputs.working-directory }}
         tag_format: ${{ inputs.tag-format }}
       env:

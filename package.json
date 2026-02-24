@@ -8,7 +8,23 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "files": [
+    "README.md",
+    "gemini-extension.json"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dezkareid/ai-team.git"
+  },
+  "author": "Joel Humberto Gomez Paredes <elmaildeldezkareid@gmail.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dezkareid/ai-team/issues"
+  },
+  "homepage": "https://github.com/dezkareid/ai-team#readme",
   "packageManager": "pnpm@10.30.1"
 }
