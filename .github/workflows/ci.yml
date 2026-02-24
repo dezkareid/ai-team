@@ -47,10 +47,6 @@ jobs:
           persist-credentials: false
       - name: Setup Node.js and install dependencies
         uses: ./.github/actions/setup-js
-      - name: Build
-        run: pnpm run build
-        env:
-          NODE_ENV: production
       - name: Create .releaserc from template
         run: cp .github/releaserc-template.json ./.releaserc
       - name: Release package
