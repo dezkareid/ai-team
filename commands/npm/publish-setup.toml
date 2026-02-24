@@ -1,8 +1,8 @@
-description = "Setup NPM publication workflow with OIDC and provenance using local standard actions (Monorepo & npm/pnpm support)."
+description = "Setup NPM publication workflow with OIDC and provenance using local standard actions (Monorepo & pnpm support)."
 
 prompt = """
 ---
-description: Create the npm publication workflow using GitHub CI/CD with OIDC and Provenance. Supports npm/pnpm and monorepos.
+description: Create the npm publication workflow using GitHub CI/CD with OIDC and Provenance. Supports pnpm and monorepos.
 ---
 
 ## User Input
@@ -21,7 +21,7 @@ Automate the setup of a secure, OIDC-powered GitHub Actions workflow for publish
 
 ### 1. Detection
 - **Monorepo**: Detected if `pnpm-workspace.yaml` or `workspaces` in `package.json` exists.
-- **Package Manager**: `pnpm` if lockfile/workspace exists, otherwise `npm`.
+- **Package Manager**: Forced to `pnpm`.
 
 ### 2. Configuration Location
 - **Release Template**: MUST be created at `.github/releaserc-template.json`.
@@ -35,29 +35,23 @@ Automate the setup of a secure, OIDC-powered GitHub Actions workflow for publish
   - `releaserc-template.json`: MUST NOT include the monorepo extension.
 
 ### 4. Action Adaptation (setup-js)
-- **If pnpm**: Use `pnpm/action-setup@v4`, `cache: 'pnpm'`, and `pnpm install --frozen-lockfile`.
-- **If npm**: Skip pnpm setup, use `cache: 'npm'`, and `npm ci`.
+- **pnpm**: Use `pnpm/action-setup@v4`, `cache: 'pnpm'`, and `pnpm install --frozen-lockfile`.
 
 ## Templates
 
 ### 1. Local Action: Setup JS (.github/actions/setup-js/action.yml)
-*Adapt based on Package Manager:*
 ```yaml
 name: 'Setup JS'
 description: 'Setup Node.js environment and install dependencies'
 runs:
   using: "composite"
   steps:
-    # [IF PNPM]
     - uses: pnpm/action-setup@v4
-      with:
-        version: 9
-    # [/IF PNPM]
     - uses: actions/setup-node@v4
       with:
         node-version: 22
-        cache: '{{pkgManager}}'
-    - run: {{installCommand}}
+        cache: 'pnpm'
+    - run: pnpm install --frozen-lockfile
       shell: bash
 ```
 
@@ -94,7 +88,7 @@ runs:
             {name: 'alpha', prerelease: true}
           ]
         extra_plugins: |
-          {{pnpmPlugin}}
+          @anolilab/semantic-release-pnpm@5.0.0
           @semantic-release/changelog@6.0.3
           @semantic-release/git@10.0.1
         working_directory: ${{ inputs.working-directory }}
@@ -110,7 +104,7 @@ runs:
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    {{pnpmPluginString}}
+    "@anolilab/semantic-release-pnpm",
     [
       "@semantic-release/git",
       {
@@ -152,12 +146,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/setup-js
+      - name: Setup JS
+        uses: ./.github/actions/setup-js
       - name: Test library
-        run: {{testCommand}}
+        run: pnpm test
 
   check-changes:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -166,10 +162,12 @@ jobs:
       packages: ${{ steps.filter.outputs.changes }}
       configuration: ${{ toJson(steps.filter.outputs) }}
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: dorny/paths-filter@v3
+      - name: Filter changed paths
+        uses: dorny/paths-filter@v3
         id: filter
         with:
           list-files: json
@@ -190,13 +188,14 @@ jobs:
     env:
       PACKAGE_NAME: ${{ matrix.package }}
       NPM_CONFIG_PROVENANCE: true
-      NODE_ENV: production
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: ./.github/actions/setup-js
+      - name: Setup JS
+        uses: ./.github/actions/setup-js
       - name: Get package information
         run: |
           export JSON_DATA='${{ needs.check-changes.outputs.configuration }}'
@@ -210,10 +209,13 @@ jobs:
           PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
           echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
       - name: Build
-        run: {{buildCommand}} --filter=${{ env.PACKAGE_NAME }}
+        run: pnpm run build --filter=${{ env.PACKAGE_NAME }}
+        env:
+          NODE_ENV: production
       - name: Create .releaserc from template
         run: cp .github/releaserc-template.json ./${{ env.PACKAGE_PATH }}/.releaserc
-      - uses: ./.github/actions/semantic-release
+      - name: Semantic Release
+        uses: ./.github/actions/semantic-release
         with:
           working-directory: ./${{ env.PACKAGE_PATH }}
           tag-format: ${{ env.PACKAGE_NAME }}-v${version}
@@ -243,12 +245,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/setup-js
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/actions/setup-js
       - name: Test library
-        run: {{testCommand}}
+        run: pnpm test
 
   release:
     needs: test
@@ -260,18 +264,23 @@ jobs:
       issues: write
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
+      NPM_CONFIG_PROVENANCE: true
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: ./.github/actions/setup-js
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/actions/setup-js
       - name: Build
-        run: {{buildCommand}}
+        run: pnpm run build
+        env:
+          NODE_ENV: production
       - name: Create .releaserc from template
         run: cp .github/releaserc-template.json ./.releaserc
-      - uses: ./.github/actions/semantic-release
+      - name: Release package
+        uses: ./.github/actions/semantic-release
         with:
           working-directory: "."
           tag-format: "{{packageNameWithoutScope}}-v${version}"
@@ -289,8 +298,7 @@ jobs:
 ## Execution Steps
 
 ### 1. Research & Detection
-- Identify if the project is a monorepo and which package manager is used.
-- Detect `installCommand`, `testCommand`, and `buildCommand`.
+- Identify if the project is a monorepo.
 - For single repos, identify the `packageName` and `packageNameWithoutScope`.
 - For monorepos, identify all packages and their relative paths.
 
@@ -298,7 +306,7 @@ jobs:
 
 #### A. Shared Infrastructure
 1. **Local Actions**:
-   - Create `.github/actions/setup-js/action.yml` (adapted for npm/pnpm).
+   - Create `.github/actions/setup-js/action.yml` (pnpm only).
    - Create `.github/actions/semantic-release/action.yml` (using reference structure).
 2. **Release Configuration**:
    - Create `.github/releaserc-template.json` (adjusted for `extends` based on repo type).
@@ -312,7 +320,7 @@ jobs:
 
 **Validation**:
 - Ensure `permissions: id-token: write` is set for OIDC in the `release` job.
-- Verify the use of `semantic_version: 25.0.3` and `@anolilab/semantic-release-pnpm@5.0.0` (for pnpm).
+- Verify the use of `semantic_version: 25.0.3` and `@anolilab/semantic-release-pnpm@5.0.0`.
 
 ### 3. Post-Setup Instructions
 - Link to Trusted Publisher on npmjs.com.
