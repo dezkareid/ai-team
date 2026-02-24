@@ -1,21 +1,37 @@
-const fs = require('fs');
 const path = require('path');
 
-const packageJsonPath = path.join(__dirname, '..', 'package.json');
-const extensionJsonPath = path.join(__dirname, '..', 'gemini-extension.json');
+function syncVersion(packageJsonPath, extensionJsonPath, fs = require('fs')) {
+  try {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    const extensionJson = JSON.parse(fs.readFileSync(extensionJsonPath, 'utf8'));
 
-try {
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  const extensionJson = JSON.parse(fs.readFileSync(extensionJsonPath, 'utf8'));
-
-  if (extensionJson.version !== packageJson.version) {
-    extensionJson.version = packageJson.version;
-    fs.writeFileSync(extensionJsonPath, JSON.stringify(extensionJson, null, 2) + '\n');
-    console.log(`Updated gemini-extension.json version to ${packageJson.version}`);
-  } else {
-    console.log('Versions are already in sync.');
+    if (extensionJson.version !== packageJson.version) {
+      const oldVersion = extensionJson.version;
+      extensionJson.version = packageJson.version;
+      fs.writeFileSync(extensionJsonPath, JSON.stringify(extensionJson, null, 2) + '\n');
+      return { updated: true, oldVersion, newVersion: packageJson.version };
+    }
+    return { updated: false, version: packageJson.version };
+  } catch (error) {
+    throw new Error(`Error syncing versions: ${error.message}`);
   }
-} catch (error) {
-  console.error('Error syncing versions:', error.message);
-  process.exit(1);
 }
+
+if (require.main === module) {
+  const packageJsonPath = path.join(__dirname, '..', 'package.json');
+  const extensionJsonPath = path.join(__dirname, '..', 'gemini-extension.json');
+
+  try {
+    const result = syncVersion(packageJsonPath, extensionJsonPath);
+    if (result.updated) {
+      console.log(`Updated gemini-extension.json version to ${result.newVersion}`);
+    } else {
+      console.log('Versions are already in sync.');
+    }
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+}
+
+module.exports = { syncVersion };
