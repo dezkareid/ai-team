@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - next
+      - beta
+      - alpha
+  push:
+    branches:
+      - main
+      - next
+      - beta
+      - alpha
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/actions/setup-js
+      - name: Test library
+        run: pnpm test
+
+  release:
+    needs: test
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
+      issues: write
+    runs-on: ubuntu-latest
+    env:
+      NPM_CONFIG_PROVENANCE: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/actions/setup-js
+      - name: Build
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+      - name: Create .releaserc from template
+        run: cp .github/releaserc-template.json ./.releaserc
+      - name: Release package
+        uses: ./.github/actions/semantic-release
+        with:
+          working-directory: "."
+          tag-format: "ai-team-v${version}"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
