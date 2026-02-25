@@ -1,0 +1,324 @@
+---
+description: "Setup NPM publication workflow with OIDC and provenance using local standard actions (Monorepo & pnpm support)."
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+## Goal
+
+Automate the setup of a secure, OIDC-powered GitHub Actions workflow for publishing packages to npm. This command MUST create local GitHub Actions and a shared `.github/releaserc-template.json` that is used during the CI process to generate a valid `.releaserc` for both monorepos and single repos.
+
+## Logic & Adaptation Rules
+
+### 1. Detection
+- **Monorepo**: Detected if `pnpm-workspace.yaml` or `workspaces` in `package.json` exists.
+- **Package Manager**: Forced to `pnpm`.
+
+### 2. Configuration Location
+- **Release Template**: MUST be created at `.github/releaserc-template.json`.
+
+### 3. Monorepo vs Single Repo Configuration
+- **If Monorepo**:
+  - `tag-format`: `${{ env.PACKAGE_NAME }}-v${version}`.
+  - `releaserc-template.json`: MUST include `"extends": "semantic-release-monorepo"`.
+- **If Single Repo**:
+  - `tag-format`: `{{packageNameWithoutScope}}-v${version}`.
+  - `releaserc-template.json`: MUST NOT include the monorepo extension.
+
+### 4. Action Adaptation (setup-js)
+- **pnpm**: Use `pnpm/action-setup@v4`, `cache: 'pnpm'`, and `pnpm install --frozen-lockfile`.
+
+## Templates
+
+### 1. Local Action: Setup JS (.github/actions/setup-js/action.yml)
+```yaml
+name: 'Setup JS'
+description: 'Setup Node.js environment and install dependencies'
+runs:
+  using: "composite"
+  steps:
+    - uses: pnpm/action-setup@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'pnpm'
+    - run: pnpm install --frozen-lockfile
+      shell: bash
+```
+
+### 2. Local Action: Semantic Release (.github/actions/semantic-release/action.yml)
+```yaml
+name: 'Semantic release'
+description: 'Release a package'
+branding:
+  icon: "cloud"
+  color: "green"
+inputs:
+  working-directory:
+    description: 'Directory where is located the package to release'
+    required: true
+  tag-format:
+    description: 'Tag format will be used to release'
+    required: true
+  github-token:
+    description: 'Github token'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Release
+      uses: cycjimmy/semantic-release-action@v6
+      with:
+        semantic_version: 25.0.3
+        branches: |
+          [
+            '+([0-9])?(.{+([0-9]),x}).x',
+            'main',
+            'next',
+            {name: 'beta', prerelease: true},
+            {name: 'alpha', prerelease: true}
+          ]
+        extra_plugins: |
+          @anolilab/semantic-release-pnpm@5.0.0
+          @semantic-release/changelog@6.0.3
+          @semantic-release/git@10.0.1
+        working_directory: ${{ inputs.working-directory }}
+        tag_format: ${{ inputs.tag-format }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+```
+
+### 3. Release Template (.github/releaserc-template.json)
+```json
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@anolilab/semantic-release-pnpm",
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["CHANGELOG.md"]
+      }
+    ],
+    "@semantic-release/github"
+  ]
+  {{extendsMonorepoJSON}}
+}
+```
+
+### 4. Monorepo CI Workflow (.github/workflows/ci-packages.yml)
+```yaml
+name: CI Packages
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "packages/**"
+      - "design-system/**"
+    branches:
+      - main
+      - next
+      - beta
+      - alpha
+  push:
+    paths:
+      - "packages/**"
+      - "design-system/**"
+    branches:
+      - main
+      - next
+      - beta
+      - alpha
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup JS
+        uses: ./.github/actions/setup-js
+      - name: Test library
+        run: pnpm test
+
+  check-changes:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.filter.outputs.changes }}
+      configuration: ${{ toJson(steps.filter.outputs) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Filter changed paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          list-files: json
+          filters: .github/packages.yml
+
+  release:
+    needs: [test, check-changes]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.check-changes.outputs.packages) }}
+      fail-fast: false
+    env:
+      PACKAGE_NAME: ${{ matrix.package }}
+      NPM_CONFIG_PROVENANCE: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup JS
+        uses: ./.github/actions/setup-js
+      - name: Get package information
+        run: |
+          export JSON_DATA='${{ needs.check-changes.outputs.configuration }}'
+          PACKAGE_FILES="${PACKAGE_NAME}_files"
+          PACKAGE_PATH_DATA=$(echo $JSON_DATA | jq -r ".["${PACKAGE_FILES}"] | fromjson[0]")
+          PACKAGE_PATH=$(echo $PACKAGE_PATH_DATA | cut -d'/' -f1-2)
+          echo "PACKAGE_PATH=$PACKAGE_PATH" >> $GITHUB_ENV
+      - name: Get package name
+        run: |
+          cd ./${{env.PACKAGE_PATH}}
+          PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
+          echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+      - name: Build
+        run: pnpm run build --filter=${{ env.PACKAGE_NAME }}
+        env:
+          NODE_ENV: production
+      - name: Create .releaserc from template
+        run: cp .github/releaserc-template.json ./${{ env.PACKAGE_PATH }}/.releaserc
+      - name: Semantic Release
+        uses: ./.github/actions/semantic-release
+        with:
+          working-directory: ./${{ env.PACKAGE_PATH }}
+          tag-format: ${{ env.PACKAGE_NAME }}-v${version}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### 5. Single Repo CI Workflow (.github/workflows/ci.yml)
+```yaml
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - next
+      - beta
+      - alpha
+  push:
+    branches:
+      - main
+      - next
+      - beta
+      - alpha
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/actions/setup-js
+      - name: Test library
+        run: pnpm test
+
+  release:
+    needs: test
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
+      issues: write
+    runs-on: ubuntu-latest
+    env:
+      NPM_CONFIG_PROVENANCE: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/actions/setup-js
+      - name: Build
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+      - name: Create .releaserc from template
+        run: cp .github/releaserc-template.json ./.releaserc
+      - name: Release package
+        uses: ./.github/actions/semantic-release
+        with:
+          working-directory: "."
+          tag-format: "{{packageNameWithoutScope}}-v${version}"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### 6. Package Mapping (.github/packages.yml)
+*Required for Monorepos to map package names to their paths. Add all your workspace paths here:*
+```yaml
+# Example:
+# package-a: "./packages/package-a/**"
+# design-tokens: "./design-system/design-tokens/**"
+```
+
+## Execution Steps
+
+### 1. Research & Detection
+- Identify if the project is a monorepo.
+- For single repos, identify the `packageName` and `packageNameWithoutScope`.
+- For monorepos, identify all packages and their relative paths.
+
+### 2. Implementation
+
+#### A. Shared Infrastructure
+1. **Local Actions**:
+   - Create `.github/actions/setup-js/action.yml` (pnpm only).
+   - Create `.github/actions/semantic-release/action.yml` (using reference structure).
+2. **Release Configuration**:
+   - Create `.github/releaserc-template.json` (adjusted for `extends` based on repo type).
+
+#### B. Repo-Specific Setup
+1. **Monorepo**:
+   - Create `.github/workflows/ci-packages.yml` (includes `check-changes` and matrix-based release).
+   - Create `.github/packages.yml` (mapping package names to glob paths).
+2. **Single Repo**:
+   - Create `.github/workflows/ci.yml` (standard checkout -> test -> release).
+
+**Validation**:
+- Ensure `permissions: id-token: write` is set for OIDC in the `release` job.
+- Verify the use of `semantic_version: 25.0.3` and `@anolilab/semantic-release-pnpm@5.0.0`.
+
+### 3. Post-Setup Instructions
+- Link to Trusted Publisher on npmjs.com.
+- Reminder to push `.github/` files.
