@@ -1,0 +1,12 @@
+{
+  "name": "dezkareid-ai-team",
+  "owner": {
+    "name": "Joel Humberto Gomez Paredes",
+    "email": "elmaildeldezkareid@gmail.com",
+    "url": "https://github.com/dezkareid"
+  },
+  "metadata": {
+    "description": "Dezkareid AI Tooling",
+    "version": "0.0.0"
+  }
+}

@@ -7,13 +7,16 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node scripts/sync-version.js"
+        "prepareCmd": "node dist/scripts/sync-version.js"
       }
     ],
     [
       "@semantic-release/git",
       {
-        "assets": ["CHANGELOG.md", "gemini-extension.json"]
+        "assets": [
+          "CHANGELOG.md",
+          "gemini-extension.json"
+        ]
       }
     ],
     "@semantic-release/github"

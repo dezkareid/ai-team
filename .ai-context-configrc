@@ -1,0 +1,6 @@
+{
+  "strategies": [
+    "claude",
+    "gemini-md"
+  ]
+}
