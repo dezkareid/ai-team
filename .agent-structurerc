@@ -1,0 +1,21 @@
+{
+    "claude-plugins": {
+        "npm-tools": {
+            "name": "npm-tools",
+            "version": "0.0.1",
+            "description": "Tools for working with npm"
+        }
+    },
+    "commands": [
+        {
+            "id": "npm-package-setup",
+            "source": "npm/package-setup.toml",
+            "claude-plugin": "npm-tools"
+        },
+        {
+            "id": "npm-publish",
+            "source": "npm/publish.toml",
+            "claude-plugin": "npm-tools"
+        }
+    ]
+}
