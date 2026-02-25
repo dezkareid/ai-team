@@ -15,7 +15,9 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "gemini-extension.json"
+          "gemini-extension.json",
+          ".claude-plugin/marketplace.json",
+          "plugins/**"
         ]
       }
     ],
