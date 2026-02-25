@@ -73,7 +73,7 @@ File `.agent-structurerc` is used to configure the project structure.
 ```
 plugins/
 └── <claude-plugin>/
-    ├── claude-plugin/
+    ├── .claude-plugin/
     │   ├── plugin.json
     ├──commands/
     │   ├── <command-name>.md

@@ -14,7 +14,7 @@
         },
         {
             "id": "npm-publish",
-            "source": "npm/publish.toml",
+            "source": "npm/publish-setup.toml",
             "claude-plugin": "npm-tools"
         }
     ]

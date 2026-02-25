@@ -8,5 +8,13 @@
   "metadata": {
     "description": "Dezkareid AI Tooling",
     "version": "0.0.0"
-  }
+  },
+  "plugins": [
+    {
+      "id": "npm-tools",
+      "name": "npm-tools",
+      "version": "0.0.1",
+      "description": "Tools for working with npm"
+    }
+  ]
 }

@@ -20,4 +20,18 @@ export default [
     ],
     external,
   },
+  {
+    input: 'src/cli/export-claude.ts',
+    output: {
+      file: 'dist/cli/export-claude.js',
+      format: 'esm',
+      sourcemap: true,
+    },
+    plugins: [
+      typescript(),
+      resolve(),
+      commonjs(),
+    ],
+    external,
+  },
 ];
