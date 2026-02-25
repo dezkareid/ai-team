@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.1.0...ai-team-v1.2.0) (2026-02-25)
+
+
+### Features
+
+* Automate gathering of repository, author, license, and bug information for npm `package.json` generation and add input validation for package name and description ([6f5570e](https://github.com/dezkareid/ai-team/commit/6f5570ecf6c96a6775c6f9820ce27447804cf057))
+
 # [1.1.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.0.0...ai-team-v1.1.0) (2026-02-25)
 
 
