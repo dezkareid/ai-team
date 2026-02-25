@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.0.0...ai-team-v1.1.0) (2026-02-25)
+
+
+### Features
+
+* add .agent-structurerc to configure npm-tools plugin and associated commands ([f38c44d](https://github.com/dezkareid/ai-team/commit/f38c44d7b0678248cd61a07b58ce6fbb464c96a8))
+* Add `export-claude` CLI for Claude plugin generation and introduce `npm-tools` plugin with package setup and publish commands ([3ab6fcc](https://github.com/dezkareid/ai-team/commit/3ab6fcc67afffcea06573cae349de704de2d8799))
+* introduce agent structuring with Claude plugins and refactor Gemini context configuration ([e57b846](https://github.com/dezkareid/ai-team/commit/e57b846841d103a23a9148daa1550295aedb71c9))
+
 # 1.0.0 (2026-02-24)
 
 
