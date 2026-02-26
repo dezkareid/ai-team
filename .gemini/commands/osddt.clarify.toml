@@ -1,0 +1,33 @@
+description = "Resolve open questions in the spec and record decisions"
+
+prompt = """
+## Instructions
+
+1. Check whether `osddt.spec.md` exists in the working directory:
+   - If it **does not exist**, inform the user that no spec was found and suggest running `/osddt.spec <brief feature description>` first. Stop here.
+
+2. Read `osddt.spec.md` and extract all items listed under the **Open Questions** section.
+   - If the **Open Questions** section is absent or empty, inform the user that there are no open questions to resolve. Skip to step 6.
+
+3. Read the **Decisions** section of `osddt.spec.md` (if it exists) to determine which questions have already been answered.
+   - A question is considered answered if there is a corresponding numbered entry in the **Decisions** section.
+   - List the already-answered questions to the user and inform them they will be skipped.
+
+4. For each **unanswered** question (in order), present it to the user and collect a response.
+   - If all questions were already answered, inform the user and skip to step 6.
+
+5. Update `osddt.spec.md`:
+   - Remove each answered question from the **Open Questions** section.
+   - If the **Open Questions** section becomes empty after removal, remove the section heading as well.
+   - If a **Decisions** section already exists, append new entries to it (do not modify existing entries).
+   - If no **Decisions** section exists, add one at the end of the file.
+   - Each decision entry uses the format: `N. **<short question summary>**: <answer>`
+
+6. Inform the user that all questions are now resolved (or were already resolved). Then prompt them to run (or re-run) the plan step so it reflects the updated decisions:
+
+```
+/osddt.plan <tech stack and key technical decisions, e.g. "use Node.js with SQLite, REST API, no auth">
+```
+
+> Note: if `osddt.plan.md` already exists, the plan should be regenerated to incorporate the decisions.
+"""
