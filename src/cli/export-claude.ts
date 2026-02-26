@@ -19,9 +19,16 @@ export interface AgentStructureCommand {
   'claude-plugin': string;
 }
 
+export interface AgentStructureSkill {
+  id: string;
+  source: string;
+  'claude-plugin': string;
+}
+
 export interface AgentStructure {
   'claude-plugins': Record<string, AgentStructurePlugin>;
   commands: AgentStructureCommand[];
+  skills?: AgentStructureSkill[];
 }
 
 interface TomlCommand {
@@ -92,15 +99,30 @@ async function run() {
   const rc: AgentStructure = JSON.parse(fs.readFileSync(rcPath, 'utf8'));
   const claudePlugins = rc['claude-plugins'] ?? {};
   const commands = rc.commands ?? [];
+  const skills = rc.skills ?? [];
+
+  // Clean up any existing plugin directories that are no longer in the config
+  if (fs.existsSync(pluginsDir)) {
+    const existingPluginDirs = fs.readdirSync(pluginsDir);
+    for (const dirName of existingPluginDirs) {
+      if (!claudePlugins[dirName]) {
+        const fullPath = path.join(pluginsDir, dirName);
+        if (fs.statSync(fullPath).isDirectory()) {
+          fsExtra.removeSync(fullPath);
+          console.log(`Removed obsolete plugin directory: ${path.relative(rootDir, fullPath)}`);
+        }
+      }
+    }
+  }
 
   // Generate plugin directories and plugin.json files
   for (const [pluginId, plugin] of Object.entries(claudePlugins)) {
     const pluginDir = path.join(pluginsDir, pluginId);
     const claudePluginDir = path.join(pluginDir, '.claude-plugin');
     const commandsOutputDir = path.join(pluginDir, 'commands');
+    const skillsOutputDir = path.join(pluginDir, 'skills');
 
     fsExtra.ensureDirSync(claudePluginDir);
-    fsExtra.ensureDirSync(commandsOutputDir);
 
     const pluginJson = buildPluginJson(plugin);
     const pluginJsonPath = path.join(claudePluginDir, 'plugin.json');
@@ -109,20 +131,86 @@ async function run() {
 
     // Process commands for this plugin
     const pluginCommands = commands.filter(cmd => cmd['claude-plugin'] === pluginId);
-    for (const cmd of pluginCommands) {
-      const sourcePath = path.join(commandsDir, cmd.source);
+    if (pluginCommands.length > 0) {
+      fsExtra.ensureDirSync(commandsOutputDir);
+      for (const cmd of pluginCommands) {
+        const sourcePath = path.join(commandsDir, cmd.source);
 
-      if (!fs.existsSync(sourcePath)) {
-        console.warn(`Warning: source file not found for command "${cmd.id}": ${sourcePath}`);
-        continue;
+        if (!fs.existsSync(sourcePath)) {
+          console.warn(`Warning: source file not found for command "${cmd.id}": ${sourcePath}`);
+          continue;
+        }
+
+        const tomlContent = fs.readFileSync(sourcePath, 'utf8');
+        const markdown = tomlToMarkdown(tomlContent, cmd.id);
+        const outputPath = path.join(commandsOutputDir, `${cmd.id}.md`);
+
+        fs.writeFileSync(outputPath, markdown);
+        console.log(`Exported ${path.relative(rootDir, outputPath)}`);
       }
+    } else if (fs.existsSync(commandsOutputDir)) {
+      fsExtra.removeSync(commandsOutputDir);
+    }
 
-      const tomlContent = fs.readFileSync(sourcePath, 'utf8');
-      const markdown = tomlToMarkdown(tomlContent, cmd.id);
-      const outputPath = path.join(commandsOutputDir, `${cmd.id}.md`);
+    // Process skills for this plugin (Agent Skills structure)
+    const pluginSkills = skills.filter(skill => skill['claude-plugin'] === pluginId);
+    if (pluginSkills.length > 0) {
+      fsExtra.ensureDirSync(skillsOutputDir);
+      for (const skill of pluginSkills) {
+        const sourceSkillFile = path.join(rootDir, skill.source);
+        const sourceSkillDir = path.dirname(sourceSkillFile);
+        const skillOutputDir = path.join(skillsOutputDir, skill.id);
+        const outputSkillFile = path.join(skillOutputDir, 'SKILL.md');
 
-      fs.writeFileSync(outputPath, markdown);
-      console.log(`Exported ${path.relative(rootDir, outputPath)}`);
+        if (!fs.existsSync(sourceSkillFile)) {
+          console.warn(`Warning: source file not found for skill "${skill.id}": ${sourceSkillFile}`);
+          continue;
+        }
+
+        fsExtra.ensureDirSync(skillOutputDir);
+
+        // Symlink SKILL.md
+        if (fs.existsSync(outputSkillFile)) {
+          fs.unlinkSync(outputSkillFile);
+        }
+        const relativeSkillSource = path.relative(path.dirname(outputSkillFile), sourceSkillFile);
+        fs.symlinkSync(relativeSkillSource, outputSkillFile);
+        console.log(`Symlinked skill ${path.relative(rootDir, outputSkillFile)} -> ${path.relative(rootDir, sourceSkillFile)}`);
+
+        // Special case for design-system tokens: Sync from node_modules to source references first
+        if (pluginId === 'design-system' && skill.id === 'design-tokens') {
+          const tokensPkgSource = path.join(rootDir, 'node_modules', '@dezkareid', 'design-tokens', 'dist', 'catalogs', 'all-tokens-css.md');
+          const sourceRefsDir = path.join(sourceSkillDir, 'references');
+          const sourceTokensFile = path.join(sourceRefsDir, 'all-tokens-css.md');
+
+          if (fs.existsSync(tokensPkgSource)) {
+            fsExtra.ensureDirSync(sourceRefsDir);
+            fs.copyFileSync(tokensPkgSource, sourceTokensFile);
+            console.log(`Updated source tokens at ${path.relative(rootDir, sourceTokensFile)}`);
+          }
+        }
+
+        // Symlink entire references folder if it exists in source
+        const sourceRefsDir = path.join(sourceSkillDir, 'references');
+        const outputRefsDir = path.join(skillOutputDir, 'references');
+        if (fs.existsSync(sourceRefsDir)) {
+          fsExtra.ensureDirSync(outputRefsDir);
+          const refFiles = fs.readdirSync(sourceRefsDir);
+          for (const refFile of refFiles) {
+            const sourceRefFile = path.join(sourceRefsDir, refFile);
+            const outputRefFile = path.join(outputRefsDir, refFile);
+            
+            if (fs.existsSync(outputRefFile)) {
+              fs.unlinkSync(outputRefFile);
+            }
+            const relativeRefSource = path.relative(path.dirname(outputRefFile), sourceRefFile);
+            fs.symlinkSync(relativeRefSource, outputRefFile);
+            console.log(`Symlinked reference ${path.relative(rootDir, outputRefFile)} -> ${path.relative(rootDir, sourceRefFile)}`);
+          }
+        }
+      }
+    } else if (fs.existsSync(skillsOutputDir)) {
+      fsExtra.removeSync(skillsOutputDir);
     }
   }
 

@@ -43,6 +43,7 @@
     "vitest": "4.0.18"
   },
   "dependencies": {
+    "@dezkareid/design-tokens": "1.1.0",
     "@iarna/toml": "2.2.5",
     "fs-extra": "11.3.3",
     "yaml": "2.8.2"

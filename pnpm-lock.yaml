@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@dezkareid/design-tokens':
+        specifier: 1.1.0
+        version: 1.1.0
       '@iarna/toml':
         specifier: 2.2.5
         version: 2.2.5
@@ -47,6 +50,10 @@ importers:
         version: 4.0.18(@types/node@25.0.10)(tsx@4.21.0)(yaml@2.8.2)
 
 packages:
+
+  '@dezkareid/design-tokens@1.1.0':
+    resolution: {integrity: sha512-fLs8GyAQurIZg7eera1oKupP6rD+LNrhb2TDDVSbxnDOTK6gUkJaJIJwjEBesqQ+iehR8jxU5hx7VN3/axEAAA==}
+    hasBin: true
 
   '@esbuild/aix-ppc64@0.27.3':
     resolution: {integrity: sha512-9fJMTNFTWZMh5qwrBItuziu834eOCUcEqymSH7pY+zoMVEZg3gcPuBNxH1EvfVYe9h0x/Ptw8KBzv7qxb7l8dg==}
@@ -696,6 +703,8 @@ packages:
     hasBin: true
 
 snapshots:
+
+  '@dezkareid/design-tokens@1.1.0': {}
 
   '@esbuild/aix-ppc64@0.27.3':
     optional: true
