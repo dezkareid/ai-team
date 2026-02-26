@@ -7,8 +7,8 @@
   "scripts": {
     "sync-version": "node dist/scripts/sync-version.js",
     "build": "rollup -c",
-    "test": "vitest run",
-    "test:marketplace": "npx ajv-cli validate -s .claude-plugin/marketplace.schema.json -d .claude-plugin/marketplace.json",
+    "test": "vitest run && npm run test:marketplace",
+    "test:marketplace": "ajv validate -s schemas/marketplace.schema.json -d .claude-plugin/marketplace.json",
     "export-claude": "node dist/cli/export-claude.js"
   },
   "keywords": [],
@@ -38,6 +38,7 @@
     "@rollup/plugin-typescript": "12.3.0",
     "@types/fs-extra": "11.0.4",
     "@types/node": "25.0.10",
+    "ajv-cli": "^5.0.0",
     "rollup": "4.56.0",
     "tslib": "2.8.1",
     "typescript": "5.9.3",
