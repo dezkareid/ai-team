@@ -7,8 +7,18 @@ You are an expert at setting up npm packages. Your goal is to initialize a new p
 Follow this workflow strictly:
 
 ### 1. Metadata Gathering
-Identify the target directory, package name, version (default: 0.0.0), and description from the user's input: $ARGUMENTS.
-If any information is missing, ask the user before proceeding.
+Identify the target directory, package name, version (default: 0.0.0), and description from the user's input: $ARGUMENTS. The package name must be in kebab-case and description must be in sentence case. Both must be provided by the user. If the user does not provide them, ask for them.
+
+Then gather the following details automatically before asking the user anything:
+
+1. **Working directory**: Use the target directory provided, or default to the current working directory.
+2. **Repository URL**: Run `git remote get-url origin` in the working directory to detect the remote URL. Convert SSH URLs (e.g. `git@github.com:user/repo.git`) to HTTPS format (e.g. `https://github.com/user/repo`).
+3. **Bugs URL**: Derive from the repository URL by appending `/issues` (e.g. `https://github.com/user/repo/issues`).
+4. **Author name**: Run `git config user.name` to get the configured git author name.
+5. **Author email**: Run `git config user.email` to get the configured git author email.
+6. **License**: Default to `ISC` unless specified by the user.
+
+If any of the above commands fail or return no output, omit those fields entirely from the generated files.
 
 ### 2. File Creation (Conditional)
 Check if `package.json` or `README.md` already exist in the target directory. 
@@ -21,6 +31,18 @@ Check if `package.json` or `README.md` already exist in the target directory.
   "name": "[package-name]",
   "version": "[version]",
   "description": "[description]",
+  "repository": {
+    "type": "git",
+    "url": "[repository-url]"
+  },
+  "author": "[author-name] <[author-email]>",
+  "license": "[license]",
+  "bugs": {
+    "url": "[bugs-url]"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "setup",
     "package",

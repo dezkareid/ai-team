@@ -15,6 +15,12 @@
       "name": "npm-tools",
       "version": "0.0.1",
       "description": "Tools for working with npm"
+    },
+    {
+      "id": "design-system",
+      "name": "design-system",
+      "version": "0.0.1",
+      "description": "Authoritative design system context and tools"
     }
   ]
 }

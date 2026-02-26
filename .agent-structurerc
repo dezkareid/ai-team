@@ -4,6 +4,11 @@
             "name": "npm-tools",
             "version": "0.0.1",
             "description": "Tools for working with npm"
+        },
+        "design-system": {
+            "name": "design-system",
+            "version": "0.0.1",
+            "description": "Authoritative design system context and tools"
         }
     },
     "commands": [
@@ -16,6 +21,13 @@
             "id": "npm-publish",
             "source": "npm/publish-setup.toml",
             "claude-plugin": "npm-tools"
+        }
+    ],
+    "skills": [
+        {
+            "id": "design-tokens",
+            "source": "skills/design-tokens/SKILL.md",
+            "claude-plugin": "design-system"
         }
     ]
 }
