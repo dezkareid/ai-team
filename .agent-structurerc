@@ -13,19 +13,19 @@
     },
     "commands": [
         {
-            "id": "npm-package-setup",
+            "name": "npm-package-setup",
             "source": "npm/package-setup.toml",
             "claude-plugin": "npm-tools"
         },
         {
-            "id": "npm-publish",
+            "name": "npm-publish",
             "source": "npm/publish-setup.toml",
             "claude-plugin": "npm-tools"
         }
     ],
     "skills": [
         {
-            "id": "design-tokens",
+            "name": "design-tokens",
             "source": "skills/design-tokens/SKILL.md",
             "claude-plugin": "design-system"
         }

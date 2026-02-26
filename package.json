@@ -8,6 +8,7 @@
     "sync-version": "node dist/scripts/sync-version.js",
     "build": "rollup -c",
     "test": "vitest run",
+    "test:marketplace": "npx ajv-cli validate -s .claude-plugin/marketplace.schema.json -d .claude-plugin/marketplace.json",
     "export-claude": "node dist/cli/export-claude.js"
   },
   "keywords": [],

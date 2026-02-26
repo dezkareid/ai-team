@@ -1,4 +1,5 @@
 {
+  "$schema": "./marketplace.schema.json",
   "name": "dezkareid-ai-team",
   "owner": {
     "name": "Joel Humberto Gomez Paredes",
@@ -11,16 +12,16 @@
   },
   "plugins": [
     {
-      "id": "npm-tools",
       "name": "npm-tools",
       "version": "0.0.1",
-      "description": "Tools for working with npm"
+      "description": "Tools for working with npm",
+      "source": "./plugins/npm-tools"
     },
     {
-      "id": "design-system",
       "name": "design-system",
       "version": "0.0.1",
-      "description": "Authoritative design system context and tools"
+      "description": "Authoritative design system context and tools",
+      "source": "./plugins/design-system"
     }
   ]
 }

@@ -77,7 +77,7 @@ First: {{args}}. Second: {{args}}.
     expect(result).not.toContain('{{args}}');
   });
 
-  it('should fall back to the command id as description when TOML has none', () => {
+  it('should fall back to the command name as description when TOML has none', () => {
     // Given
     const tomlContent = `
 prompt = """
@@ -86,10 +86,10 @@ Some prompt content.
     `.trim();
 
     // When
-    const result = tomlToMarkdown(tomlContent, 'fallback-id');
+    const result = tomlToMarkdown(tomlContent, 'fallback-name');
 
     // Then
-    expect(result).toContain('description: "fallback-id"');
+    expect(result).toContain('description: "fallback-name"');
   });
 
   it('should strip embedded frontmatter from the TOML prompt field', () => {
@@ -178,7 +178,7 @@ describe('buildMarketplacePlugins', () => {
     expect(result).toHaveLength(2);
   });
 
-  it('should map each plugin id to its marketplace entry', () => {
+  it('should map each plugin to its marketplace entry', () => {
     // Given
     const plugins = {
       'npm-tools': { name: 'npm-tools', version: '0.0.1', description: 'NPM tools' },
@@ -189,10 +189,10 @@ describe('buildMarketplacePlugins', () => {
 
     // Then
     expect(result[0]).toEqual({
-      id: 'npm-tools',
       name: 'npm-tools',
       version: '0.0.1',
       description: 'NPM tools',
+      source: './plugins/npm-tools',
     });
   });
 
@@ -208,6 +208,7 @@ describe('buildMarketplacePlugins', () => {
     // Then
     expect(result[0].version).toBe('0.0.1');
     expect(result[0].description).toBe('');
+    expect(result[0].source).toBe('./plugins/bare-plugin');
   });
 
   it('should return an empty array when given no plugins', () => {
