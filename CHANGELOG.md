@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.2.0...ai-team-v1.3.0) (2026-02-26)
+
+
+### Features
+
+* add design system plugin and design-tokens skill ([67dc217](https://github.com/dezkareid/ai-team/commit/67dc2176f4ddfb7208d5ce2f10530e0cc5ed6080))
+* add github user for setup package.json ([55d504f](https://github.com/dezkareid/ai-team/commit/55d504f508b741040e288d45a97d11a56a068147))
+
 # [1.2.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.1.0...ai-team-v1.2.0) (2026-02-25)
 
 
