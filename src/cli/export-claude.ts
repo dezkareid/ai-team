@@ -14,13 +14,13 @@ export interface AgentStructurePlugin {
 }
 
 export interface AgentStructureCommand {
-  id: string;
+  name: string;
   source: string;
   'claude-plugin': string;
 }
 
 export interface AgentStructureSkill {
-  id: string;
+  name: string;
   source: string;
   'claude-plugin': string;
 }
@@ -40,9 +40,9 @@ export function stripEmbeddedFrontmatter(content: string): string {
   return content.replace(/^---\n[\s\S]*?\n---\n/, '').trimStart();
 }
 
-export function tomlToMarkdown(tomlContent: string, commandId: string): string {
+export function tomlToMarkdown(tomlContent: string, commandName: string): string {
   const parsed = toml.parse(tomlContent) as unknown as TomlCommand;
-  const description = parsed.description ?? commandId;
+  const description = parsed.description ?? commandName;
   const rawPrompt = (parsed.prompt ?? '').replace(/\{\{args\}\}/g, '$ARGUMENTS').trim();
   const prompt = stripEmbeddedFrontmatter(rawPrompt);
 
@@ -50,18 +50,18 @@ export function tomlToMarkdown(tomlContent: string, commandId: string): string {
 }
 
 export interface MarketplacePlugin {
-  id: string;
   name: string;
   version: string;
   description: string;
+  source: string;
 }
 
 export function buildMarketplacePlugins(plugins: Record<string, AgentStructurePlugin>): MarketplacePlugin[] {
   return Object.entries(plugins).map(([id, plugin]) => ({
-    id,
     name: plugin.name,
     version: plugin.version ?? '0.0.1',
     description: plugin.description ?? '',
+    source: `./plugins/${id}`,
   }));
 }
 
@@ -137,13 +137,13 @@ async function run() {
         const sourcePath = path.join(commandsDir, cmd.source);
 
         if (!fs.existsSync(sourcePath)) {
-          console.warn(`Warning: source file not found for command "${cmd.id}": ${sourcePath}`);
+          console.warn(`Warning: source file not found for command "${cmd.name}": ${sourcePath}`);
           continue;
         }
 
         const tomlContent = fs.readFileSync(sourcePath, 'utf8');
-        const markdown = tomlToMarkdown(tomlContent, cmd.id);
-        const outputPath = path.join(commandsOutputDir, `${cmd.id}.md`);
+        const markdown = tomlToMarkdown(tomlContent, cmd.name);
+        const outputPath = path.join(commandsOutputDir, `${cmd.name}.md`);
 
         fs.writeFileSync(outputPath, markdown);
         console.log(`Exported ${path.relative(rootDir, outputPath)}`);
@@ -159,11 +159,11 @@ async function run() {
       for (const skill of pluginSkills) {
         const sourceSkillFile = path.join(rootDir, skill.source);
         const sourceSkillDir = path.dirname(sourceSkillFile);
-        const skillOutputDir = path.join(skillsOutputDir, skill.id);
+        const skillOutputDir = path.join(skillsOutputDir, skill.name);
         const outputSkillFile = path.join(skillOutputDir, 'SKILL.md');
 
         if (!fs.existsSync(sourceSkillFile)) {
-          console.warn(`Warning: source file not found for skill "${skill.id}": ${sourceSkillFile}`);
+          console.warn(`Warning: source file not found for skill "${skill.name}": ${sourceSkillFile}`);
           continue;
         }
 
@@ -178,7 +178,7 @@ async function run() {
         console.log(`Symlinked skill ${path.relative(rootDir, outputSkillFile)} -> ${path.relative(rootDir, sourceSkillFile)}`);
 
         // Special case for design-system tokens: Sync from node_modules to source references first
-        if (pluginId === 'design-system' && skill.id === 'design-tokens') {
+        if (pluginId === 'design-system' && skill.name === 'design-tokens') {
           const tokensPkgSource = path.join(rootDir, 'node_modules', '@dezkareid', 'design-tokens', 'dist', 'catalogs', 'all-tokens-css.md');
           const sourceRefsDir = path.join(sourceSkillDir, 'references');
           const sourceTokensFile = path.join(sourceRefsDir, 'all-tokens-css.md');
