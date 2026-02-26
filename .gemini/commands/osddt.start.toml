@@ -1,0 +1,98 @@
+description = "Start a new feature by creating a branch and working-on folder"
+
+prompt = """
+## Context
+
+Before proceeding, run the following command and parse the JSON output to get the current branch and date:
+
+```
+npx @dezkareid/osddt meta-info
+```
+
+## Repository Configuration
+
+Before proceeding, read the `.osddtrc` file in the root of the repository to determine the project path.
+
+```json
+// .osddtrc example
+{ "repoType": "monorepo" | "single" }
+```
+
+- If `repoType` is `"single"`: the project path is the repository root.
+- If `repoType` is `"monorepo"`: ask the user which package to work on (e.g. `packages/my-package`), then use `<repo-root>/<package>` as the project path.
+
+## Working Directory
+
+All generated files live under `<project-path>/working-on/<feature-name>/`.
+
+> All file paths in the instructions below are relative to `<project-path>/working-on/<feature-name>/`.
+
+## Instructions
+
+The argument provided is: {{args}}
+
+Determine the branch name using the following logic:
+
+1. If {{args}} looks like a branch name (e.g. `feat/my-feature`, `fix/some-bug`, `my-feature-branch` — no spaces, kebab-case or slash-separated), use it as-is.
+2. Otherwise treat {{args}} as a human-readable feature description, convert it to a feature name, and use the format `feat/<derived-name>` as the branch name.
+
+Apply the constraints below to the feature name (the segment after the last `/`) before using it:
+
+### Feature Name Constraints
+
+When deriving a feature name from a description:
+
+- Use only lowercase letters, digits, and hyphens (`a-z`, `0-9`, `-`)
+- Replace spaces and special characters with hyphens
+- Remove consecutive hyphens (e.g. `--` → `-`)
+- Remove leading and trailing hyphens
+- **Maximum length: 30 characters** — if the derived name exceeds 30 characters, truncate at the last hyphen boundary before or at the 30th character
+- If the input is already a valid branch name (no spaces, kebab-case or slash-separated), apply the 30-character limit to the last segment only (after the last `/`)
+- Reject (and ask the user to provide a shorter name) if no valid name can be derived after truncation
+
+**Examples:**
+
+| Input | Derived feature name |
+| ----------------------------------------------------- | ---------------------------- |
+| `Add user authentication` | `add-user-authentication` |
+| `Implement real-time notifications for dashboard` | `implement-real-time` |
+| `feat/add-user-authentication` | `add-user-authentication` |
+| `feat/implement-real-time-notifications-for-dashboard` | `implement-real-time` |
+
+
+Once the branch name is determined:
+
+3. Check whether the branch already exists locally or remotely:
+   - If it **does not exist**, create and switch to it:
+     ```
+     git checkout -b <branch-name>
+     ```
+   - If it **already exists**, warn the user and ask whether to:
+     - **Resume** — switch to the existing branch (`git checkout <branch-name>`) and continue
+     - **Abort** — stop and do nothing
+
+4. Check whether the working directory `<project-path>/working-on/<feature-name>` already exists:
+   - If it **does not exist**, create it:
+     ```
+     mkdir -p <project-path>/working-on/<feature-name>
+     ```
+   - If it **already exists**, warn the user and ask whether to:
+     - **Resume** — continue into the existing folder (proceed to the next step without recreating it)
+     - **Abort** — stop and do nothing
+
+Where `<feature-name>` is the last segment of the branch name (after the last `/`, or the full branch name if no `/` is present).
+
+5. Report the branch name and working directory that were created or resumed.
+
+## Arguments
+
+{{args}}
+
+## Next Step
+
+Run the following command to write the feature specification:
+
+```
+/osddt.spec <brief description of the feature being built>
+```
+"""

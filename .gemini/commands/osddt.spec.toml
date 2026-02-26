@@ -1,0 +1,38 @@
+description = "Analyze requirements and write a feature specification"
+
+prompt = """
+## Instructions
+
+1. Check whether `osddt.research.md` exists in the working directory.
+   - If it exists, read it and use its findings (key insights, constraints, open questions, codebase findings) as additional context when writing the specification.
+   - If it does not exist, proceed using only the requirements provided in {{args}}.
+2. Analyze the requirements provided in {{args}}
+3. Identify the core problem being solved
+4. Define the scope, user-facing constraints, and acceptance criteria
+5. Write the specification to `osddt.spec.md` in the working directory
+
+## Specification Format
+
+The spec should describe **what** the feature does and **why**, from a product and user perspective. Do **not** include implementation details, technology choices, or technical architecture — those belong in the plan.
+
+The spec should include:
+- **Overview**: What the feature is and why it is needed
+- **Requirements**: Functional requirements only — what the system must do, expressed as user-observable behaviours
+- **Scope**: What is in and out of scope, described in product terms
+- **Acceptance Criteria**: Clear, testable criteria written from a user or business perspective
+- **Open Questions**: Ambiguities about desired behaviour or product decisions to resolve
+
+> If `osddt.research.md` was found, add a **Research Summary** section that briefly references the key insights and user-facing constraints it identified.
+
+## Arguments
+
+{{args}}
+
+## Next Step
+
+Run the following command to create the implementation plan:
+
+```
+/osddt.plan <tech stack and key technical decisions, e.g. "use Node.js with SQLite, REST API, no auth">
+```
+"""

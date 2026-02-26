@@ -1,0 +1,63 @@
+description = "Detect the current workflow phase and prompt the next command to run"
+
+prompt = """
+## Context
+
+Before proceeding, run the following command and parse the JSON output to get the current branch and date:
+
+```
+npx @dezkareid/osddt meta-info
+```
+
+## Repository Configuration
+
+Before proceeding, read the `.osddtrc` file in the root of the repository to determine the project path.
+
+```json
+// .osddtrc example
+{ "repoType": "monorepo" | "single" }
+```
+
+- If `repoType` is `"single"`: the project path is the repository root.
+- If `repoType` is `"monorepo"`: ask the user which package to work on (e.g. `packages/my-package`), then use `<repo-root>/<package>` as the project path.
+
+## Working Directory
+
+All generated files live under `<project-path>/working-on/<feature-name>/`.
+
+> All file paths in the instructions below are relative to `<project-path>/working-on/<feature-name>/`.
+
+### Resolving the Feature Name
+
+Use the following logic to determine `<feature-name>`:
+
+1. If arguments were provided, derive the feature name from them:
+   - If the argument looks like a branch name (no spaces, kebab-case or slash-separated), use the last segment (after the last `/`, or the full value if no `/` is present).
+   - Otherwise treat it as a human-readable description and convert it to a feature name following the constraints in the Feature Name Constraints section.
+2. If **no arguments were provided**:
+   - List all folders under `<project-path>/working-on/`.
+   - If there is **only one folder**, use it automatically and inform the user.
+   - If there are **multiple folders**, present the list to the user and ask them to pick one.
+   - If there are **no folders**, inform the user that no in-progress features were found and stop.
+
+## Instructions
+
+Check the working directory `<project-path>/working-on/<feature-name>` for the files listed below **in order** to determine the current phase. Use the first matching condition:
+
+| Condition | Current phase | Run next |
+| --------- | ------------- | -------- |
+| `osddt.tasks.md` exists **and** has at least one unchecked task (`- [ ]`) | Implementing | `/osddt.implement` |
+| `osddt.tasks.md` exists **and** all tasks are checked (`- [x]`) | Ready to close | `/osddt.done` |
+| `osddt.plan.md` exists | Planning done | `/osddt.tasks` |
+| `osddt.spec.md` exists | Spec done | `/osddt.plan <tech stack and key technical decisions>` |
+| `osddt.research.md` exists | Research done | `/osddt.spec <brief feature description>` |
+| None of the above | Not started | `/osddt.spec <brief feature description>` (or `/osddt.research <topic>` if research is needed first) |
+
+Report which file was found, which phase that corresponds to, and the exact command the user should run next.
+
+> **Open Questions check**: After reporting the phase, if the detected phase is **Spec done** or **Planning done**, also check whether `osddt.spec.md` contains any unanswered open questions (items in the **Open Questions** section with no corresponding entry in the **Decisions** section). If unanswered questions exist, inform the user and recommend running `/osddt.clarify <feature-name>` before (or in addition to) the suggested next command.
+
+## Arguments
+
+{{args}}
+"""
