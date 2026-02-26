@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.3.0...ai-team-v1.3.1) (2026-02-26)
+
+
+### Bug Fixes
+
+* replace id with name in agent config and add marketplace validation ([41f715c](https://github.com/dezkareid/ai-team/commit/41f715c245b478522d655600390fc4b4a8c7c337))
+
 # [1.3.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.2.0...ai-team-v1.3.0) (2026-02-26)
 
 
