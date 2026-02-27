@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.3.1...ai-team-v1.3.2) (2026-02-27)
+
+
+### Bug Fixes
+
+* update tokens and example for skill ([2d4512b](https://github.com/dezkareid/ai-team/commit/2d4512b9784c59987e29faf4fa3b9936b8bb1762))
+
 ## [1.3.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.3.0...ai-team-v1.3.1) (2026-02-26)
 
 
