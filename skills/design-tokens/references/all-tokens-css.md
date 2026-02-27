@@ -33,18 +33,6 @@ This catalog contains design tokens optimized for CSS usage.
 | `--color-base-gray-900` | `#111827` |
 | `--color-base-white` | `#ffffff` |
 | `--color-base-black` | `#000000` |
-| `--light-color-primary` | `#3b82f6` |
-| `--light-color-success` | `#22c55e` |
-| `--light-color-background-primary` | `#ffffff` |
-| `--light-color-background-secondary` | `#f3f4f6` |
-| `--light-color-text-primary` | `#111827` |
-| `--light-color-text-inverse` | `#ffffff` |
-| `--dark-color-primary` | `#dbeafe` |
-| `--dark-color-success` | `#14532d` |
-| `--dark-color-background-primary` | `#111827` |
-| `--dark-color-background-secondary` | `#6b7280` |
-| `--dark-color-text-primary` | `#ffffff` |
-| `--dark-color-text-inverse` | `#111827` |
 
 ## Font
 
@@ -83,4 +71,29 @@ This catalog contains design tokens optimized for CSS usage.
 | `--spacing-32` | `2rem` |
 | `--spacing-48` | `3rem` |
 | `--spacing-64` | `4rem` |
+
+## Semantic Tokens
+
+The following semantic tokens are themed and support light/dark modes.
+
+| CSS Variable | Value |
+| :--- | :--- |
+| `--color-background-primary` | `light-dark(var(--light-color-background-primary), var(--dark-color-background-primary))` |
+| `--light-color-background-primary` | `#ffffff` |
+| `--dark-color-background-primary` | `#111827` |
+| `--color-background-secondary` | `light-dark(var(--light-color-background-secondary), var(--dark-color-background-secondary))` |
+| `--light-color-background-secondary` | `#f3f4f6` |
+| `--dark-color-background-secondary` | `#6b7280` |
+| `--color-primary` | `light-dark(var(--light-color-primary), var(--dark-color-primary))` |
+| `--light-color-primary` | `#3b82f6` |
+| `--dark-color-primary` | `#dbeafe` |
+| `--color-success` | `light-dark(var(--light-color-success), var(--dark-color-success))` |
+| `--light-color-success` | `#22c55e` |
+| `--dark-color-success` | `#14532d` |
+| `--color-text-inverse` | `light-dark(var(--light-color-text-inverse), var(--dark-color-text-inverse))` |
+| `--light-color-text-inverse` | `#ffffff` |
+| `--dark-color-text-inverse` | `#111827` |
+| `--color-text-primary` | `light-dark(var(--light-color-text-primary), var(--dark-color-text-primary))` |
+| `--light-color-text-primary` | `#111827` |
+| `--dark-color-text-primary` | `#ffffff` |
 
