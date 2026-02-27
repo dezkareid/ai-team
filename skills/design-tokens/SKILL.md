@@ -36,7 +36,7 @@ When generating CSS or inline styles, you MUST prefer using CSS custom propertie
 ```
 
 ### 2. Colors
-Use semantic names for colors whenever possible (e.g., `--color-primary`, `--color-secondary`, `--color-error`). Refer to `references/all-tokens-css.md` for the full list of available semantic and numeric scales.
+Use semantic names for colors whenever possible (e.g., `--color-primary`, `--color-background-primary`, `--color-text-primary`). These tokens are designed to be theme-aware (supporting both light and dark modes). Refer to `references/all-tokens-css.md` for the full list of available semantic and numeric scales.
 
 ### 3. Spacing
 The project uses a consistent spacing scale. Use the `--spacing-*` variables for margins, paddings, and gaps.
@@ -47,5 +47,31 @@ Example:
 ```css
 @media (min-width: var(--breakpoint-tablet)) {
   /* ... */
+}
+```
+
+### 5. Semantic Tokens and Theming
+The project uses semantic tokens that automatically support light and dark modes. You MUST use these top-level semantic tokens instead of specific light or dark variants to ensure the UI adapts correctly to the user's theme.
+
+**Bad:**
+```css
+/* Avoid using theme-specific tokens directly in components */
+.card {
+  background-color: var(--light-color-background-primary);
+  color: var(--light-color-text-primary);
+}
+
+[data-theme='dark'] .card {
+  background-color: var(--dark-color-background-primary);
+  color: var(--dark-color-text-primary);
+}
+```
+
+**Good:**
+```css
+/* Use semantic tokens that handle theming automatically */
+.card {
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
 }
 ```
