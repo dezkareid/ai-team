@@ -57,24 +57,29 @@ export interface MarketplacePlugin {
 }
 
 export function buildMarketplacePlugins(
-  plugins: Record<string, AgentStructurePlugin>,
-  existingPlugins: MarketplacePlugin[] = []
+  plugins: Record<string, AgentStructurePlugin>
 ): MarketplacePlugin[] {
-  return Object.entries(plugins).map(([id, plugin]) => {
-    const existing = existingPlugins.find(p => p.name === plugin.name);
-    return {
-      name: plugin.name,
-      version: existing?.version ?? plugin.version ?? '0.0.1',
-      description: plugin.description ?? '',
-      source: `./plugins/${id}`,
-    };
-  });
+  return Object.entries(plugins).map(([id, plugin]) => ({
+    name: plugin.name,
+    version: plugin.version ?? '0.0.1',
+    description: plugin.description ?? '',
+    source: `./plugins/${id}`,
+  }));
 }
 
-export function updateMarketplace(marketplacePath: string, plugins: Record<string, AgentStructurePlugin>): void {
+export function updateMarketplace(marketplacePath: string, pluginsDir: string, plugins: Record<string, AgentStructurePlugin>): void {
   const marketplace = JSON.parse(fs.readFileSync(marketplacePath, 'utf8'));
 
-  marketplace.plugins = buildMarketplacePlugins(plugins, marketplace.plugins ?? []);
+  const resolvedPlugins: Record<string, AgentStructurePlugin> = {};
+  for (const [id, plugin] of Object.entries(plugins)) {
+    const pluginJsonPath = path.join(pluginsDir, id, '.claude-plugin', 'plugin.json');
+    const pluginVersion = fs.existsSync(pluginJsonPath)
+      ? JSON.parse(fs.readFileSync(pluginJsonPath, 'utf8')).version
+      : plugin.version;
+    resolvedPlugins[id] = { ...plugin, version: pluginVersion };
+  }
+
+  marketplace.plugins = buildMarketplacePlugins(resolvedPlugins);
 
   fs.writeFileSync(marketplacePath, JSON.stringify(marketplace, null, 2) + '\n');
   console.log(`Updated ${path.basename(marketplacePath)} with ${Object.keys(plugins).length} plugin(s).`);
@@ -222,7 +227,7 @@ async function run() {
 
   // Update marketplace.json
   if (fs.existsSync(marketplacePath)) {
-    updateMarketplace(marketplacePath, claudePlugins);
+    updateMarketplace(marketplacePath, pluginsDir, claudePlugins);
   } else {
     console.warn(`Warning: ${marketplacePath} not found, skipping marketplace update.`);
   }

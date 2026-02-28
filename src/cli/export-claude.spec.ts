@@ -219,43 +219,27 @@ describe('buildMarketplacePlugins', () => {
     expect(result).toEqual([]);
   });
 
-  it('should preserve existing marketplace version over agent-structure version', () => {
+  it('should use the plugin version from the passed plugin definition', () => {
     // Given
     const plugins = {
-      'npm-tools': { name: 'npm-tools', version: '0.0.1', description: 'NPM tools' },
-    };
-    const existingPlugins = [
-      { name: 'npm-tools', version: '1.5.0', description: 'NPM tools', source: './plugins/npm-tools' },
-    ];
-
-    // When
-    const result = buildMarketplacePlugins(plugins, existingPlugins);
-
-    // Then
-    expect(result[0].version).toBe('1.5.0');
-  });
-
-  it('should fall back to agent-structure version when plugin is not in existing marketplace', () => {
-    // Given
-    const plugins = {
-      'new-plugin': { name: 'new-plugin', version: '0.5.0', description: 'A new plugin' },
+      'npm-tools': { name: 'npm-tools', version: '2.0.0', description: 'NPM tools' },
     };
 
     // When
-    const result = buildMarketplacePlugins(plugins, []);
+    const result = buildMarketplacePlugins(plugins);
 
     // Then
-    expect(result[0].version).toBe('0.5.0');
+    expect(result[0].version).toBe('2.0.0');
   });
 
-  it('should fall back to 0.0.1 when version is absent from both sources', () => {
+  it('should fall back to 0.0.1 when version is absent', () => {
     // Given
     const plugins = {
       'bare-plugin': { name: 'bare-plugin' },
     };
 
     // When
-    const result = buildMarketplacePlugins(plugins, []);
+    const result = buildMarketplacePlugins(plugins);
 
     // Then
     expect(result[0].version).toBe('0.0.1');
