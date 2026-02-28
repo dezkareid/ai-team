@@ -38,7 +38,7 @@
   "mcpServers": {
     "ai-team": {
       "claude-plugin": "company-context",
-      "version": "0.0.0",
+      "version": "1.4.6",
       "package": "@dezkareid/ai-team",
       "command": "npx",
       "args": [

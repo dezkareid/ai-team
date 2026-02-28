@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.5...ai-team-v1.4.6) (2026-02-28)
+
+
+### Bug Fixes
+
+* add right path for mcp ([8838fd5](https://github.com/dezkareid/ai-team/commit/8838fd5ef99468bccf53f9dc41ffadc19fff597e))
+
 ## [1.4.5](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.4...ai-team-v1.4.5) (2026-02-28)
 
 
