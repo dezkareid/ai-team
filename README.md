@@ -42,12 +42,3 @@ claude plugin install npm-tools
 claude plugin install design-system
 claude plugin install company-context
 ```
-
-### Use a command
-
-Invoke any installed command directly from Claude Code:
-
-```
-/npm-package-setup my-lib 0.1.0 "A utility library"
-/npm-publish
-```
