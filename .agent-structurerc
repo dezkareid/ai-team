@@ -2,17 +2,17 @@
   "claude-plugins": {
     "npm-tools": {
       "name": "npm-tools",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "description": "Tools for working with npm"
     },
     "design-system": {
       "name": "design-system",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "description": "Authoritative design system context and tools"
     },
     "company-context": {
       "name": "company-context",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "description": "Authoritative company context and tools"
     }
   },
@@ -38,7 +38,7 @@
   "mcpServers": {
     "ai-team": {
       "claude-plugin": "company-context",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "package": "@dezkareid/ai-team",
       "command": "npx",
       "args": [

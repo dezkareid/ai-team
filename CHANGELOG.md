@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.0...ai-team-v1.4.1) (2026-02-28)
+
+
+### Bug Fixes
+
+* Update MCP server to use `McpServer` for streamlined tool registration, pin dependency versions, and add a new agent guideline ([6f55cc9](https://github.com/dezkareid/ai-team/commit/6f55cc91120f3ea3f768b43a74357b9e6d6c87e5))
+
 # [1.4.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.3.2...ai-team-v1.4.0) (2026-02-28)
 
 
