@@ -31,7 +31,15 @@ claude marketplace add dezkareid-ai-team https://github.com/dezkareid/ai-team
 
 #### `design-system` — Authoritative design system context and tools
 
+| Skill | Description |
+|---|---|
+| `design-tokens` | Authoritative context for the project's design tokens. Provides information on colors, spacing, and breakpoints using CSS custom properties. |
+
 #### `company-context` — Authoritative company context and tools
+
+| MCP Server | Description |
+|---|---|
+| `ai-team` | Provides authoritative company context, outcomes, and architecture principles. |
 
 ### Install a plugin
 
@@ -41,4 +49,52 @@ Once the marketplace is added, install a plugin with:
 claude plugin install npm-tools
 claude plugin install design-system
 claude plugin install company-context
+```
+
+## Development
+
+### Workflow
+
+The project uses a structured workflow to keep versions, commands, and configurations in sync across Gemini and Claude platforms.
+
+```mermaid
+graph TD
+    subgraph "Phase 1: Sync Version"
+        P[package.json] -- sync-version --> AS[.agent-structurerc]
+        P -- sync-version --> M[.claude-plugin/marketplace.json]
+        P -- sync-version --> GE[gemini-extension.json]
+    end
+
+    subgraph "Phase 2: Export to Claude"
+        CMD[commands/*.toml] -- export-claude --> P_CMD[plugins/commands/*.md]
+        SKL[skills/**] -- export-claude --> P_SKL[plugins/skills/**]
+        AS -- export-claude --> P_JSON[plugins/**/plugin.json]
+        P_JSON -- updates --> M
+    end
+
+    subgraph "Phase 3: Distribute MCP"
+        AS -- distribute-mcp --> GE
+        AS -- distribute-mcp --> PM[plugins/company-context/.mcp.json]
+    end
+```
+
+> **Note**: You must run `pnpm run build` before executing these commands, as they rely on the compiled files in the `dist/` directory.
+
+1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version from `package.json` to `.agent-structurerc`, `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
+2.  **Export to Claude**: Run `pnpm run export-claude` to process source files and update plugins.
+3.  **Distribute MCP**: Run `pnpm run distribute-mcp` to resolve placeholders and update platform-specific MCP configurations.
+
+### Organization
+
+- **`commands/`**: Source command files in TOML format (Gemini CLI).
+- **`skills/`**: Source skill files (SKILL.md) for specialized AI knowledge.
+- **`plugins/`**: Exported Claude Code plugins.
+- **`.claude-plugin/`**: Claude marketplace and plugin metadata.
+
+### Testing
+
+Tests are written using **Vitest**:
+
+```bash
+pnpm test
 ```
