@@ -1,8 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fileExists, readFileContent } from './utils.js';
-import { loadConfig, getRootDir } from './config.js';
+import { loadConfig } from './config.js';
 import fs from 'fs';
-import path from 'path';
 
 vi.mock('fs');
 
