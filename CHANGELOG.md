@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.2...ai-team-v1.4.3) (2026-02-28)
+
+
+### Bug Fixes
+
+* update plugin strategy ([f3a12ad](https://github.com/dezkareid/ai-team/commit/f3a12ad28b4ccb34386e6223117255d6052c814f))
+
 ## [1.4.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.1...ai-team-v1.4.2) (2026-02-28)
 
 

@@ -1,12 +1,12 @@
 {
   "name": "dezkareid-ai-team",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "mcpServers": {
     "ai-team": {
       "command": "npx",
       "args": [
         "-y",
-        "@dezkareid/ai-team@1.4.2"
+        "@dezkareid/ai-team@1.4.3"
       ]
     }
   }
