@@ -90,9 +90,23 @@ Where `<feature-name>` is the last segment of the branch name (after the last `/
 
 ## Next Step
 
-Run the following command to write the feature specification:
+- If {{args}} was a **human-readable description** (not a branch name):
 
-```
-/osddt.spec <brief description of the feature being built>
-```
+  Your description will be used as the starting point for the spec. Run:
+
+  ```
+  /osddt.spec
+  ```
+
+  > You can append more details if you want the spec to capture additional context.
+
+- If {{args}} was a **branch name** (or no arguments were provided):
+
+  Run the following command to write the feature specification:
+
+  ```
+  /osddt.spec <brief feature description, e.g. "add user authentication with JWT">
+  ```
+
+  > Add a short description of what you're building so the spec has the right starting point.
 """

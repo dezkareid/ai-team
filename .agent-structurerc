@@ -1,33 +1,54 @@
 {
-    "claude-plugins": {
-        "npm-tools": {
-            "name": "npm-tools",
-            "version": "0.0.1",
-            "description": "Tools for working with npm"
-        },
-        "design-system": {
-            "name": "design-system",
-            "version": "0.0.1",
-            "description": "Authoritative design system context and tools"
-        }
+  "claude-plugins": {
+    "npm-tools": {
+      "name": "npm-tools",
+      "version": "0.0.0",
+      "description": "Tools for working with npm"
     },
-    "commands": [
-        {
-            "name": "npm-package-setup",
-            "source": "npm/package-setup.toml",
-            "claude-plugin": "npm-tools"
-        },
-        {
-            "name": "npm-publish",
-            "source": "npm/publish-setup.toml",
-            "claude-plugin": "npm-tools"
-        }
-    ],
-    "skills": [
-        {
-            "name": "design-tokens",
-            "source": "skills/design-tokens/SKILL.md",
-            "claude-plugin": "design-system"
-        }
-    ]
+    "design-system": {
+      "name": "design-system",
+      "version": "0.0.0",
+      "description": "Authoritative design system context and tools"
+    },
+    "company-context": {
+      "name": "company-context",
+      "version": "0.0.0",
+      "description": "Authoritative company context and tools"
+    }
+  },
+  "commands": [
+    {
+      "name": "npm-package-setup",
+      "source": "npm/package-setup.toml",
+      "claude-plugin": "npm-tools"
+    },
+    {
+      "name": "npm-publish",
+      "source": "npm/publish-setup.toml",
+      "claude-plugin": "npm-tools"
+    }
+  ],
+  "skills": [
+    {
+      "name": "design-tokens",
+      "source": "skills/design-tokens/SKILL.md",
+      "claude-plugin": "design-system"
+    }
+  ],
+  "mcpServers": {
+    "ai-team": {
+      "claude-plugin": "company-context",
+      "version": "0.0.0",
+      "package": "@dezkareid/ai-team",
+      "command": "npx",
+      "args": [
+        "-y",
+        "${package}@${version}"
+      ],
+      "contextFiles": {
+        "get_company_outcomes": "context/outcomes.md",
+        "get_architecture_principles": "context/architecture-principles.md"
+      }
+    }
+  }
 }
