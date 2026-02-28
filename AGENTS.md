@@ -48,6 +48,8 @@ Different agents use different argument placeholders:
 
 ## Development
 
+Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
+
 File `.agent-structurerc` is used to configure the project structure.
 
 ```json
