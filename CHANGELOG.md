@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.3...ai-team-v1.4.4) (2026-02-28)
+
+
+### Bug Fixes
+
+* Add `export-claude.js` to the release prepare command ([49041c8](https://github.com/dezkareid/ai-team/commit/49041c864c9bdc602c607343c009765730e8d908))
+
 ## [1.4.3](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.2...ai-team-v1.4.3) (2026-02-28)
 
 
