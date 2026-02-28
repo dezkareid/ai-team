@@ -20,7 +20,8 @@
     "README.md",
     "AGENTS.md",
     "gemini-extension.json",
-    "context"
+    "context",
+    ".agent-structurerc"
   ],
   "publishConfig": {
     "access": "public",
