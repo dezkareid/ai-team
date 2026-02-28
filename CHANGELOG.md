@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.4...ai-team-v1.4.5) (2026-02-28)
+
+
+### Bug Fixes
+
+* resolve plugin versions from plugin.json in marketplace export ([13bdac7](https://github.com/dezkareid/ai-team/commit/13bdac77d045cb878fb66a047e59536c72cee8c2))
+
 ## [1.4.4](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.3...ai-team-v1.4.4) (2026-02-28)
 
 

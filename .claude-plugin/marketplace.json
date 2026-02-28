@@ -7,24 +7,24 @@
   },
   "metadata": {
     "description": "Dezkareid AI Tooling",
-    "version": "1.4.4"
+    "version": "1.4.5"
   },
   "plugins": [
     {
       "name": "npm-tools",
-      "version": "1.4.2",
+      "version": "0.0.1",
       "description": "Tools for working with npm",
       "source": "./plugins/npm-tools"
     },
     {
       "name": "design-system",
-      "version": "1.4.2",
+      "version": "0.0.1",
       "description": "Authoritative design system context and tools",
       "source": "./plugins/design-system"
     },
     {
       "name": "company-context",
-      "version": "1.4.2",
+      "version": "0.0.2",
       "description": "Authoritative company context and tools",
       "source": "./plugins/company-context"
     }
