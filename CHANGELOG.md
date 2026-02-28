@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.1...ai-team-v1.4.2) (2026-02-28)
+
+
+### Bug Fixes
+
+* include configuration file in package packet ([a16e513](https://github.com/dezkareid/ai-team/commit/a16e5133168818917bc2ef5a4cea38469ab26655))
+
 ## [1.4.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.0...ai-team-v1.4.1) (2026-02-28)
 
 
