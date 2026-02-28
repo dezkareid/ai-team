@@ -16,7 +16,7 @@ function resolvePlaceholders(str: string, vars: Record<string, string>): string 
 async function run() {
   const rootDir = getRootDir();
   const agentRcPath = path.join(rootDir, '.agent-structurerc');
-  
+
   if (!fs.existsSync(agentRcPath)) {
     console.error('.agent-structurerc not found');
     process.exit(1);
@@ -47,7 +47,7 @@ async function run() {
   // 2. Distribute to plugins/company-context/mcp.json
   for (const [name, config] of Object.entries(mcpServers) as [string, any][]) {
     if (config['claude-plugin'] === 'company-context') {
-      const pluginMcpPath = path.join(rootDir, 'plugins/company-context/mcp.json');
+      const pluginMcpPath = path.join(rootDir, 'plugins/company-context/.mcp.json');
       const vars = { package: config.package, version: config.version };
       const mcpConfig = {
         mcpServers: {

@@ -12,7 +12,7 @@
     },
     "company-context": {
       "name": "company-context",
-      "version": "0.0.2",
+      "version": "0.0.3",
       "description": "Authoritative company context and tools"
     }
   },
@@ -38,7 +38,7 @@
   "mcpServers": {
     "ai-team": {
       "claude-plugin": "company-context",
-      "version": "1.4.5",
+      "version": "0.0.0",
       "package": "@dezkareid/ai-team",
       "command": "npx",
       "args": [
