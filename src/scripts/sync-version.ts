@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export type SyncStrategy = 'gemini' | 'claude' | 'agent-structure' | 'marketplace-plugins';
+export type SyncStrategy = 'gemini' | 'claude' | 'agent-structure' | 'marketplace';
 
 export interface FileSystem {
   existsSync(path: string): boolean;
@@ -26,34 +26,17 @@ function updateJsonVersion(json: any, version: string, strategy: SyncStrategy): 
       json.version = version;
       updated = true;
     }
-  } else if (strategy === 'agent-structure') {
-    // Sync all plugins and mcpServers
-    if (json['claude-plugins']) {
-      for (const key in json['claude-plugins']) {
-        if (json['claude-plugins'][key].version !== version) {
-          json['claude-plugins'][key].version = version;
-          updated = true;
-        }
-      }
-    }
-    if (json.mcpServers) {
-      for (const key in json.mcpServers) {
-        if (json.mcpServers[key].version !== version) {
-          json.mcpServers[key].version = version;
-          updated = true;
-        }
-      }
-    }
-  } else if (strategy === 'marketplace-plugins') {
-    // Sync metadata version and all plugins
+  } else if (strategy === 'marketplace') {
     if (json.metadata && json.metadata.version !== version) {
       json.metadata.version = version;
       updated = true;
     }
-    if (json.plugins && Array.isArray(json.plugins)) {
-      for (const plugin of json.plugins) {
-        if (plugin.version !== version) {
-          plugin.version = version;
+  } else if (strategy === 'agent-structure') {
+    // Only sync mcpServers from package version
+    if (json.mcpServers) {
+      for (const key in json.mcpServers) {
+        if (json.mcpServers[key].version !== version) {
+          json.mcpServers[key].version = version;
           updated = true;
         }
       }
@@ -92,11 +75,12 @@ export function syncVersion(
 async function run() {
   const rootDir = path.join(__dirname, '..', '..');
   const packageJsonPath = path.join(rootDir, 'package.json');
-  
+  const agentStructurePath = path.join(rootDir, '.agent-structurerc');
+
   const targets: Array<{ path: string; strategy: SyncStrategy; silent?: boolean }> = [
     { path: path.join(rootDir, 'gemini-extension.json'), strategy: 'gemini' },
-    { path: path.join(rootDir, '.claude-plugin/marketplace.json'), strategy: 'marketplace-plugins' },
-    { path: path.join(rootDir, '.agent-structurerc'), strategy: 'agent-structure' },
+    { path: path.join(rootDir, '.claude-plugin/marketplace.json'), strategy: 'marketplace' },
+    { path: agentStructurePath, strategy: 'agent-structure' },
   ];
 
   try {

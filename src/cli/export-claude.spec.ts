@@ -4,7 +4,7 @@ import {
   tomlToMarkdown,
   buildPluginJson,
   buildMarketplacePlugins,
-} from './export-claude';
+} from './export-claude.js';
 
 describe('stripEmbeddedFrontmatter', () => {
   it('should remove a leading frontmatter block from content', () => {
@@ -217,5 +217,47 @@ describe('buildMarketplacePlugins', () => {
 
     // Then
     expect(result).toEqual([]);
+  });
+
+  it('should preserve existing marketplace version over agent-structure version', () => {
+    // Given
+    const plugins = {
+      'npm-tools': { name: 'npm-tools', version: '0.0.1', description: 'NPM tools' },
+    };
+    const existingPlugins = [
+      { name: 'npm-tools', version: '1.5.0', description: 'NPM tools', source: './plugins/npm-tools' },
+    ];
+
+    // When
+    const result = buildMarketplacePlugins(plugins, existingPlugins);
+
+    // Then
+    expect(result[0].version).toBe('1.5.0');
+  });
+
+  it('should fall back to agent-structure version when plugin is not in existing marketplace', () => {
+    // Given
+    const plugins = {
+      'new-plugin': { name: 'new-plugin', version: '0.5.0', description: 'A new plugin' },
+    };
+
+    // When
+    const result = buildMarketplacePlugins(plugins, []);
+
+    // Then
+    expect(result[0].version).toBe('0.5.0');
+  });
+
+  it('should fall back to 0.0.1 when version is absent from both sources', () => {
+    // Given
+    const plugins = {
+      'bare-plugin': { name: 'bare-plugin' },
+    };
+
+    // When
+    const result = buildMarketplacePlugins(plugins, []);
+
+    // Then
+    expect(result[0].version).toBe('0.0.1');
   });
 });
