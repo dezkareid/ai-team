@@ -7,7 +7,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node dist/scripts/sync-version.js && node dist/scripts/export-claude.js && node dist/scripts/distribute-mcp.js"
+        "prepareCmd": "node dist/scripts/sync-version.js && node dist/cli/export-claude.js && node dist/scripts/distribute-mcp.js"
       }
     ],
     [
