@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.3.2...ai-team-v1.4.0) (2026-02-28)
+
+
+### Features
+
+* implement MCP server for company context and distribution tooling ([8be3e6b](https://github.com/dezkareid/ai-team/commit/8be3e6ba61d01c8d6bf486a05ae1b40699d85762))
+
 ## [1.3.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.3.1...ai-team-v1.3.2) (2026-02-27)
 
 
