@@ -7,7 +7,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node dist/scripts/sync-version.js"
+        "prepareCmd": "node dist/scripts/sync-version.js && node dist/scripts/distribute-mcp.js"
       }
     ],
     [
@@ -17,6 +17,7 @@
           "CHANGELOG.md",
           "gemini-extension.json",
           ".claude-plugin/marketplace.json",
+          ".agent-structurerc",
           "plugins/**"
         ]
       }

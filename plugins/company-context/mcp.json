@@ -1,6 +1,4 @@
 {
-  "name": "dezkareid-ai-team",
-  "version": "0.0.0",
   "mcpServers": {
     "ai-team": {
       "command": "npx",

@@ -1,3 +1,6 @@
 {
-  "repoType": "single"
+  "repoType": "single",
+  "agents": [
+    "gemini"
+  ]
 }
