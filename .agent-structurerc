@@ -33,6 +33,11 @@
       "name": "design-tokens",
       "source": "skills/design-tokens/SKILL.md",
       "claude-plugin": "design-system"
+    },
+    {
+      "name": "audit-agents-file",
+      "source": "skills/audit-agents-file/SKILL.md",
+      "claude-plugin": "company-context"
     }
   ],
   "mcpServers": {
