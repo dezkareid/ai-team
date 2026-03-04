@@ -166,6 +166,63 @@ graph TD
     -   Updates `gemini-extension.json` for Gemini CLI.
     -   Creates/updates `.mcp.json` in relevant plugin folders (e.g., `plugins/company-context/`) for Claude Code.
 
+### Versioning Skills and Plugins
+
+Skills and plugins are versioned independently using changeset files (powered by `@changesets/cli`).
+
+#### Version sources
+
+| Artifact | Where the version lives |
+|---|---|
+| **Skill** | `metadata.version` field in the skill's `SKILL.md` frontmatter |
+| **Plugin** | `version` field under `claude-plugins.<id>` in `.agent-structurerc` |
+
+#### Changeset file format
+
+Create a file inside `.changeset/` (any name, `.md` extension). The frontmatter lists one or more names and their bump type (`major`, `minor`, or `patch`). The same name can appear in both scripts — each one only acts on its own registry.
+
+```md
+---
+"design-tokens": minor
+"npm-tools": patch
+---
+
+Brief description of what changed.
+```
+
+Use `pnpm changeset` to generate the file interactively, or create it manually.
+
+#### Applying changesets
+
+```bash
+pnpm run build
+
+# Bump versions in SKILL.md files for any skill listed in pending changesets
+pnpm run apply-skill-changesets
+
+# Bump versions in .agent-structurerc for any plugin listed in pending changesets
+pnpm run apply-plugin-changesets
+```
+
+Each script reads all `.md` files in `.changeset/` (skipping `README.md`), applies the highest bump when a name appears in multiple files, writes the new version to its respective location, and deletes the consumed changeset files.
+
+#### Workflow diagram
+
+```mermaid
+graph TD
+    subgraph "Skill versioning"
+        CS1[.changeset/*.md] -- apply-skill-changesets --> SM[skills/**/SKILL.md\nmetadata.version]
+    end
+
+    subgraph "Plugin versioning"
+        CS2[.changeset/*.md] -- apply-plugin-changesets --> AS[.agent-structurerc\nclaude-plugins.version]
+        AS -- export-claude --> PJ[plugins/**/plugin.json]
+        PJ -- updates --> M[.claude-plugin/marketplace.json]
+    end
+```
+
+After bumping plugin versions, run `pnpm run export-claude` so the new versions are propagated to `plugin.json` and `marketplace.json`.
+
 ### Commit Rules
 
 Always use Conventional Commits format for commit messages.

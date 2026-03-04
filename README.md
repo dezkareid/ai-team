@@ -84,6 +84,36 @@ graph TD
 2.  **Export to Claude**: Run `pnpm run export-claude` to process source files and update plugins.
 3.  **Distribute MCP**: Run `pnpm run distribute-mcp` to resolve placeholders and update platform-specific MCP configurations.
 
+### Versioning skills and plugins
+
+Skills and plugins follow independent semantic versioning driven by changeset files.
+
+| Artifact | Version location |
+|---|---|
+| **Skill** | `metadata.version` in the skill's `SKILL.md` frontmatter |
+| **Plugin** | `version` under `claude-plugins.<id>` in `.agent-structurerc` |
+
+Create a changeset file in `.changeset/` (use `pnpm changeset` or write it manually):
+
+```md
+---
+"design-tokens": minor
+"npm-tools": patch
+---
+
+Brief description of what changed.
+```
+
+Then apply the changesets:
+
+```bash
+pnpm run build
+pnpm run apply-skill-changesets   # bumps version in SKILL.md
+pnpm run apply-plugin-changesets  # bumps version in .agent-structurerc
+```
+
+After bumping plugin versions, run `pnpm run export-claude` to propagate the new versions to `plugin.json` and `marketplace.json`.
+
 ### Organization
 
 - **`commands/`**: Source command files in TOML format (Gemini CLI).
