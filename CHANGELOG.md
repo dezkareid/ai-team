@@ -1,3 +1,10 @@
+## [1.4.7](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.6...ai-team-v1.4.7) (2026-03-16)
+
+
+### Bug Fixes
+
+* instructions to login to wait user ([9d0eeb5](https://github.com/dezkareid/ai-team/commit/9d0eeb585ed086950cc7eeeb3c1a93975881357c))
+
 ## [1.4.6](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.5...ai-team-v1.4.6) (2026-02-28)
 
 
