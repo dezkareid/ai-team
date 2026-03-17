@@ -80,10 +80,13 @@ The following semantic tokens are themed and support light/dark modes.
 | :--- | :--- |
 | `--color-background-primary` | `light-dark(var(--light-color-background-primary), var(--dark-color-background-primary))` |
 | `--light-color-background-primary` | `#ffffff` |
-| `--dark-color-background-primary` | `#111827` |
+| `--dark-color-background-primary` | `#000000` |
 | `--color-background-secondary` | `light-dark(var(--light-color-background-secondary), var(--dark-color-background-secondary))` |
 | `--light-color-background-secondary` | `#f3f4f6` |
 | `--dark-color-background-secondary` | `#6b7280` |
+| `--color-danger` | `light-dark(var(--light-color-danger), var(--dark-color-danger))` |
+| `--light-color-danger` | `#ef4444` |
+| `--dark-color-danger` | `#7f1d1d` |
 | `--color-primary` | `light-dark(var(--light-color-primary), var(--dark-color-primary))` |
 | `--light-color-primary` | `#3b82f6` |
 | `--dark-color-primary` | `#dbeafe` |
