@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.5.0...ai-team-v1.6.0) (2026-03-17)
+
+
+### Features
+
+* add docs ([9e439de](https://github.com/dezkareid/ai-team/commit/9e439de98f3a707a268dc748838a5c3013012e38))
+
 # [1.5.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.7...ai-team-v1.5.0) (2026-03-17)
 
 
