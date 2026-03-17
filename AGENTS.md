@@ -64,6 +64,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "company-context",
       "version": "0.0.3",
       "description": "Authoritative company context and tools"
+    },
+    "web-quality": {
+      "name": "web-quality",
+      "version": "0.0.1",
+      "description": "Skills for auditing and optimizing web quality (Performance, Accessibility, SEO, Core Web Vitals, Best Practices)"
     }
   },
   "commands": [
@@ -83,6 +88,36 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "design-tokens",
       "source": "skills/design-tokens/SKILL.md",
       "claude-plugin": "design-system"
+    },
+    {
+      "name": "performance",
+      "source": "skills/performance/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "accessibility",
+      "source": "skills/accessibility/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "seo",
+      "source": "skills/seo/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "core-web-vitals",
+      "source": "skills/core-web-vitals/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "best-practices",
+      "source": "skills/best-practices/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "web-quality-audit",
+      "source": "skills/web-quality-audit/SKILL.md",
+      "claude-plugin": "web-quality"
     }
   ],
   "mcpServers": {

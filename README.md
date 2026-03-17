@@ -41,6 +41,17 @@ claude marketplace add dezkareid-ai-team https://github.com/dezkareid/ai-team
 |---|---|
 | `ai-team` | Provides authoritative company context, outcomes, and architecture principles. |
 
+#### `web-quality` — Skills for auditing and optimizing web quality
+
+| Skill | Description |
+|---|---|
+| `web-quality-audit` | Comprehensive web quality audit covering performance, accessibility, SEO, and best practices. |
+| `performance` | Optimize web performance for faster loading and better user experience. |
+| `accessibility` | Audit and improve web accessibility following WCAG 2.2 guidelines. |
+| `seo` | Optimize for search engine visibility and ranking. |
+| `core-web-vitals` | Optimize Core Web Vitals (LCP, INP, CLS) for better page experience and search ranking. |
+| `best-practices` | Apply modern web development best practices for security, compatibility, and code quality. |
+
 ### Install a plugin
 
 Once the marketplace is added, install a plugin with:
@@ -49,6 +60,7 @@ Once the marketplace is added, install a plugin with:
 claude plugin install npm-tools
 claude plugin install design-system
 claude plugin install company-context
+claude plugin install web-quality
 ```
 
 ## Development
