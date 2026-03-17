@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.7...ai-team-v1.5.0) (2026-03-17)
+
+
+### Features
+
+* add web quality skills ([318deb8](https://github.com/dezkareid/ai-team/commit/318deb83dd48c32c40c86783c2635717752d1d8a))
+
 ## [1.4.7](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.6...ai-team-v1.4.7) (2026-03-16)
 
 
