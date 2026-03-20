@@ -43,6 +43,32 @@ Command content with {SCRIPT} and {{args}} placeholders.
 - **`plugins/`**: Claude Code plugins. Each subdirectory represents a plugin and contains exported versions of commands and skills in Markdown format.
 - **`.claude-plugin/`**: Metadata and configuration for Claude Code. The root folder contains the `marketplace.json`, while plugin folders contain their respective `plugin.json`.
 
+### AI Team MCP
+
+The `ai-team` MCP server provides authoritative business and architectural context.
+
+#### Available Tools
+
+| Tool | Description |
+|---|---|
+| `get_enterprise_context` | Retrieves the enterprise mission, strategic goals, and core architecture characteristics. |
+| `get_company_outcomes` | Retrieves the high-level business outcomes and key results. |
+| `get_architecture_principles` | Retrieves the technology-agnostic architecture principles. |
+| `search_product` | Dynamic tool to search for specific product characteristics. |
+
+#### Context Folder Structure
+
+```text
+context/
+├── enterprise.md              # Shared mission, goals, and core characteristics
+├── outcomes.md                # Shared strategic outcomes (OKRs)
+├── architecture-principles.md # Fundamental philosophy and standards
+└── products/                  # Product-specific characteristics
+    ├── personal-website.md
+    ├── collecstory.md
+    └── default.md             # Fallback for undocumented products
+```
+
 #### Project Configuration (`.agent-structurerc`)
 
 File `.agent-structurerc` is used to configure the project structure.
@@ -146,6 +172,7 @@ File `.agent-structurerc` is used to configure the project structure.
         "${package}@${version}"
       ],
       "contextFiles": {
+        "get_enterprise_context": "context/enterprise.md",
         "get_company_outcomes": "context/outcomes.md",
         "get_architecture_principles": "context/architecture-principles.md"
       }

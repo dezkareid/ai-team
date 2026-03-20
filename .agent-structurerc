@@ -96,6 +96,7 @@
         "${package}@${version}"
       ],
       "contextFiles": {
+        "get_enterprise_context": "context/enterprise.md",
         "get_company_outcomes": "context/outcomes.md",
         "get_architecture_principles": "context/architecture-principles.md"
       }
