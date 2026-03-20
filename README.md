@@ -52,6 +52,13 @@ claude marketplace add dezkareid-ai-team https://github.com/dezkareid/ai-team
 | `core-web-vitals` | Optimize Core Web Vitals (LCP, INP, CLS) for better page experience and search ranking. |
 | `best-practices` | Apply modern web development best practices for security, compatibility, and code quality. |
 
+#### `frontend-tools` — Expert procedural guidance for frontend development
+
+| Skill | Description |
+|---|---|
+| `react-best-practices` | Expert guidance for React development, including hooks, performance, and patterns. |
+| `next-best-practices` | Best practices for Next.js applications, including RSC, caching, and routing. |
+
 ### Install a plugin
 
 Once the marketplace is added, install a plugin with:
@@ -61,6 +68,7 @@ claude plugin install npm-tools
 claude plugin install design-system
 claude plugin install company-context
 claude plugin install web-quality
+claude plugin install frontend-tools
 ```
 
 ## Development
