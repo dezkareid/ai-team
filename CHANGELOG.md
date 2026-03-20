@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.6.0...ai-team-v1.7.0) (2026-03-20)
+
+
+### Features
+
+* add skills for react and nextjs development ([d8761d5](https://github.com/dezkareid/ai-team/commit/d8761d503a359635cbcdbafbdf36f122ad071738))
+
 # [1.6.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.5.0...ai-team-v1.6.0) (2026-03-17)
 
 
