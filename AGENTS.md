@@ -69,6 +69,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "web-quality",
       "version": "0.0.1",
       "description": "Skills for auditing and optimizing web quality (Performance, Accessibility, SEO, Core Web Vitals, Best Practices)"
+    },
+    "frontend-tools": {
+      "name": "frontend-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)"
     }
   },
   "commands": [
@@ -118,6 +123,16 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "web-quality-audit",
       "source": "skills/web-quality-audit/SKILL.md",
       "claude-plugin": "web-quality"
+    },
+    {
+      "name": "react-best-practices",
+      "source": "skills/react-best-practices/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "next-best-practices",
+      "source": "skills/next-best-practices/SKILL.md",
+      "claude-plugin": "frontend-tools"
     }
   ],
   "mcpServers": {
