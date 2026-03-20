@@ -1,0 +1,134 @@
+description = "Bootstrap all planning artifacts (spec, plan, tasks) from a single description"
+
+prompt = """
+## Context
+
+Before proceeding, run the following command and parse the JSON output to get the current branch and date:
+
+```
+npx @dezkareid/osddt meta-info
+```
+
+## Repository Configuration
+
+Before proceeding, read the `.osddtrc` file in the root of the repository to determine the project path.
+
+```json
+// .osddtrc example
+{ "repoType": "monorepo" | "single" }
+```
+
+- If `repoType` is `"single"`: the project path is the repository root.
+- If `repoType` is `"monorepo"`: ask the user which package to work on (e.g. `packages/my-package`), then use `<repo-root>/<package>` as the project path.
+
+## Working Directory
+
+All generated files live under `<project-path>/working-on/<feature-name>/`.
+
+> All file paths in the instructions below are relative to `<project-path>/working-on/<feature-name>/`.
+
+## Instructions
+
+The argument provided is: {{args}}
+
+This command runs the full spec-driven setup sequence in one shot — branch creation, spec, plan, and task list — without pausing for user input. Follow each step below in order without asking the user for clarification or confirmation between steps.
+
+### Step 1 — Derive branch and feature name
+
+Determine the branch name from {{args}}:
+
+1. If {{args}} looks like a branch name (no spaces, kebab-case or slash-separated), use it as-is.
+2. Otherwise treat {{args}} as a human-readable feature description, convert it to a feature name, and use the format `feat/<derived-name>` as the branch name.
+
+Apply the constraints below to the feature name (the segment after the last `/`):
+
+### Feature Name Constraints
+
+When deriving a feature name from a description:
+
+- Use only lowercase letters, digits, and hyphens (`a-z`, `0-9`, `-`)
+- Replace spaces and special characters with hyphens
+- Remove consecutive hyphens (e.g. `--` → `-`)
+- Remove leading and trailing hyphens
+- **Maximum length: 30 characters** — if the derived name exceeds 30 characters, truncate at the last hyphen boundary before or at the 30th character
+- If the input is already a valid branch name (no spaces, kebab-case or slash-separated), apply the 30-character limit to the last segment only (after the last `/`)
+- Reject (and ask the user to provide a shorter name) if no valid name can be derived after truncation
+
+**Examples:**
+
+| Input | Derived feature name |
+| ----------------------------------------------------- | ---------------------------- |
+| `Add user authentication` | `add-user-authentication` |
+| `Implement real-time notifications for dashboard` | `implement-real-time` |
+| `feat/add-user-authentication` | `add-user-authentication` |
+| `feat/implement-real-time-notifications-for-dashboard` | `implement-real-time` |
+
+
+### Step 2 — Create branch and working directory
+
+3. Check whether the branch already exists locally or remotely:
+   - If it **does not exist**, create and switch to it:
+     ```
+     git checkout -b <branch-name>
+     ```
+   - If it **already exists**, warn the user and ask whether to:
+     - **Resume** — switch to the existing branch (`git checkout <branch-name>`) and continue
+     - **Abort** — stop and do nothing
+
+4. Check whether the working directory `<project-path>/working-on/<feature-name>` already exists:
+   - If it **does not exist**, create it:
+     ```
+     mkdir -p <project-path>/working-on/<feature-name>
+     ```
+   - If it **already exists**, warn the user and ask whether to:
+     - **Resume** — continue into the existing folder (proceed to the next step without recreating it)
+     - **Abort** — stop and do nothing
+
+Where `<feature-name>` is the last segment of the branch name (after the last `/`, or the full branch name if no `/` is present).
+
+### Step 3 — Generate spec
+
+Write `osddt.spec.md` to the working directory. Base it entirely on {{args}} and any codebase context you can gather. Do **not** ask the user any questions. If there are ambiguities, record them in an **Open Questions** section and continue.
+
+The spec must include:
+- **Overview**: What the feature is and why it is needed
+- **Requirements**: Functional requirements expressed as user-observable behaviours
+- **Scope**: In scope and out of scope in product terms
+- **Acceptance Criteria**: Clear, testable criteria from a user or business perspective
+- **Open Questions** (if any): Ambiguities to resolve later — do not block on these
+
+### Step 4 — Generate plan
+
+Write `osddt.plan.md` to the working directory. Derive all technical decisions from the spec and codebase inspection. Do **not** ask the user for input.
+
+The plan must include:
+- **Assumptions**: Document every technical decision made automatically (e.g. library choices, architecture patterns) so the user can review them before implementing
+- **Architecture Overview**: High-level design decisions
+- **Implementation Phases**: Ordered phases with goals
+- **Technical Dependencies**: Libraries, APIs, services needed
+- **Risks & Mitigations**: Known risks and mitigations
+- **Out of Scope**: What will not be built
+
+### Step 5 — Generate task list
+
+Write `osddt.tasks.md` to the working directory based on `osddt.plan.md`.
+
+The task list must include:
+- A checklist of tasks grouped by phase: `- [ ] [S/M/L] Description`
+- Dependencies between tasks noted where relevant
+- A Definition of Done per phase
+
+### Step 6 — Report
+
+Display the full contents of `osddt.tasks.md` to the user. Then prompt them to run:
+
+```
+/osddt.implement
+```
+
+> You can optionally run `/osddt.clarify` before implementing to resolve any Open Questions recorded in the spec.
+
+## Arguments
+
+{{args}}
+"""
