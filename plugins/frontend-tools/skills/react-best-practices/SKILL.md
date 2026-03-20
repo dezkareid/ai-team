@@ -1,0 +1,1 @@
+../../../../skills/react-best-practices/SKILL.md

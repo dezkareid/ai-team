@@ -1,0 +1,1 @@
+../../../../skills/next-best-practices/SKILL.md
