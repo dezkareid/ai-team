@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.8.1...ai-team-v1.9.0) (2026-03-21)
+
+
+### Features
+
+* add outcomes ([8d0ab84](https://github.com/dezkareid/ai-team/commit/8d0ab84e1d8aaa55f7c73e85227e5cc87a3b31f7))
+
 ## [1.8.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.8.0...ai-team-v1.8.1) (2026-03-21)
 
 
