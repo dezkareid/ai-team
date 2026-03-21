@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.0...ai-team-v1.9.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* add to changeset run to CI ([29199ae](https://github.com/dezkareid/ai-team/commit/29199ae2629a698af7f2895645672b496a780eef))
+
 # [1.9.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.8.1...ai-team-v1.9.0) (2026-03-21)
 
 
