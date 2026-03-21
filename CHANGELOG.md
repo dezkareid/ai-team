@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.7.0...ai-team-v1.8.0) (2026-03-21)
+
+
+### Features
+
+* add to mcp tool for products ([39ba771](https://github.com/dezkareid/ai-team/commit/39ba771dce982e812fe532b484645f436b865237))
+
 # [1.7.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.6.0...ai-team-v1.7.0) (2026-03-20)
 
 
