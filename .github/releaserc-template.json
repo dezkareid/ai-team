@@ -7,7 +7,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "node dist/scripts/sync-version.js && node dist/cli/export-claude.js && node dist/scripts/distribute-mcp.js"
+        "prepareCmd": "node dist/scripts/apply-skill-changesets.js && node dist/scripts/apply-plugin-changesets.js && node dist/scripts/sync-version.js && node dist/cli/export-claude.js && node dist/scripts/distribute-mcp.js"
       }
     ],
     [
@@ -18,7 +18,9 @@
           "gemini-extension.json",
           ".claude-plugin/marketplace.json",
           ".agent-structurerc",
-          "plugins/**"
+          "plugins/**",
+          ".changeset/**",
+          "skills/**"
         ]
       }
     ],
