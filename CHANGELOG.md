@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.1...ai-team-v1.9.2) (2026-03-21)
+
+
+### Bug Fixes
+
+* rename eslint config to mjs and fix linter issues ([e6de871](https://github.com/dezkareid/ai-team/commit/e6de8717a0f4a7f4e561a543627f3fb796c51a7f))
+
 ## [1.9.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.0...ai-team-v1.9.1) (2026-03-21)
 
 
