@@ -4,14 +4,20 @@ import { syncVersion } from './sync-version.js';
 const packagePath = 'package.json';
 const targetPath = 'target.json';
 
-function makeFs(files: Record<string, string>) {
+interface MockFs {
+  existsSync: (p: string) => boolean;
+  readFileSync: (p: string, encoding?: string) => string;
+  writeFileSync: (p: string, data: string) => void;
+}
+
+function makeFs(files: Record<string, string>): MockFs {
   return {
     existsSync: vi.fn((p: string) => p in files),
     readFileSync: vi.fn((p: string) => {
       if (p in files) return files[p];
       throw new Error(`File not found: ${p}`);
-    }) as any,
-    writeFileSync: vi.fn() as any,
+    }),
+    writeFileSync: vi.fn(),
   };
 }
 
@@ -209,10 +215,10 @@ describe('syncVersion', () => {
 
   it('should throw when files cannot be read', () => {
     // Given
-    const mockFs = {
+    const mockFs: MockFs = {
       existsSync: vi.fn(() => true),
-      readFileSync: vi.fn(() => { throw new Error('Read error'); }) as any,
-      writeFileSync: vi.fn() as any,
+      readFileSync: vi.fn(() => { throw new Error('Read error'); }),
+      writeFileSync: vi.fn(),
     };
 
     // When / Then

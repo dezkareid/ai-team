@@ -13,6 +13,14 @@ function resolvePlaceholders(str: string, vars: Record<string, string>): string 
   return str.replace(/\${(.*?)}/g, (_, name) => vars[name] || _);
 }
 
+interface McpConfig {
+  version: string;
+  package: string;
+  command: string;
+  args: string[];
+  'claude-plugin'?: string;
+}
+
 async function run() {
   const rootDir = getRootDir();
   const agentRcPath = path.join(rootDir, '.agent-structurerc');
@@ -23,15 +31,15 @@ async function run() {
   }
 
   const agentRc = JSON.parse(fs.readFileSync(agentRcPath, 'utf8'));
-  const mcpServers = agentRc.mcpServers || {};
+  const mcpServers: Record<string, McpConfig> = agentRc.mcpServers || {};
 
   // 1. Distribute to gemini-extension.json
   const geminiPath = path.join(rootDir, 'gemini-extension.json');
   if (fs.existsSync(geminiPath)) {
     const gemini = JSON.parse(fs.readFileSync(geminiPath, 'utf8'));
-    const resolvedMcpServers: Record<string, any> = {};
+    const resolvedMcpServers: Record<string, { command: string; args: string[] }> = {};
 
-    for (const [name, config] of Object.entries(mcpServers) as [string, any][]) {
+    for (const [name, config] of Object.entries(mcpServers)) {
       const vars = { package: config.package, version: config.version };
       resolvedMcpServers[name] = {
         command: config.command,
@@ -45,7 +53,7 @@ async function run() {
   }
 
   // 2. Distribute to plugins/company-context/mcp.json
-  for (const [name, config] of Object.entries(mcpServers) as [string, any][]) {
+  for (const [name, config] of Object.entries(mcpServers)) {
     if (config['claude-plugin'] === 'company-context') {
       const pluginMcpPath = path.join(rootDir, 'plugins/company-context/.mcp.json');
       const vars = { package: config.package, version: config.version };

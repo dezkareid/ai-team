@@ -53,12 +53,13 @@ async function main() {
             ],
           };
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error);
         return {
           content: [
             {
               type: 'text',
-              text: `Error reading product content: ${error.message}`,
+              text: `Error reading product content: ${message}`,
             },
           ],
           isError: true,
@@ -87,12 +88,13 @@ async function main() {
               },
             ],
           };
-        } catch (error: any) {
+        } catch (error: unknown) {
+          const message = error instanceof Error ? error.message : String(error);
           return {
             content: [
               {
                 type: 'text',
-                text: `Error reading content: ${error.message}`,
+                text: `Error reading content: ${message}`,
               },
             ],
             isError: true,
