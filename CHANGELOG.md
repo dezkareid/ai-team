@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.8.0...ai-team-v1.8.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* format of outcomes ([26f4814](https://github.com/dezkareid/ai-team/commit/26f481452ba2bf8d1648c1f90116a24830000d57))
+
 # [1.8.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.7.0...ai-team-v1.8.0) (2026-03-21)
 
 
