@@ -37,9 +37,33 @@ claude marketplace add dezkareid-ai-team https://github.com/dezkareid/ai-team
 
 #### `company-context` — Authoritative company context and tools
 
-| MCP Server | Description |
+### AI Team MCP
+
+The `ai-team` MCP server provides authoritative business and architectural context to AI agents.
+
+#### Available Tools
+
+| Tool | Description |
 |---|---|
-| `ai-team` | Provides authoritative company context, outcomes, and architecture principles. |
+| `get_enterprise_context` | Retrieves the enterprise mission, strategic goals, and core architecture characteristics. |
+| `get_company_outcomes` | Retrieves the high-level business outcomes and key results for the enterprise. |
+| `get_architecture_principles` | Retrieves the technology-agnostic architecture principles and quality standards. |
+| `search_product` | Searches for a specific product's characteristics and goals. Returns a default profile if not found. |
+
+#### Context Structure
+
+The documentation follows a hierarchical, technology-agnostic structure:
+
+```text
+context/
+├── enterprise.md              # Mission, goals, and core characteristics
+├── outcomes.md                # Shared strategic outcomes (OKRs)
+├── architecture-principles.md # Fundamental philosophy and standards
+└── products/                  # Product-specific characteristics
+    ├── personal-website.md
+    ├── collecstory.md
+    └── default.md             # Fallback for undocumented products
+```
 
 #### `web-quality` — Skills for auditing and optimizing web quality
 
