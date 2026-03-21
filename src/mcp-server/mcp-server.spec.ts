@@ -8,7 +8,7 @@ vi.mock('fs');
 describe('MCP Server Utils', () => {
   describe('fileExists', () => {
     it('should return true if file exists', () => {
-      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as any);
+      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as unknown as fs.Stats);
       expect(fileExists('test.txt')).toBe(true);
     });
 
@@ -20,7 +20,7 @@ describe('MCP Server Utils', () => {
 
   describe('readFileContent', () => {
     it('should read file content if it exists', () => {
-      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as any);
+      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as unknown as fs.Stats);
       vi.mocked(fs.readFileSync).mockReturnValue('test content');
       expect(readFileContent('test.txt')).toBe('test content');
     });

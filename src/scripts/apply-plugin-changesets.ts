@@ -73,8 +73,9 @@ async function run() {
     if (result.updated.length === 0 && result.warnings.length === 0) {
       console.log('No pending plugin changesets.');
     }
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(message);
     process.exit(1);
   }
 }

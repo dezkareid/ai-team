@@ -27,20 +27,29 @@ description: "Design tokens skill"
 ## Overview
 `;
 
-function makeFs(files: Record<string, string>, dirs: Record<string, string[]> = {}) {
+interface MockFs {
+  existsSync: (p: string) => boolean;
+  readdirSync: (p: string) => string[];
+  readFileSync: (p: string, encoding?: string) => string;
+  writeFileSync: (p: string, data: string) => void;
+  unlinkSync: (p: string) => void;
+  _store: Record<string, string>;
+}
+
+function makeFs(files: Record<string, string>, dirs: Record<string, string[]> = {}): MockFs {
   const store = { ...files };
   return {
     existsSync: vi.fn((p: string) => p in store || p in dirs),
     readdirSync: vi.fn((p: string) => {
       if (p in dirs) return dirs[p];
       throw new Error(`Not a directory: ${p}`);
-    }) as any,
+    }),
     readFileSync: vi.fn((p: string) => {
       if (p in store) return store[p];
       throw new Error(`File not found: ${p}`);
-    }) as any,
-    writeFileSync: vi.fn((p: string, data: string) => { store[p] = data; }) as any,
-    unlinkSync: vi.fn((p: string) => { delete store[p]; }) as any,
+    }),
+    writeFileSync: vi.fn((p: string, data: string) => { store[p] = data; }),
+    unlinkSync: vi.fn((p: string) => { delete store[p]; }),
     _store: store,
   };
 }

@@ -13,36 +13,52 @@ export interface FileSystem {
   writeFileSync(path: string, data: string): void;
 }
 
-function updateJsonVersion(json: any, version: string, strategy: SyncStrategy): boolean {
-  let updated = false;
+interface VersionedJson {
+  version?: string;
+  metadata?: { version?: string };
+  mcpServers?: Record<string, { version?: string }>;
+}
 
-  if (strategy === 'claude') {
-    if (json.metadata && json.metadata.version !== version) {
-      json.metadata.version = version;
-      updated = true;
-    }
-  } else if (strategy === 'gemini') {
-    if (json.version !== version) {
-      json.version = version;
-      updated = true;
-    }
-  } else if (strategy === 'marketplace') {
-    if (json.metadata && json.metadata.version !== version) {
-      json.metadata.version = version;
-      updated = true;
-    }
-  } else if (strategy === 'agent-structure') {
-    // Only sync mcpServers from package version
-    if (json.mcpServers) {
-      for (const key in json.mcpServers) {
-        if (json.mcpServers[key].version !== version) {
-          json.mcpServers[key].version = version;
-          updated = true;
-        }
+function updateJsonVersion(json: unknown, version: string, strategy: SyncStrategy): boolean {
+  if (typeof json !== 'object' || json === null) {
+    return false;
+  }
+
+  const data = json as VersionedJson;
+
+  switch (strategy) {
+    case 'claude':
+    case 'marketplace':
+      if (data.metadata && data.metadata.version !== version) {
+        data.metadata.version = version;
+        return true;
+      }
+      break;
+
+    case 'gemini':
+      if (data.version !== version) {
+        data.version = version;
+        return true;
+      }
+      break;
+
+    case 'agent-structure':
+      return updateAgentStructureVersion(data, version);
+  }
+
+  return false;
+}
+
+function updateAgentStructureVersion(data: VersionedJson, version: string): boolean {
+  let updated = false;
+  if (data.mcpServers) {
+    for (const key in data.mcpServers) {
+      if (data.mcpServers[key].version !== version) {
+        data.mcpServers[key].version = version;
+        updated = true;
       }
     }
   }
-
   return updated;
 }
 
@@ -67,8 +83,9 @@ export function syncVersion(
       return { updated: true, newVersion: version };
     }
     return { updated: false, version };
-  } catch (error: any) {
-    throw new Error(`Error syncing versions for ${targetJsonPath}: ${error.message}`);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Error syncing versions for ${targetJsonPath}: ${message}`);
   }
 }
 
@@ -96,8 +113,9 @@ async function run() {
         console.log(`${path.basename(target.path)} version is already in sync.`);
       }
     }
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(message);
     process.exit(1);
   }
 }
