@@ -14,21 +14,21 @@ export interface AgentStructurePlugin {
 }
 
 export interface AgentStructureCommand {
-  name: string;
-  source: string;
+  'name': string;
+  'source': string;
   'claude-plugin': string;
 }
 
 export interface AgentStructureSkill {
-  name: string;
-  source: string;
+  'name': string;
+  'source': string;
   'claude-plugin': string;
 }
 
 export interface AgentStructure {
   'claude-plugins': Record<string, AgentStructurePlugin>;
-  commands: AgentStructureCommand[];
-  skills?: AgentStructureSkill[];
+  'commands': AgentStructureCommand[];
+  'skills'?: AgentStructureSkill[];
 }
 
 interface TomlCommand {
@@ -57,7 +57,7 @@ export interface MarketplacePlugin {
 }
 
 export function buildMarketplacePlugins(
-  plugins: Record<string, AgentStructurePlugin>
+  plugins: Record<string, AgentStructurePlugin>,
 ): MarketplacePlugin[] {
   return Object.entries(plugins).map(([id, plugin]) => ({
     name: plugin.name,
@@ -111,7 +111,7 @@ function cleanObsoletePlugins(pluginsDir: string, claudePlugins: Record<string, 
 function processPluginCommands(pluginId: string, pluginDir: string, commands: AgentStructureCommand[], commandsDir: string, rootDir: string) {
   const commandsOutputDir = path.join(pluginDir, 'commands');
   const pluginCommands = commands.filter(cmd => cmd['claude-plugin'] === pluginId);
-  
+
   if (pluginCommands.length > 0) {
     fsExtra.ensureDirSync(commandsOutputDir);
     for (const cmd of pluginCommands) {
@@ -129,7 +129,8 @@ function processPluginCommands(pluginId: string, pluginDir: string, commands: Ag
       fs.writeFileSync(outputPath, markdown);
       console.log(`Exported ${path.relative(rootDir, outputPath)}`);
     }
-  } else if (fs.existsSync(commandsOutputDir)) {
+  }
+  else if (fs.existsSync(commandsOutputDir)) {
     fsExtra.removeSync(commandsOutputDir);
   }
 }
@@ -137,7 +138,7 @@ function processPluginCommands(pluginId: string, pluginDir: string, commands: Ag
 function processPluginSkills(pluginId: string, pluginDir: string, skills: AgentStructureSkill[], rootDir: string) {
   const skillsOutputDir = path.join(pluginDir, 'skills');
   const pluginSkills = skills.filter(skill => skill['claude-plugin'] === pluginId);
-  
+
   if (pluginSkills.length > 0) {
     fsExtra.ensureDirSync(skillsOutputDir);
     for (const skill of pluginSkills) {
@@ -180,7 +181,7 @@ function processPluginSkills(pluginId: string, pluginDir: string, skills: AgentS
         for (const refFile of refFiles) {
           const sourceRefFile = path.join(sourceRefsDir, refFile);
           const outputRefFile = path.join(outputRefsDir, refFile);
-          
+
           if (fs.existsSync(outputRefFile)) {
             fs.unlinkSync(outputRefFile);
           }
@@ -190,7 +191,8 @@ function processPluginSkills(pluginId: string, pluginDir: string, skills: AgentS
         }
       }
     }
-  } else if (fs.existsSync(skillsOutputDir)) {
+  }
+  else if (fs.existsSync(skillsOutputDir)) {
     fsExtra.removeSync(skillsOutputDir);
   }
 }
@@ -230,7 +232,8 @@ async function run() {
 
   if (fs.existsSync(marketplacePath)) {
     updateMarketplace(marketplacePath, pluginsDir, claudePlugins);
-  } else {
+  }
+  else {
     console.warn(`Warning: ${marketplacePath} not found, skipping marketplace update.`);
   }
 }

@@ -13,7 +13,9 @@ describe('MCP Server Utils', () => {
     });
 
     it('should return false if file does not exist', () => {
-      vi.mocked(fs.statSync).mockImplementation(() => { throw new Error(); });
+      vi.mocked(fs.statSync).mockImplementation(() => {
+        throw new Error();
+      });
       expect(fileExists('test.txt')).toBe(false);
     });
   });
@@ -26,7 +28,9 @@ describe('MCP Server Utils', () => {
     });
 
     it('should throw error if file does not exist', () => {
-      vi.mocked(fs.statSync).mockImplementation(() => { throw new Error(); });
+      vi.mocked(fs.statSync).mockImplementation(() => {
+        throw new Error();
+      });
       expect(() => readFileContent('test.txt')).toThrow();
     });
   });
@@ -38,14 +42,14 @@ describe('MCP Server Config', () => {
       vi.mocked(fs.existsSync).mockReturnValue(true);
       vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
         'claude-plugins': {},
-        mcpServers: {
+        'mcpServers': {
           'ai-team': {
             version: '1.0.0',
             package: 'test',
             command: 'node',
-            args: []
-          }
-        }
+            args: [],
+          },
+        },
       }));
 
       const config = loadConfig();

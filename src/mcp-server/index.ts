@@ -42,7 +42,8 @@ async function main() {
               },
             ],
           };
-        } else {
+        }
+        else {
           const content = readFileContent(defaultPath);
           return {
             content: [
@@ -53,7 +54,8 @@ async function main() {
             ],
           };
         }
-      } catch (error: unknown) {
+      }
+      catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         return {
           content: [
@@ -65,7 +67,7 @@ async function main() {
           isError: true,
         };
       }
-    }
+    },
   );
 
   // Register tools based on contextFiles mapping
@@ -88,7 +90,8 @@ async function main() {
               },
             ],
           };
-        } catch (error: unknown) {
+        }
+        catch (error: unknown) {
           const message = error instanceof Error ? error.message : String(error);
           return {
             content: [
@@ -100,7 +103,7 @@ async function main() {
             isError: true,
           };
         }
-      }
+      },
     );
   }
 

@@ -8,16 +8,16 @@ export const ClaudePluginSchema = z.object({
 
 export const McpServerSchema = z.object({
   'claude-plugin': z.string().optional(),
-  version: z.string(),
-  package: z.string(),
-  command: z.string(),
-  args: z.array(z.string()),
-  contextFiles: z.record(z.string(), z.string()).optional(),
+  'version': z.string(),
+  'package': z.string(),
+  'command': z.string(),
+  'args': z.array(z.string()),
+  'contextFiles': z.record(z.string(), z.string()).optional(),
 });
 
 export const AgentStructureSchema = z.object({
   'claude-plugins': z.record(z.string(), ClaudePluginSchema),
-  mcpServers: z.record(z.string(), McpServerSchema),
+  'mcpServers': z.record(z.string(), McpServerSchema),
 });
 
 export type AgentStructure = z.infer<typeof AgentStructureSchema>;

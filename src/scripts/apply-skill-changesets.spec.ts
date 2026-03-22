@@ -90,7 +90,7 @@ describe('readChangesetFiles', () => {
   it('should read and parse all .md files except README.md', () => {
     const mockFs = makeFs(
       { '.changeset/abc.md': `---\n"design-tokens": minor\n---\n` },
-      { '.changeset': ['abc.md', 'README.md', 'config.json'] }
+      { '.changeset': ['abc.md', 'README.md', 'config.json'] },
     );
     const result = readChangesetFiles('.changeset', mockFs);
     expect(result).toHaveLength(1);
@@ -109,7 +109,7 @@ describe('readChangesetFiles', () => {
   it('should aggregate changesets from multiple files', () => {
     const mockFs = makeFs(
       { '.changeset/a.md': `---\n"design-tokens": patch\n---\n`, '.changeset/b.md': `---\n"other-skill": major\n---\n` },
-      { '.changeset': ['a.md', 'b.md'] }
+      { '.changeset': ['a.md', 'b.md'] },
     );
     expect(readChangesetFiles('.changeset', mockFs)).toHaveLength(2);
   });
@@ -191,10 +191,10 @@ describe('writeSkillVersion', () => {
 
 describe('applySkillChangesets', () => {
   it('should update metadata.version in SKILL.md and delete changeset file', () => {
-    const rc = { skills: [{ name: 'design-tokens', source: 'skills/design-tokens/SKILL.md', 'claude-plugin': 'design-system' }] };
+    const rc = { skills: [{ 'name': 'design-tokens', 'source': 'skills/design-tokens/SKILL.md', 'claude-plugin': 'design-system' }] };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), 'skills/design-tokens/SKILL.md': SKILL_MD_WITH_VERSION, '.changeset/change.md': `---\n"design-tokens": minor\n---\n` },
-      { [CHANGESET_DIR]: ['change.md'] }
+      { [CHANGESET_DIR]: ['change.md'] },
     );
 
     const result = applySkillChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs, '.');
@@ -208,7 +208,7 @@ describe('applySkillChangesets', () => {
     const rc = { skills: [{ name: 'design-tokens', source: 'skills/design-tokens/SKILL.md' }] };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), 'skills/design-tokens/SKILL.md': SKILL_MD_WITHOUT_VERSION, '.changeset/change.md': `---\n"design-tokens": minor\n---\n` },
-      { [CHANGESET_DIR]: ['change.md'] }
+      { [CHANGESET_DIR]: ['change.md'] },
     );
 
     const result = applySkillChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs, '.');
@@ -221,7 +221,7 @@ describe('applySkillChangesets', () => {
     const rc = { skills: [{ name: 'design-tokens', source: 'skills/design-tokens/SKILL.md' }] };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), 'skills/design-tokens/SKILL.md': SKILL_MD_WITH_VERSION, '.changeset/a.md': `---\n"design-tokens": patch\n---\n`, '.changeset/b.md': `---\n"design-tokens": major\n---\n` },
-      { [CHANGESET_DIR]: ['a.md', 'b.md'] }
+      { [CHANGESET_DIR]: ['a.md', 'b.md'] },
     );
 
     applySkillChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs, '.');
@@ -233,7 +233,7 @@ describe('applySkillChangesets', () => {
     const rc = { skills: [{ name: 'design-tokens', source: 'skills/design-tokens/SKILL.md' }] };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), 'skills/design-tokens/SKILL.md': SKILL_MD_WITH_VERSION, '.changeset/change.md': `---\n"nonexistent": minor\n---\n` },
-      { [CHANGESET_DIR]: ['change.md'] }
+      { [CHANGESET_DIR]: ['change.md'] },
     );
 
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -250,7 +250,7 @@ describe('applySkillChangesets', () => {
     const rc = { skills: [{ name: 'design-tokens', source: 'skills/design-tokens/SKILL.md' }] };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), 'skills/design-tokens/SKILL.md': SKILL_MD_WITH_VERSION },
-      { [CHANGESET_DIR]: [] }
+      { [CHANGESET_DIR]: [] },
     );
 
     const result = applySkillChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs, '.');
@@ -262,7 +262,7 @@ describe('applySkillChangesets', () => {
 
   it('should throw when .agent-structurerc does not exist', () => {
     expect(() => applySkillChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, makeFs({}))).toThrow(
-      '.agent-structurerc not found'
+      '.agent-structurerc not found',
     );
   });
 });
