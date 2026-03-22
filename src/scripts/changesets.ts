@@ -55,7 +55,7 @@ export function readChangesetFiles(changesetDir: string, fileSystem: FileSystem)
 
 export function resolveBumpType(bumpTypes: BumpType[]): BumpType {
   return bumpTypes.reduce((highest, current) =>
-    BUMP_PRIORITY[current] > BUMP_PRIORITY[highest] ? current : highest
+    BUMP_PRIORITY[current] > BUMP_PRIORITY[highest] ? current : highest,
   );
 }
 

@@ -14,7 +14,6 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 export function readSkillVersion(skillFilePath: string, fileSystem: FileSystem): string | undefined {
   if (!fileSystem.existsSync(skillFilePath)) return undefined;
   const content = fileSystem.readFileSync(skillFilePath, 'utf8');
@@ -47,7 +46,7 @@ export function applySkillChangesets(
   agentStructurePath: string,
   changesetDir: string,
   fileSystem: FileSystem = fs as unknown as FileSystem,
-  rootDir?: string
+  rootDir?: string,
 ): ApplyResult {
   if (!fileSystem.existsSync(agentStructurePath)) {
     throw new Error(`${agentStructurePath} not found`);
@@ -100,7 +99,8 @@ async function run() {
     if (result.updated.length === 0 && result.warnings.length === 0) {
       console.log('No pending skill changesets.');
     }
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.error(message);
     process.exit(1);

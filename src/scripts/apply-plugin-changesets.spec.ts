@@ -38,7 +38,7 @@ describe('applyPluginChangesets', () => {
     };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), '.changeset/change.md': `---\n"npm-tools": minor\n---\n` },
-      { [CHANGESET_DIR]: ['change.md'] }
+      { [CHANGESET_DIR]: ['change.md'] },
     );
 
     const result = applyPluginChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs);
@@ -53,7 +53,7 @@ describe('applyPluginChangesets', () => {
     const rc = { 'claude-plugins': { 'npm-tools': { name: 'npm-tools', description: 'Tools for npm' } } };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), '.changeset/change.md': `---\n"npm-tools": patch\n---\n` },
-      { [CHANGESET_DIR]: ['change.md'] }
+      { [CHANGESET_DIR]: ['change.md'] },
     );
 
     applyPluginChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs);
@@ -66,7 +66,7 @@ describe('applyPluginChangesets', () => {
     const rc = { 'claude-plugins': { 'npm-tools': { name: 'npm-tools', version: '1.0.0' } } };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), '.changeset/a.md': `---\n"npm-tools": patch\n---\n`, '.changeset/b.md': `---\n"npm-tools": major\n---\n` },
-      { [CHANGESET_DIR]: ['a.md', 'b.md'] }
+      { [CHANGESET_DIR]: ['a.md', 'b.md'] },
     );
 
     applyPluginChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs);
@@ -84,7 +84,7 @@ describe('applyPluginChangesets', () => {
     };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), '.changeset/change.md': `---\n"npm-tools": patch\n"design-system": minor\n---\n` },
-      { [CHANGESET_DIR]: ['change.md'] }
+      { [CHANGESET_DIR]: ['change.md'] },
     );
 
     const result = applyPluginChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs);
@@ -100,7 +100,7 @@ describe('applyPluginChangesets', () => {
     const rc = { 'claude-plugins': { 'npm-tools': { name: 'npm-tools', version: '1.0.0' } } };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc), '.changeset/change.md': `---\n"nonexistent": minor\n---\n` },
-      { [CHANGESET_DIR]: ['change.md'] }
+      { [CHANGESET_DIR]: ['change.md'] },
     );
 
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -117,7 +117,7 @@ describe('applyPluginChangesets', () => {
     const rc = { 'claude-plugins': { 'npm-tools': { name: 'npm-tools', version: '1.0.0' } } };
     const mockFs = makeFs(
       { [AGENT_STRUCTURE_PATH]: JSON.stringify(rc) },
-      { [CHANGESET_DIR]: [] }
+      { [CHANGESET_DIR]: [] },
     );
 
     const result = applyPluginChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, mockFs);
@@ -129,7 +129,7 @@ describe('applyPluginChangesets', () => {
 
   it('should throw when .agent-structurerc does not exist', () => {
     expect(() => applyPluginChangesets(AGENT_STRUCTURE_PATH, CHANGESET_DIR, makeFs({}))).toThrow(
-      '.agent-structurerc not found'
+      '.agent-structurerc not found',
     );
   });
 });

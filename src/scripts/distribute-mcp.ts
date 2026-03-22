@@ -14,10 +14,10 @@ function resolvePlaceholders(str: string, vars: Record<string, string>): string 
 }
 
 interface McpConfig {
-  version: string;
-  package: string;
-  command: string;
-  args: string[];
+  'version': string;
+  'package': string;
+  'command': string;
+  'args': string[];
   'claude-plugin'?: string;
 }
 
@@ -62,8 +62,8 @@ async function run() {
           [name]: {
             command: config.command,
             args: config.args.map((arg: string) => resolvePlaceholders(arg, vars)),
-          }
-        }
+          },
+        },
       };
 
       fs.mkdirSync(path.dirname(pluginMcpPath), { recursive: true });

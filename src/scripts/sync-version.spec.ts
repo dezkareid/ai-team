@@ -38,7 +38,7 @@ describe('syncVersion', () => {
       expect(result.newVersion).toBe('1.2.3');
       expect(mockFs.writeFileSync).toHaveBeenCalledWith(
         targetPath,
-        expect.stringContaining('"version": "1.2.3"')
+        expect.stringContaining('"version": "1.2.3"'),
       );
     });
 
@@ -74,7 +74,7 @@ describe('syncVersion', () => {
       expect(result.newVersion).toBe('1.2.3');
       expect(mockFs.writeFileSync).toHaveBeenCalledWith(
         targetPath,
-        expect.stringContaining('"version": "1.2.3"')
+        expect.stringContaining('"version": "1.2.3"'),
       );
     });
 
@@ -145,7 +145,7 @@ describe('syncVersion', () => {
           'claude-plugins': {
             'npm-tools': { version: '0.0.1' },
           },
-          mcpServers: {
+          'mcpServers': {
             'ai-team': { version: '1.0.0' },
           },
         }),
@@ -189,7 +189,7 @@ describe('syncVersion', () => {
           'claude-plugins': {
             'npm-tools': { version: '0.0.1' },
           },
-          mcpServers: { 'ai-team': { version: '2.0.0' } },
+          'mcpServers': { 'ai-team': { version: '2.0.0' } },
         }),
       });
 

@@ -1,7 +1,8 @@
-import tsBase from '@dezkareid/eslint-config-ts-base';
+import tseslint from 'typescript-eslint';
+import webTs from '@dezkareid/eslint-plugin-web/typescript';
 
-export default [
-  ...tsBase,
+export default tseslint.config(
+  ...webTs,
   {
     ignores: [
       'dist/',
@@ -11,7 +12,7 @@ export default [
       'working-on/',
       'coverage/',
       '.claude-plugin/',
-      'marketplace.json'
-    ]
-  }
-];
+      'marketplace.json',
+    ],
+  },
+);

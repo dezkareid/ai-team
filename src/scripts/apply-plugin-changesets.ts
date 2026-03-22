@@ -19,7 +19,7 @@ export type { FileSystem, ApplyResult };
 export function applyPluginChangesets(
   agentStructurePath: string,
   changesetDir: string,
-  fileSystem: FileSystem = fs as unknown as FileSystem
+  fileSystem: FileSystem = fs as unknown as FileSystem,
 ): ApplyResult {
   if (!fileSystem.existsSync(agentStructurePath)) {
     throw new Error(`${agentStructurePath} not found`);
@@ -73,7 +73,8 @@ async function run() {
     if (result.updated.length === 0 && result.warnings.length === 0) {
       console.log('No pending plugin changesets.');
     }
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.error(message);
     process.exit(1);

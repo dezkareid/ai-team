@@ -66,7 +66,7 @@ export function syncVersion(
   packageJsonPath: string,
   targetJsonPath: string,
   strategy: SyncStrategy,
-  fileSystem: FileSystem = fs
+  fileSystem: FileSystem = fs,
 ) {
   try {
     if (!fileSystem.existsSync(targetJsonPath)) {
@@ -83,7 +83,8 @@ export function syncVersion(
       return { updated: true, newVersion: version };
     }
     return { updated: false, version };
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(`Error syncing versions for ${targetJsonPath}: ${message}`);
   }
@@ -105,15 +106,18 @@ async function run() {
       const result = syncVersion(packageJsonPath, target.path, target.strategy);
       if (result.updated) {
         console.log(`Updated ${path.basename(target.path)} version to ${result.newVersion}`);
-      } else if (result.error) {
+      }
+      else if (result.error) {
         if (!target.silent) {
           console.warn(`Warning: ${result.error} for ${path.basename(target.path)}`);
         }
-      } else {
+      }
+      else {
         console.log(`${path.basename(target.path)} version is already in sync.`);
       }
     }
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.error(message);
     process.exit(1);

@@ -9,7 +9,8 @@ export function fileExists(filePath: string): boolean {
   try {
     const stats = fs.statSync(filePath);
     return stats.isFile();
-  } catch {
+  }
+  catch {
     return false;
   }
 }
