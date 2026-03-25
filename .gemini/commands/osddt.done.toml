@@ -4,14 +4,62 @@ prompt = """
 ## Instructions
 
 1. Confirm all tasks in `osddt.tasks.md` are checked off (`- [x]`)
-2. Run the following command to move the feature folder from `working-on` to `done`:
+2. Run the following command to check whether this feature uses a git worktree:
 
 ```
-npx @dezkareid/osddt done <feature-name> --dir <project-path>
+npx @dezkareid/osddt worktree-info <feature-name>
 ```
 
-   The command will automatically prefix the destination folder name with today's date in `YYYY-MM-DD` format.
+3. Based on the result:
+
+   **If it exits with code 1 (standard feature):** use the project path from `.osddtrc`, then run:
+   ```
+   npx @dezkareid/osddt done <feature-name> --dir <project-path>
+   ```
+   Skip to step 8.
+
+   **If it exits with code 0 (worktree feature):** parse the JSON to get `worktreePath` and `branch`, derive `<project-path>` from `workingDir`, then continue below.
+
+4. Check for uncommitted changes inside the worktree:
+
+   ```
+   git -C <worktreePath> status --porcelain
+   ```
+
+5. If there are **uncommitted changes**:
+   1. Run `git -C <worktreePath> diff` to inspect them.
+   2. Derive a concise commit message in **conventional commit** format (e.g. `feat: add payment gateway integration`) based on the diff.
+   3. Present the proposed message to the user: _"Use this commit message, or provide your own?"_
+   4. Once confirmed, commit:
+      ```
+      git -C <worktreePath> add -A
+      git -C <worktreePath> commit -m "<confirmed-message>"
+      ```
+
+6. Push the branch to remote (covers both first push and subsequent pushes):
+
+   ```
+   git -C <worktreePath> push --set-upstream origin <branch>
+   ```
+
+7. Run the done command with the `--worktree` flag:
+   ```
+   npx @dezkareid/osddt done <feature-name> --dir <project-path> --worktree
+   ```
+
+8. The command will automatically prefix the destination folder name with today's date in `YYYY-MM-DD` format.
    For example, `working-on/feature-a` will be moved to `done/YYYY-MM-DD-feature-a`.
 
-3. Report the result of the command, including the full destination path
+9. Report the result of the command, including the full destination path
+
+## Custom Context
+
+Run the following command and, if it returns content, use it as additional context before proceeding:
+
+```
+npx @dezkareid/osddt context done
+```
+
+If the command returns no output, skip this section and continue.
+
 """

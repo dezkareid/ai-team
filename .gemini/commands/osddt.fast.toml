@@ -11,15 +11,22 @@ npx @dezkareid/osddt meta-info
 
 ## Repository Configuration
 
-Before proceeding, read the `.osddtrc` file in the root of the repository to determine the project path.
+Before proceeding, read the `.osddtrc` file in the root of the repository to determine the project path and workflow mode.
 
 ```json
-// .osddtrc example
-{ "repoType": "monorepo" | "single" }
+// standard mode
+{ "repoType": "monorepo" | "single", "agents": ["claude"] }
+
+// worktree mode — "worktree-repository" presence determines the workflow
+{ "repoType": "monorepo" | "single", "agents": ["claude"], "worktree-repository": "https://github.com/org/repo.git" }
 ```
 
 - If `repoType` is `"single"`: the project path is the repository root.
 - If `repoType` is `"monorepo"`: ask the user which package to work on (e.g. `packages/my-package`), then use `<repo-root>/<package>` as the project path.
+- If `"worktree-repository"` is **present**: once the feature name is known, run `npx @dezkareid/osddt worktree-info <feature-name>` to resolve the working directory:
+  - exit code **0**: parse the JSON and use the returned `workingDir` as the working directory.
+  - exit code **1**: the feature is not yet in a worktree — proceed as standard.
+- If `"worktree-repository"` is **absent**: use the standard project path from `.osddtrc`.
 
 ## Working Directory
 
@@ -65,6 +72,26 @@ When deriving a feature name from a description:
 
 
 ### Step 2 — Create branch and working directory
+
+Choose the workflow based on `.osddtrc`:
+
+#### If `worktree-repository` is **present** — Worktree workflow
+
+3. Run the following command to create the git worktree, scaffold the working directory, and register the feature in the state file:
+
+```
+npx @dezkareid/osddt start-worktree <feature-name>
+```
+
+For monorepos, pass the package path:
+
+```
+npx @dezkareid/osddt start-worktree <feature-name> --dir <package-path>
+```
+
+4. Parse the command output to extract `worktreePath` and `workingDir`. Navigate into `<worktreePath>` to locate the project root.
+
+#### If `worktree-repository` is **absent** — Standard workflow
 
 3. Check whether the branch already exists locally or remotely:
    - If it **does not exist**, create and switch to it:
@@ -127,6 +154,16 @@ Display the full contents of `osddt.tasks.md` to the user. Then prompt them to r
 ```
 
 > You can optionally run `/osddt.clarify` before implementing to resolve any Open Questions recorded in the spec.
+
+## Custom Context
+
+Run the following command and, if it returns content, use it as additional context before proceeding:
+
+```
+npx @dezkareid/osddt context fast
+```
+
+If the command returns no output, skip this section and continue.
 
 ## Arguments
 

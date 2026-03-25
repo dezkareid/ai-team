@@ -29,6 +29,16 @@ The spec should include:
 > If `osddt.research.md` was found, add a **Research Summary** section that briefly references the key insights and user-facing constraints it identified.
 > If additional context was gathered from the conversation session, add a **Session Context** section summarising any extra details, decisions, or constraints discussed beyond what was passed as arguments.
 
+## Custom Context
+
+Run the following command and, if it returns content, use it as additional context before proceeding:
+
+```
+npx @dezkareid/osddt context spec
+```
+
+If the command returns no output, skip this section and continue.
+
 ## Arguments
 
 {{args}}

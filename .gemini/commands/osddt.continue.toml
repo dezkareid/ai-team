@@ -11,15 +11,22 @@ npx @dezkareid/osddt meta-info
 
 ## Repository Configuration
 
-Before proceeding, read the `.osddtrc` file in the root of the repository to determine the project path.
+Before proceeding, read the `.osddtrc` file in the root of the repository to determine the project path and workflow mode.
 
 ```json
-// .osddtrc example
-{ "repoType": "monorepo" | "single" }
+// standard mode
+{ "repoType": "monorepo" | "single", "agents": ["claude"] }
+
+// worktree mode — "worktree-repository" presence determines the workflow
+{ "repoType": "monorepo" | "single", "agents": ["claude"], "worktree-repository": "https://github.com/org/repo.git" }
 ```
 
 - If `repoType` is `"single"`: the project path is the repository root.
 - If `repoType` is `"monorepo"`: ask the user which package to work on (e.g. `packages/my-package`), then use `<repo-root>/<package>` as the project path.
+- If `"worktree-repository"` is **present**: once the feature name is known, run `npx @dezkareid/osddt worktree-info <feature-name>` to resolve the working directory:
+  - exit code **0**: parse the JSON and use the returned `workingDir` as the working directory.
+  - exit code **1**: the feature is not yet in a worktree — proceed as standard.
+- If `"worktree-repository"` is **absent**: use the standard project path from `.osddtrc`.
 
 ## Working Directory
 
@@ -27,22 +34,33 @@ All generated files live under `<project-path>/working-on/<feature-name>/`.
 
 > All file paths in the instructions below are relative to `<project-path>/working-on/<feature-name>/`.
 
-### Resolving the Feature Name
+### Resolving the Feature Name and Working Directory
 
-Use the following logic to determine `<feature-name>`:
+Use the following logic to determine the working directory:
+
+**If `worktree-repository` is present in `.osddtrc` (worktree mode):**
 
 1. If arguments were provided, derive the feature name from them:
    - If the argument looks like a branch name (no spaces, kebab-case or slash-separated), use the last segment (after the last `/`, or the full value if no `/` is present).
-   - Otherwise treat it as a human-readable description and convert it to a feature name following the constraints in the Feature Name Constraints section.
+   - Otherwise convert it to a feature name following the Feature Name Constraints.
+2. Run `npx @dezkareid/osddt worktree-info` (pass `<feature-name>` as argument if one was derived, otherwise run without arguments). Parse the JSON from **stdout** and handle based on the output:
+   - JSON contains `workingDir`: use it as the working directory and continue.
+   - JSON contains `{ "error": "multiple", "worktrees": [...] }`: present the list to the user and ask them to choose a feature, then use the chosen entry's details as the working context — do not re-run the command.
+   - JSON contains `{ "error": "none" }`: inform the user that no feature worktrees were found and stop.
+   - JSON contains `{ "error": "not-found" }`: inform the user that the specified feature was not found in any worktree and stop.
+
+**If `worktree-repository` is absent in `.osddtrc` (standard mode):**
+
+1. If arguments were provided, derive the feature name (same rules as above).
 2. If **no arguments were provided**:
    - List all folders under `<project-path>/working-on/`.
    - If there is **only one folder**, use it automatically and inform the user.
-   - If there are **multiple folders**, present the list to the user and ask them to pick one.
+   - If there are **multiple folders**, display the list as a numbered enumeration, then **stop** and instruct the user to re-run the command with the chosen feature name as an explicit argument (e.g. `/osddt.continue <feature-name>`).
    - If there are **no folders**, inform the user that no in-progress features were found and stop.
 
 ## Instructions
 
-Check the working directory `<project-path>/working-on/<feature-name>` for the files listed below **in order** to determine the current phase. Use the first matching condition:
+Check the working directory for the files listed below **in order** to determine the current phase. Use the `workingDir` resolved above (from `worktree-info` in worktree mode, or `{project-path}/working-on/{feature-name}` in standard mode). Use the first matching condition:
 
 | Condition | Current phase | Run next |
 | --------- | ------------- | -------- |
@@ -56,6 +74,16 @@ Check the working directory `<project-path>/working-on/<feature-name>` for the f
 Report which file was found, which phase that corresponds to, and the exact command the user should run next.
 
 > **Open Questions check**: After reporting the phase, if the detected phase is **Spec done** or **Planning done**, also check whether `osddt.spec.md` contains any unanswered open questions (items in the **Open Questions** section with no corresponding entry in the **Decisions** section). If unanswered questions exist, inform the user and recommend running `/osddt.clarify <feature-name>` before (or in addition to) the suggested next command.
+
+## Custom Context
+
+Run the following command and, if it returns content, use it as additional context before proceeding:
+
+```
+npx @dezkareid/osddt context continue
+```
+
+If the command returns no output, skip this section and continue.
 
 ## Arguments
 
