@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@dezkareid/components':
+        specifier: 1.0.3
+        version: 1.0.3
       '@dezkareid/design-tokens':
         specifier: 1.3.1
         version: 1.3.1
@@ -240,6 +243,26 @@ packages:
         optional: true
       conventional-commits-parser:
         optional: true
+
+  '@dezkareid/components@1.0.3':
+    resolution: {integrity: sha512-5cj8csdL2BuhSRI4ZjnKUOyNWh8uq4jttoxJjSwzN2rPH8kHb4+eqWW5Z9HEY3hpU7zqqouax9q9eKNf1P9N6w==}
+    peerDependencies:
+      astro: '>=6.0.0'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+      vue: ^3.0.0
+    peerDependenciesMeta:
+      astro:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      vue:
+        optional: true
+
+  '@dezkareid/design-tokens@0.0.0':
+    resolution: {integrity: sha512-cnYjVCX+R6rb8b4zfisAPKzMxbfKuBJdsKg9/ezIRCWV5tXJu8w0jaNFjwDmGph6DcpfQ50WBHqwSPcwc1qjkw==}
 
   '@dezkareid/design-tokens@1.3.1':
     resolution: {integrity: sha512-Yy4CD+AKcWkJmWLZff2SrKyMrBE1leK3j3VEEMwZVKgl3BxXmEg0NsExzSG/ktMBj/6p2A+ZUw1zZxKmQW13ow==}
@@ -1010,6 +1033,9 @@ packages:
   ci-info@4.4.0:
     resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
     engines: {node: '>=8'}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   clean-regexp@1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
@@ -2525,6 +2551,13 @@ snapshots:
     optionalDependencies:
       conventional-commits-parser: 6.3.0
 
+  '@dezkareid/components@1.0.3':
+    dependencies:
+      '@dezkareid/design-tokens': 0.0.0
+      classnames: 2.5.1
+
+  '@dezkareid/design-tokens@0.0.0': {}
+
   '@dezkareid/design-tokens@1.3.1': {}
 
   '@dezkareid/eslint-config-ts-base@1.0.0(@eslint/js@9.39.2)(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.57.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)':
@@ -3200,6 +3233,8 @@ snapshots:
   ci-info@3.9.0: {}
 
   ci-info@4.4.0: {}
+
+  classnames@2.5.1: {}
 
   clean-regexp@1.0.0:
     dependencies:
