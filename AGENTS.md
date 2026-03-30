@@ -100,6 +100,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "frontend-tools",
       "version": "0.0.1",
       "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)"
+    },
+    "database-tools": {
+      "name": "database-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for database optimization and best practices"
     }
   },
   "commands": [
@@ -159,6 +164,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "next-best-practices",
       "source": "skills/next-best-practices/SKILL.md",
       "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "supabase-postgres-best-practices",
+      "source": "skills/supabase-postgres-best-practices/SKILL.md",
+      "claude-plugin": "database-tools"
     }
   ],
   "mcpServers": {
