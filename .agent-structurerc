@@ -24,6 +24,11 @@
       "name": "frontend-tools",
       "version": "0.0.1",
       "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)"
+    },
+    "context-tools": {
+      "name": "context-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for evaluating project context quality (Usage, Development, Debug, and Quality)"
     }
   },
   "commands": [
@@ -83,6 +88,11 @@
       "name": "next-best-practices",
       "source": "skills/next-best-practices/SKILL.md",
       "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "context-evaluator",
+      "source": "skills/context-evaluator/SKILL.md",
+      "claude-plugin": "context-tools"
     }
   ],
   "mcpServers": {

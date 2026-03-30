@@ -39,6 +39,12 @@
       "version": "0.0.1",
       "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)",
       "source": "./plugins/frontend-tools"
+    },
+    {
+      "name": "context-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for evaluating project context quality (Usage, Development, Debug, and Quality)",
+      "source": "./plugins/context-tools"
     }
   ]
 }
