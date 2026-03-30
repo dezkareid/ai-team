@@ -83,6 +83,12 @@ context/
 | `react-best-practices` | Expert guidance for React development, including hooks, performance, and patterns. |
 | `next-best-practices` | Best practices for Next.js applications, including RSC, caching, and routing. |
 
+#### `database-tools` — Expert procedural guidance for database optimization and best practices
+
+| Skill | Description |
+|---|---|
+| `supabase-postgres-best-practices` | Postgres performance optimization and best practices from Supabase. |
+
 ### Install a plugin
 
 Once the marketplace is added, install a plugin with:
@@ -93,6 +99,7 @@ claude plugin install design-system
 claude plugin install company-context
 claude plugin install web-quality
 claude plugin install frontend-tools
+claude plugin install database-tools
 ```
 
 ## Development
