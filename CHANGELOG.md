@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.2...ai-team-v1.10.0) (2026-03-30)
+
+
+### Features
+
+* add supabase skill ([7b53e98](https://github.com/dezkareid/ai-team/commit/7b53e98ef53fb9187b83b7204e133ddd5f59d35e))
+
 ## [1.9.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.1...ai-team-v1.9.2) (2026-03-21)
 
 
