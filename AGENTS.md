@@ -171,26 +171,33 @@ File `.agent-structurerc` is used to configure the project structure.
       "claude-plugin": "database-tools"
     }
   ],
+  "mainMcp": {
+    "claude-plugin": "company-context",
+    "version": "1.4.6",
+    "package": "@dezkareid/ai-team",
+    "command": "npx",
+    "args": [
+      "-y",
+      "${package}@${version}"
+    ],
+    "contextFiles": {
+      "get_enterprise_context": "context/enterprise.md",
+      "get_company_outcomes": "context/outcomes.md",
+      "get_architecture_principles": "context/architecture-principles.md"
+    }
+  },
   "mcpServers": {
-    "ai-team": {
-      "claude-plugin": "company-context",
-      "version": "1.4.6",
-      "package": "@dezkareid/ai-team",
+    "chrome-devtools": {
+      "claude-plugin": "frontend-tools",
       "command": "npx",
       "args": [
         "-y",
-        "${package}@${version}"
-      ],
-      "contextFiles": {
-        "get_enterprise_context": "context/enterprise.md",
-        "get_company_outcomes": "context/outcomes.md",
-        "get_architecture_principles": "context/architecture-principles.md"
-      }
+        "chrome-devtools-mcp@latest"
+      ]
     }
   }
 }
 ```
-
 #### Claude Plugin Structure
 
 ```
@@ -244,7 +251,7 @@ graph TD
 
 > **Note**: You must run `pnpm run build` before executing these commands, as they rely on the compiled files in the `dist/` directory.
 
-1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version from `package.json` to `.agent-structurerc` (specifically `mcpServers`), `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
+1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version and name from `package.json` to `.agent-structurerc` (specifically `mainMcp`), `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
 2.  **Export to Claude**: Run `pnpm run export-claude` to process source files.
     -   **Commands**: Converts TOML source files to Markdown with Claude-compatible frontmatter and `$ARGUMENTS` placeholders.
     -   **Skills**: Symlinks `SKILL.md` and reference files into the `plugins/` directory.

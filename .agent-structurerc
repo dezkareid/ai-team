@@ -12,7 +12,7 @@
     },
     "company-context": {
       "name": "company-context",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "description": "Authoritative company context and tools"
     },
     "web-quality": {
@@ -95,30 +95,29 @@
       "claude-plugin": "database-tools"
     }
   ],
+  "mainMcp": {
+    "claude-plugin": "company-context",
+    "version": "1.11.1",
+    "package": "@dezkareid/ai-team",
+    "command": "npx",
+    "args": [
+      "-y",
+      "${package}@${version}"
+    ],
+    "contextFiles": {
+      "get_enterprise_context": "context/enterprise.md",
+      "get_company_outcomes": "context/outcomes.md",
+      "get_architecture_principles": "context/architecture-principles.md"
+    }
+  },
   "mcpServers": {
-    "ai-team": {
-      "claude-plugin": "company-context",
-      "version": "1.11.1",
-      "package": "@dezkareid/ai-team",
-      "command": "npx",
-      "args": [
-        "-y",
-        "${package}@${version}"
-      ],
-      "contextFiles": {
-        "get_enterprise_context": "context/enterprise.md",
-        "get_company_outcomes": "context/outcomes.md",
-        "get_architecture_principles": "context/architecture-principles.md"
-      }
-    },
     "chrome-devtools": {
       "claude-plugin": "frontend-tools",
       "command": "npx",
       "args": [
         "-y",
         "chrome-devtools-mcp@latest"
-      ],
-      "version": "1.11.1"
+      ]
     }
   }
 }

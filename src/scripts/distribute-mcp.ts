@@ -92,7 +92,10 @@ async function run() {
   }
 
   const agentRc = JSON.parse(fs.readFileSync(agentRcPath, 'utf8'));
-  const mcpServers: Record<string, McpConfig> = agentRc.mcpServers || {};
+  const mcpServers: Record<string, McpConfig> = { ...(agentRc.mcpServers || {}) };
+  if (agentRc.mainMcp) {
+    mcpServers['ai-team'] = agentRc.mainMcp;
+  }
 
   distributeToGemini(rootDir, mcpServers);
   distributeToClaude(rootDir, mcpServers);
