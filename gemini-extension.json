@@ -1,12 +1,19 @@
 {
   "name": "dezkareid-ai-team",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "mcpServers": {
     "ai-team": {
       "command": "npx",
       "args": [
         "-y",
-        "@dezkareid/ai-team@1.10.0"
+        "@dezkareid/ai-team@1.11.0"
+      ]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
       ]
     }
   }

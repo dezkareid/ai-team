@@ -1,3 +1,15 @@
+# [1.11.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.10.0...ai-team-v1.11.0) (2026-04-03)
+
+
+### Bug Fixes
+
+* distribution of mcps to plugins ([816822b](https://github.com/dezkareid/ai-team/commit/816822bd21c210c5360c85fb5a6d6321f0fe4686))
+
+
+### Features
+
+* add chrome mcp ([71cbb60](https://github.com/dezkareid/ai-team/commit/71cbb60dfe1afb0b660ba4833e58cdec2f26d87e))
+
 # [1.10.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.2...ai-team-v1.10.0) (2026-03-30)
 
 

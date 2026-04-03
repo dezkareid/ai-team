@@ -98,7 +98,7 @@
   "mcpServers": {
     "ai-team": {
       "claude-plugin": "company-context",
-      "version": "1.10.0",
+      "version": "1.11.0",
       "package": "@dezkareid/ai-team",
       "command": "npx",
       "args": [
@@ -117,7 +117,8 @@
       "args": [
         "-y",
         "chrome-devtools-mcp@latest"
-      ]
+      ],
+      "version": "1.11.0"
     }
   }
 }
