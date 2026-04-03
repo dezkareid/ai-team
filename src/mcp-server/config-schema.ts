@@ -17,7 +17,7 @@ export const McpServerSchema = z.object({
 
 export const AgentStructureSchema = z.object({
   'claude-plugins': z.record(z.string(), ClaudePluginSchema),
-  'mcpServers': z.record(z.string(), McpServerSchema),
+  'mcpServers': z.record(z.string(), z.unknown()),
 });
 
 export type AgentStructure = z.infer<typeof AgentStructureSchema>;

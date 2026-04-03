@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { AgentStructureSchema, McpServerConfig } from './config-schema.js';
+import { AgentStructureSchema, McpServerConfig, McpServerSchema } from './config-schema.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,5 +32,5 @@ export function getMcpServerConfig(serverName: string): McpServerConfig {
     throw new Error(`MCP server configuration for "${serverName}" not found in .agent-structurerc`);
   }
 
-  return serverConfig;
+  return McpServerSchema.parse(serverConfig);
 }
