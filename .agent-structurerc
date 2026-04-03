@@ -22,7 +22,7 @@
     },
     "frontend-tools": {
       "name": "frontend-tools",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)"
     },
     "database-tools": {
@@ -110,6 +110,14 @@
         "get_company_outcomes": "context/outcomes.md",
         "get_architecture_principles": "context/architecture-principles.md"
       }
+    },
+    "chrome-devtools": {
+      "claude-plugin": "frontend-tools",
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
     }
   }
 }
