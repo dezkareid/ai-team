@@ -1,3 +1,10 @@
+## [1.11.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.1...ai-team-v1.11.2) (2026-04-03)
+
+
+### Bug Fixes
+
+* version ([fa8fd17](https://github.com/dezkareid/ai-team/commit/fa8fd17bdff1f46fc846d232441d200187877f15))
+
 ## [1.11.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.0...ai-team-v1.11.1) (2026-04-03)
 
 
