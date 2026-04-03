@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.0...ai-team-v1.11.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* mcp server zod configuration ([53e172d](https://github.com/dezkareid/ai-team/commit/53e172d32e964a596241483fd2639e22f53e56a8))
+
 # [1.11.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.10.0...ai-team-v1.11.0) (2026-04-03)
 
 
