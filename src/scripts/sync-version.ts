@@ -16,15 +16,17 @@ export interface FileSystem {
 interface VersionedJson {
   version?: string;
   metadata?: { version?: string };
-  mcpServers?: Record<string, { version?: string }>;
+  mainMcp?: { version?: string; package?: string };
+  mcpServers?: Record<string, { version?: string; package?: string }>;
 }
 
-function updateJsonVersion(json: unknown, version: string, strategy: SyncStrategy): boolean {
+function updateJsonVersion(json: unknown, packageJson: { version: string; name: string }, strategy: SyncStrategy): boolean {
   if (typeof json !== 'object' || json === null) {
     return false;
   }
 
   const data = json as VersionedJson;
+  const { version, name } = packageJson;
 
   switch (strategy) {
     case 'claude':
@@ -43,20 +45,22 @@ function updateJsonVersion(json: unknown, version: string, strategy: SyncStrateg
       break;
 
     case 'agent-structure':
-      return updateAgentStructureVersion(data, version);
+      return updateAgentStructureVersion(data, version, name);
   }
 
   return false;
 }
 
-function updateAgentStructureVersion(data: VersionedJson, version: string): boolean {
+function updateAgentStructureVersion(data: VersionedJson, version: string, name: string): boolean {
   let updated = false;
-  if (data.mcpServers) {
-    for (const key in data.mcpServers) {
-      if (data.mcpServers[key].version !== version) {
-        data.mcpServers[key].version = version;
-        updated = true;
-      }
+  if (data.mainMcp) {
+    if (data.mainMcp.version !== version) {
+      data.mainMcp.version = version;
+      updated = true;
+    }
+    if (data.mainMcp.package !== name) {
+      data.mainMcp.package = name;
+      updated = true;
     }
   }
   return updated;
@@ -75,14 +79,13 @@ export function syncVersion(
     const packageJson = JSON.parse(fileSystem.readFileSync(packageJsonPath, 'utf8'));
     const targetJson = JSON.parse(fileSystem.readFileSync(targetJsonPath, 'utf8'));
 
-    const version = packageJson.version;
-    const isUpdated = updateJsonVersion(targetJson, version, strategy);
+    const isUpdated = updateJsonVersion(targetJson, packageJson, strategy);
 
     if (isUpdated) {
       fileSystem.writeFileSync(targetJsonPath, JSON.stringify(targetJson, null, 2) + '\n');
-      return { updated: true, newVersion: version };
+      return { updated: true, newVersion: packageJson.version };
     }
-    return { updated: false, version };
+    return { updated: false, version: packageJson.version };
   }
   catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);

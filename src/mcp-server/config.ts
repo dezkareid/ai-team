@@ -26,7 +26,11 @@ export function loadConfig() {
 
 export function getMcpServerConfig(serverName: string): McpServerConfig {
   const config = loadConfig();
-  const serverConfig = config.mcpServers[serverName];
+  let serverConfig = (config.mcpServers || {})[serverName];
+
+  if (serverName === 'ai-team' && config.mainMcp) {
+    serverConfig = config.mainMcp;
+  }
 
   if (!serverConfig) {
     throw new Error(`MCP server configuration for "${serverName}" not found in .agent-structurerc`);

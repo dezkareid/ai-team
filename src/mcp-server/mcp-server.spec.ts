@@ -38,10 +38,33 @@ describe('MCP Server Utils', () => {
 
 describe('MCP Server Config', () => {
   describe('loadConfig', () => {
+    it('should load and validate config with mainMcp', () => {
+      vi.mocked(fs.existsSync).mockReturnValue(true);
+      vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
+        'claude-plugins': {},
+        'mainMcp': {
+          version: '1.0.0',
+          package: 'test',
+          command: 'node',
+          args: [],
+        },
+        'mcpServers': {},
+      }));
+
+      const config = loadConfig();
+      expect(config.mainMcp?.version).toBe('1.0.0');
+    });
+
     it('should load and validate config', () => {
       vi.mocked(fs.existsSync).mockReturnValue(true);
       vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
         'claude-plugins': {},
+        'mainMcp': {
+          version: '1.0.0',
+          package: 'test',
+          command: 'node',
+          args: [],
+        },
         'mcpServers': {
           'ai-team': {
             version: '1.0.0',
@@ -53,7 +76,7 @@ describe('MCP Server Config', () => {
       }));
 
       const config = loadConfig();
-      expect(config.mcpServers['ai-team'].version).toBe('1.0.0');
+      expect(config.mcpServers?.['ai-team'].version).toBe('1.0.0');
     });
 
     it('should throw if config is missing', () => {

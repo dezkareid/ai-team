@@ -131,7 +131,7 @@ graph TD
 
 > **Note**: You must run `pnpm run build` before executing these commands, as they rely on the compiled files in the `dist/` directory.
 
-1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version from `package.json` to `.agent-structurerc`, `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
+1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version and name from `package.json` to `.agent-structurerc` (specifically `mainMcp`), `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
 2.  **Export to Claude**: Run `pnpm run export-claude` to process source files and update plugins.
 3.  **Distribute MCP**: Run `pnpm run distribute-mcp` to resolve placeholders and update platform-specific MCP configurations.
 
