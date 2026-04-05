@@ -12,7 +12,7 @@
     },
     "company-context": {
       "name": "company-context",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "description": "Authoritative company context and tools"
     },
     "web-quality": {
@@ -48,6 +48,11 @@
       "name": "design-tokens",
       "source": "skills/design-tokens/SKILL.md",
       "claude-plugin": "design-system"
+    },
+    {
+      "name": "audit-agents-file",
+      "source": "skills/audit-agents-file/SKILL.md",
+      "claude-plugin": "company-context"
     },
     {
       "name": "performance",
