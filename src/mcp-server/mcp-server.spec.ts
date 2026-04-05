@@ -8,25 +8,29 @@ vi.mock('fs');
 describe('MCP Server Utils', () => {
   describe('fileExists', () => {
     it('should return true if file exists', () => {
-      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as any);
+      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as unknown as fs.Stats);
       expect(fileExists('test.txt')).toBe(true);
     });
 
     it('should return false if file does not exist', () => {
-      vi.mocked(fs.statSync).mockImplementation(() => { throw new Error(); });
+      vi.mocked(fs.statSync).mockImplementation(() => {
+        throw new Error();
+      });
       expect(fileExists('test.txt')).toBe(false);
     });
   });
 
   describe('readFileContent', () => {
     it('should read file content if it exists', () => {
-      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as any);
+      vi.mocked(fs.statSync).mockReturnValue({ isFile: () => true } as unknown as fs.Stats);
       vi.mocked(fs.readFileSync).mockReturnValue('test content');
       expect(readFileContent('test.txt')).toBe('test content');
     });
 
     it('should throw error if file does not exist', () => {
-      vi.mocked(fs.statSync).mockImplementation(() => { throw new Error(); });
+      vi.mocked(fs.statSync).mockImplementation(() => {
+        throw new Error();
+      });
       expect(() => readFileContent('test.txt')).toThrow();
     });
   });
@@ -34,22 +38,45 @@ describe('MCP Server Utils', () => {
 
 describe('MCP Server Config', () => {
   describe('loadConfig', () => {
+    it('should load and validate config with mainMcp', () => {
+      vi.mocked(fs.existsSync).mockReturnValue(true);
+      vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
+        'claude-plugins': {},
+        'mainMcp': {
+          version: '1.0.0',
+          package: 'test',
+          command: 'node',
+          args: [],
+        },
+        'mcpServers': {},
+      }));
+
+      const config = loadConfig();
+      expect(config.mainMcp?.version).toBe('1.0.0');
+    });
+
     it('should load and validate config', () => {
       vi.mocked(fs.existsSync).mockReturnValue(true);
       vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
         'claude-plugins': {},
-        mcpServers: {
+        'mainMcp': {
+          version: '1.0.0',
+          package: 'test',
+          command: 'node',
+          args: [],
+        },
+        'mcpServers': {
           'ai-team': {
             version: '1.0.0',
             package: 'test',
             command: 'node',
-            args: []
-          }
-        }
+            args: [],
+          },
+        },
       }));
 
       const config = loadConfig();
-      expect(config.mcpServers['ai-team'].version).toBe('1.0.0');
+      expect(config.mcpServers?.['ai-team'].version).toBe('1.0.0');
     });
 
     it('should throw if config is missing', () => {

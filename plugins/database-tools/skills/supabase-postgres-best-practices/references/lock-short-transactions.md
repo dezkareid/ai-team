@@ -1,0 +1,1 @@
+../../../../../skills/supabase-postgres-best-practices/references/lock-short-transactions.md

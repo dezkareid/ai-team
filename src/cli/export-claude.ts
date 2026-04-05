@@ -14,21 +14,21 @@ export interface AgentStructurePlugin {
 }
 
 export interface AgentStructureCommand {
-  name: string;
-  source: string;
+  'name': string;
+  'source': string;
   'claude-plugin': string;
 }
 
 export interface AgentStructureSkill {
-  name: string;
-  source: string;
+  'name': string;
+  'source': string;
   'claude-plugin': string;
 }
 
 export interface AgentStructure {
   'claude-plugins': Record<string, AgentStructurePlugin>;
-  commands: AgentStructureCommand[];
-  skills?: AgentStructureSkill[];
+  'commands': AgentStructureCommand[];
+  'skills'?: AgentStructureSkill[];
 }
 
 interface TomlCommand {
@@ -57,7 +57,7 @@ export interface MarketplacePlugin {
 }
 
 export function buildMarketplacePlugins(
-  plugins: Record<string, AgentStructurePlugin>
+  plugins: Record<string, AgentStructurePlugin>,
 ): MarketplacePlugin[] {
   return Object.entries(plugins).map(([id, plugin]) => ({
     name: plugin.name,
@@ -93,10 +93,112 @@ export function buildPluginJson(plugin: AgentStructurePlugin): { name: string; v
   };
 }
 
-async function run() {
-  const isDist = __dirname.includes(path.join('dist', 'cli'));
-  const rootDir = isDist ? path.join(__dirname, '..', '..') : path.join(__dirname, '..', '..');
+function cleanObsoletePlugins(pluginsDir: string, claudePlugins: Record<string, AgentStructurePlugin>, rootDir: string) {
+  if (fs.existsSync(pluginsDir)) {
+    const existingPluginDirs = fs.readdirSync(pluginsDir);
+    for (const dirName of existingPluginDirs) {
+      if (!claudePlugins[dirName]) {
+        const fullPath = path.join(pluginsDir, dirName);
+        if (fs.statSync(fullPath).isDirectory()) {
+          fsExtra.removeSync(fullPath);
+          console.log(`Removed obsolete plugin directory: ${path.relative(rootDir, fullPath)}`);
+        }
+      }
+    }
+  }
+}
 
+function processPluginCommands(pluginId: string, pluginDir: string, commands: AgentStructureCommand[], commandsDir: string, rootDir: string) {
+  const commandsOutputDir = path.join(pluginDir, 'commands');
+  const pluginCommands = commands.filter(cmd => cmd['claude-plugin'] === pluginId);
+
+  if (pluginCommands.length > 0) {
+    fsExtra.ensureDirSync(commandsOutputDir);
+    for (const cmd of pluginCommands) {
+      const sourcePath = path.join(commandsDir, cmd.source);
+
+      if (!fs.existsSync(sourcePath)) {
+        console.warn(`Warning: source file not found for command "${cmd.name}": ${sourcePath}`);
+        continue;
+      }
+
+      const tomlContent = fs.readFileSync(sourcePath, 'utf8');
+      const markdown = tomlToMarkdown(tomlContent, cmd.name);
+      const outputPath = path.join(commandsOutputDir, `${cmd.name}.md`);
+
+      fs.writeFileSync(outputPath, markdown);
+      console.log(`Exported ${path.relative(rootDir, outputPath)}`);
+    }
+  }
+  else if (fs.existsSync(commandsOutputDir)) {
+    fsExtra.removeSync(commandsOutputDir);
+  }
+}
+
+function processPluginSkills(pluginId: string, pluginDir: string, skills: AgentStructureSkill[], rootDir: string) {
+  const skillsOutputDir = path.join(pluginDir, 'skills');
+  const pluginSkills = skills.filter(skill => skill['claude-plugin'] === pluginId);
+
+  if (pluginSkills.length > 0) {
+    fsExtra.ensureDirSync(skillsOutputDir);
+    for (const skill of pluginSkills) {
+      const sourceSkillFile = path.join(rootDir, skill.source);
+      const sourceSkillDir = path.dirname(sourceSkillFile);
+      const skillOutputDir = path.join(skillsOutputDir, skill.name);
+      const outputSkillFile = path.join(skillOutputDir, 'SKILL.md');
+
+      if (!fs.existsSync(sourceSkillFile)) {
+        console.warn(`Warning: source file not found for skill "${skill.name}": ${sourceSkillFile}`);
+        continue;
+      }
+
+      fsExtra.ensureDirSync(skillOutputDir);
+
+      if (fs.existsSync(outputSkillFile)) {
+        fs.unlinkSync(outputSkillFile);
+      }
+      const relativeSkillSource = path.relative(path.dirname(outputSkillFile), sourceSkillFile);
+      fs.symlinkSync(relativeSkillSource, outputSkillFile);
+      console.log(`Symlinked skill ${path.relative(rootDir, outputSkillFile)} -> ${path.relative(rootDir, sourceSkillFile)}`);
+
+      if (pluginId === 'design-system' && skill.name === 'design-tokens') {
+        const tokensPkgSource = path.join(rootDir, 'node_modules', '@dezkareid', 'design-tokens', 'dist', 'catalogs', 'all-tokens-css.md');
+        const sourceRefsDir = path.join(sourceSkillDir, 'references');
+        const sourceTokensFile = path.join(sourceRefsDir, 'all-tokens-css.md');
+
+        if (fs.existsSync(tokensPkgSource)) {
+          fsExtra.ensureDirSync(sourceRefsDir);
+          fs.copyFileSync(tokensPkgSource, sourceTokensFile);
+          console.log(`Updated source tokens at ${path.relative(rootDir, sourceTokensFile)}`);
+        }
+      }
+
+      const sourceRefsDir = path.join(sourceSkillDir, 'references');
+      const outputRefsDir = path.join(skillOutputDir, 'references');
+      if (fs.existsSync(sourceRefsDir)) {
+        fsExtra.ensureDirSync(outputRefsDir);
+        const refFiles = fs.readdirSync(sourceRefsDir);
+        for (const refFile of refFiles) {
+          const sourceRefFile = path.join(sourceRefsDir, refFile);
+          const outputRefFile = path.join(outputRefsDir, refFile);
+
+          if (fs.existsSync(outputRefFile)) {
+            fs.unlinkSync(outputRefFile);
+          }
+          const relativeRefSource = path.relative(path.dirname(outputRefFile), sourceRefFile);
+          fs.symlinkSync(relativeRefSource, outputRefFile);
+          console.log(`Symlinked reference ${path.relative(rootDir, outputRefFile)} -> ${path.relative(rootDir, sourceRefFile)}`);
+        }
+      }
+    }
+  }
+  else if (fs.existsSync(skillsOutputDir)) {
+    fsExtra.removeSync(skillsOutputDir);
+  }
+}
+
+async function run() {
+  const rootDir = path.join(__dirname, '..', '..');
   const rcPath = path.join(rootDir, '.agent-structurerc');
   const marketplacePath = path.join(rootDir, '.claude-plugin', 'marketplace.json');
   const commandsDir = path.join(rootDir, 'commands');
@@ -112,27 +214,11 @@ async function run() {
   const commands = rc.commands ?? [];
   const skills = rc.skills ?? [];
 
-  // Clean up any existing plugin directories that are no longer in the config
-  if (fs.existsSync(pluginsDir)) {
-    const existingPluginDirs = fs.readdirSync(pluginsDir);
-    for (const dirName of existingPluginDirs) {
-      if (!claudePlugins[dirName]) {
-        const fullPath = path.join(pluginsDir, dirName);
-        if (fs.statSync(fullPath).isDirectory()) {
-          fsExtra.removeSync(fullPath);
-          console.log(`Removed obsolete plugin directory: ${path.relative(rootDir, fullPath)}`);
-        }
-      }
-    }
-  }
+  cleanObsoletePlugins(pluginsDir, claudePlugins, rootDir);
 
-  // Generate plugin directories and plugin.json files
   for (const [pluginId, plugin] of Object.entries(claudePlugins)) {
     const pluginDir = path.join(pluginsDir, pluginId);
     const claudePluginDir = path.join(pluginDir, '.claude-plugin');
-    const commandsOutputDir = path.join(pluginDir, 'commands');
-    const skillsOutputDir = path.join(pluginDir, 'skills');
-
     fsExtra.ensureDirSync(claudePluginDir);
 
     const pluginJson = buildPluginJson(plugin);
@@ -140,102 +226,22 @@ async function run() {
     fs.writeFileSync(pluginJsonPath, JSON.stringify(pluginJson, null, 2) + '\n');
     console.log(`Created ${path.relative(rootDir, pluginJsonPath)}`);
 
-    // Process commands for this plugin
-    const pluginCommands = commands.filter(cmd => cmd['claude-plugin'] === pluginId);
-    if (pluginCommands.length > 0) {
-      fsExtra.ensureDirSync(commandsOutputDir);
-      for (const cmd of pluginCommands) {
-        const sourcePath = path.join(commandsDir, cmd.source);
-
-        if (!fs.existsSync(sourcePath)) {
-          console.warn(`Warning: source file not found for command "${cmd.name}": ${sourcePath}`);
-          continue;
-        }
-
-        const tomlContent = fs.readFileSync(sourcePath, 'utf8');
-        const markdown = tomlToMarkdown(tomlContent, cmd.name);
-        const outputPath = path.join(commandsOutputDir, `${cmd.name}.md`);
-
-        fs.writeFileSync(outputPath, markdown);
-        console.log(`Exported ${path.relative(rootDir, outputPath)}`);
-      }
-    } else if (fs.existsSync(commandsOutputDir)) {
-      fsExtra.removeSync(commandsOutputDir);
-    }
-
-    // Process skills for this plugin (Agent Skills structure)
-    const pluginSkills = skills.filter(skill => skill['claude-plugin'] === pluginId);
-    if (pluginSkills.length > 0) {
-      fsExtra.ensureDirSync(skillsOutputDir);
-      for (const skill of pluginSkills) {
-        const sourceSkillFile = path.join(rootDir, skill.source);
-        const sourceSkillDir = path.dirname(sourceSkillFile);
-        const skillOutputDir = path.join(skillsOutputDir, skill.name);
-        const outputSkillFile = path.join(skillOutputDir, 'SKILL.md');
-
-        if (!fs.existsSync(sourceSkillFile)) {
-          console.warn(`Warning: source file not found for skill "${skill.name}": ${sourceSkillFile}`);
-          continue;
-        }
-
-        fsExtra.ensureDirSync(skillOutputDir);
-
-        // Symlink SKILL.md
-        if (fs.existsSync(outputSkillFile)) {
-          fs.unlinkSync(outputSkillFile);
-        }
-        const relativeSkillSource = path.relative(path.dirname(outputSkillFile), sourceSkillFile);
-        fs.symlinkSync(relativeSkillSource, outputSkillFile);
-        console.log(`Symlinked skill ${path.relative(rootDir, outputSkillFile)} -> ${path.relative(rootDir, sourceSkillFile)}`);
-
-        // Special case for design-system tokens: Sync from node_modules to source references first
-        if (pluginId === 'design-system' && skill.name === 'design-tokens') {
-          const tokensPkgSource = path.join(rootDir, 'node_modules', '@dezkareid', 'design-tokens', 'dist', 'catalogs', 'all-tokens-css.md');
-          const sourceRefsDir = path.join(sourceSkillDir, 'references');
-          const sourceTokensFile = path.join(sourceRefsDir, 'all-tokens-css.md');
-
-          if (fs.existsSync(tokensPkgSource)) {
-            fsExtra.ensureDirSync(sourceRefsDir);
-            fs.copyFileSync(tokensPkgSource, sourceTokensFile);
-            console.log(`Updated source tokens at ${path.relative(rootDir, sourceTokensFile)}`);
-          }
-        }
-
-        // Symlink entire references folder if it exists in source
-        const sourceRefsDir = path.join(sourceSkillDir, 'references');
-        const outputRefsDir = path.join(skillOutputDir, 'references');
-        if (fs.existsSync(sourceRefsDir)) {
-          fsExtra.ensureDirSync(outputRefsDir);
-          const refFiles = fs.readdirSync(sourceRefsDir);
-          for (const refFile of refFiles) {
-            const sourceRefFile = path.join(sourceRefsDir, refFile);
-            const outputRefFile = path.join(outputRefsDir, refFile);
-            
-            if (fs.existsSync(outputRefFile)) {
-              fs.unlinkSync(outputRefFile);
-            }
-            const relativeRefSource = path.relative(path.dirname(outputRefFile), sourceRefFile);
-            fs.symlinkSync(relativeRefSource, outputRefFile);
-            console.log(`Symlinked reference ${path.relative(rootDir, outputRefFile)} -> ${path.relative(rootDir, sourceRefFile)}`);
-          }
-        }
-      }
-    } else if (fs.existsSync(skillsOutputDir)) {
-      fsExtra.removeSync(skillsOutputDir);
-    }
+    processPluginCommands(pluginId, pluginDir, commands, commandsDir, rootDir);
+    processPluginSkills(pluginId, pluginDir, skills, rootDir);
   }
 
-  // Update marketplace.json
   if (fs.existsSync(marketplacePath)) {
     updateMarketplace(marketplacePath, pluginsDir, claudePlugins);
-  } else {
+  }
+  else {
     console.warn(`Warning: ${marketplacePath} not found, skipping marketplace update.`);
   }
 }
 
 if (process.argv[1] === __filename || process.argv[1]?.endsWith('export-claude.js')) {
-  run().catch(err => {
-    console.error(err.message);
+  run().catch((err: unknown) => {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(message);
     process.exit(1);
   });
 }

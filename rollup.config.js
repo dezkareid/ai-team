@@ -53,6 +53,26 @@ export default [
     external,
   },
   {
+    input: 'src/scripts/apply-plugin-changesets.ts',
+    output: {
+      file: 'dist/scripts/apply-plugin-changesets.js',
+      format: 'esm',
+      sourcemap: true,
+    },
+    plugins: [json(), typescript(), resolve(), commonjs()],
+    external,
+  },
+  {
+    input: 'src/scripts/apply-skill-changesets.ts',
+    output: {
+      file: 'dist/scripts/apply-skill-changesets.js',
+      format: 'esm',
+      sourcemap: true,
+    },
+    plugins: [json(), typescript(), resolve(), commonjs()],
+    external,
+  },
+  {
     input: 'src/mcp-server/index.ts',
     output: {
       file: 'dist/mcp-server/index.js',

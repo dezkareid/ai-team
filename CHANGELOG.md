@@ -1,3 +1,99 @@
+## [1.11.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.1...ai-team-v1.11.2) (2026-04-03)
+
+
+### Bug Fixes
+
+* version ([fa8fd17](https://github.com/dezkareid/ai-team/commit/fa8fd17bdff1f46fc846d232441d200187877f15))
+
+## [1.11.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.0...ai-team-v1.11.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* mcp server zod configuration ([53e172d](https://github.com/dezkareid/ai-team/commit/53e172d32e964a596241483fd2639e22f53e56a8))
+
+# [1.11.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.10.0...ai-team-v1.11.0) (2026-04-03)
+
+
+### Bug Fixes
+
+* distribution of mcps to plugins ([816822b](https://github.com/dezkareid/ai-team/commit/816822bd21c210c5360c85fb5a6d6321f0fe4686))
+
+
+### Features
+
+* add chrome mcp ([71cbb60](https://github.com/dezkareid/ai-team/commit/71cbb60dfe1afb0b660ba4833e58cdec2f26d87e))
+
+# [1.10.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.2...ai-team-v1.10.0) (2026-03-30)
+
+
+### Features
+
+* add supabase skill ([7b53e98](https://github.com/dezkareid/ai-team/commit/7b53e98ef53fb9187b83b7204e133ddd5f59d35e))
+
+## [1.9.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.1...ai-team-v1.9.2) (2026-03-21)
+
+
+### Bug Fixes
+
+* rename eslint config to mjs and fix linter issues ([e6de871](https://github.com/dezkareid/ai-team/commit/e6de8717a0f4a7f4e561a543627f3fb796c51a7f))
+
+## [1.9.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.9.0...ai-team-v1.9.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* add to changeset run to CI ([29199ae](https://github.com/dezkareid/ai-team/commit/29199ae2629a698af7f2895645672b496a780eef))
+
+# [1.9.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.8.1...ai-team-v1.9.0) (2026-03-21)
+
+
+### Features
+
+* add outcomes ([8d0ab84](https://github.com/dezkareid/ai-team/commit/8d0ab84e1d8aaa55f7c73e85227e5cc87a3b31f7))
+
+## [1.8.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.8.0...ai-team-v1.8.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* format of outcomes ([26f4814](https://github.com/dezkareid/ai-team/commit/26f481452ba2bf8d1648c1f90116a24830000d57))
+
+# [1.8.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.7.0...ai-team-v1.8.0) (2026-03-21)
+
+
+### Features
+
+* add to mcp tool for products ([39ba771](https://github.com/dezkareid/ai-team/commit/39ba771dce982e812fe532b484645f436b865237))
+
+# [1.7.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.6.0...ai-team-v1.7.0) (2026-03-20)
+
+
+### Features
+
+* add skills for react and nextjs development ([d8761d5](https://github.com/dezkareid/ai-team/commit/d8761d503a359635cbcdbafbdf36f122ad071738))
+
+# [1.6.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.5.0...ai-team-v1.6.0) (2026-03-17)
+
+
+### Features
+
+* add docs ([9e439de](https://github.com/dezkareid/ai-team/commit/9e439de98f3a707a268dc748838a5c3013012e38))
+
+# [1.5.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.7...ai-team-v1.5.0) (2026-03-17)
+
+
+### Features
+
+* add web quality skills ([318deb8](https://github.com/dezkareid/ai-team/commit/318deb83dd48c32c40c86783c2635717752d1d8a))
+
+## [1.4.7](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.6...ai-team-v1.4.7) (2026-03-16)
+
+
+### Bug Fixes
+
+* instructions to login to wait user ([9d0eeb5](https://github.com/dezkareid/ai-team/commit/9d0eeb585ed086950cc7eeeb3c1a93975881357c))
+
 ## [1.4.6](https://github.com/dezkareid/ai-team/compare/ai-team-v1.4.5...ai-team-v1.4.6) (2026-02-28)
 
 

@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Dezkareid AI Tooling",
-    "version": "1.4.6"
+    "version": "1.11.2"
   },
   "plugins": [
     {
@@ -18,15 +18,33 @@
     },
     {
       "name": "design-system",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "description": "Authoritative design system context and tools",
       "source": "./plugins/design-system"
     },
     {
       "name": "company-context",
-      "version": "0.0.3",
+      "version": "0.1.1",
       "description": "Authoritative company context and tools",
       "source": "./plugins/company-context"
+    },
+    {
+      "name": "web-quality",
+      "version": "0.0.1",
+      "description": "Skills for auditing and optimizing web quality (Performance, Accessibility, SEO, Core Web Vitals, Best Practices)",
+      "source": "./plugins/web-quality"
+    },
+    {
+      "name": "frontend-tools",
+      "version": "0.0.2",
+      "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)",
+      "source": "./plugins/frontend-tools"
+    },
+    {
+      "name": "database-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for database optimization and best practices",
+      "source": "./plugins/database-tools"
     }
   ]
 }

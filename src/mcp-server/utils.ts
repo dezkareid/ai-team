@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 
 /**
  * Checks if a file exists and is readable.
@@ -10,7 +9,8 @@ export function fileExists(filePath: string): boolean {
   try {
     const stats = fs.statSync(filePath);
     return stats.isFile();
-  } catch {
+  }
+  catch {
     return false;
   }
 }

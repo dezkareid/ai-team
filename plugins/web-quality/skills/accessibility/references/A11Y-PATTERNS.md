@@ -1,0 +1,1 @@
+../../../../../skills/accessibility/references/A11Y-PATTERNS.md

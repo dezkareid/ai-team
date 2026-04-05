@@ -13,36 +13,56 @@ export interface FileSystem {
   writeFileSync(path: string, data: string): void;
 }
 
-function updateJsonVersion(json: any, version: string, strategy: SyncStrategy): boolean {
-  let updated = false;
+interface VersionedJson {
+  version?: string;
+  metadata?: { version?: string };
+  mainMcp?: { version?: string; package?: string };
+  mcpServers?: Record<string, { version?: string; package?: string }>;
+}
 
-  if (strategy === 'claude') {
-    if (json.metadata && json.metadata.version !== version) {
-      json.metadata.version = version;
-      updated = true;
-    }
-  } else if (strategy === 'gemini') {
-    if (json.version !== version) {
-      json.version = version;
-      updated = true;
-    }
-  } else if (strategy === 'marketplace') {
-    if (json.metadata && json.metadata.version !== version) {
-      json.metadata.version = version;
-      updated = true;
-    }
-  } else if (strategy === 'agent-structure') {
-    // Only sync mcpServers from package version
-    if (json.mcpServers) {
-      for (const key in json.mcpServers) {
-        if (json.mcpServers[key].version !== version) {
-          json.mcpServers[key].version = version;
-          updated = true;
-        }
-      }
-    }
+function updateJsonVersion(json: unknown, packageJson: { version: string; name: string }, strategy: SyncStrategy): boolean {
+  if (typeof json !== 'object' || json === null) {
+    return false;
   }
 
+  const data = json as VersionedJson;
+  const { version, name } = packageJson;
+
+  switch (strategy) {
+    case 'claude':
+    case 'marketplace':
+      if (data.metadata && data.metadata.version !== version) {
+        data.metadata.version = version;
+        return true;
+      }
+      break;
+
+    case 'gemini':
+      if (data.version !== version) {
+        data.version = version;
+        return true;
+      }
+      break;
+
+    case 'agent-structure':
+      return updateAgentStructureVersion(data, version, name);
+  }
+
+  return false;
+}
+
+function updateAgentStructureVersion(data: VersionedJson, version: string, name: string): boolean {
+  let updated = false;
+  if (data.mainMcp) {
+    if (data.mainMcp.version !== version) {
+      data.mainMcp.version = version;
+      updated = true;
+    }
+    if (data.mainMcp.package !== name) {
+      data.mainMcp.package = name;
+      updated = true;
+    }
+  }
   return updated;
 }
 
@@ -50,7 +70,7 @@ export function syncVersion(
   packageJsonPath: string,
   targetJsonPath: string,
   strategy: SyncStrategy,
-  fileSystem: FileSystem = fs
+  fileSystem: FileSystem = fs,
 ) {
   try {
     if (!fileSystem.existsSync(targetJsonPath)) {
@@ -59,16 +79,17 @@ export function syncVersion(
     const packageJson = JSON.parse(fileSystem.readFileSync(packageJsonPath, 'utf8'));
     const targetJson = JSON.parse(fileSystem.readFileSync(targetJsonPath, 'utf8'));
 
-    const version = packageJson.version;
-    const isUpdated = updateJsonVersion(targetJson, version, strategy);
+    const isUpdated = updateJsonVersion(targetJson, packageJson, strategy);
 
     if (isUpdated) {
       fileSystem.writeFileSync(targetJsonPath, JSON.stringify(targetJson, null, 2) + '\n');
-      return { updated: true, newVersion: version };
+      return { updated: true, newVersion: packageJson.version };
     }
-    return { updated: false, version };
-  } catch (error: any) {
-    throw new Error(`Error syncing versions for ${targetJsonPath}: ${error.message}`);
+    return { updated: false, version: packageJson.version };
+  }
+  catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Error syncing versions for ${targetJsonPath}: ${message}`);
   }
 }
 
@@ -88,16 +109,20 @@ async function run() {
       const result = syncVersion(packageJsonPath, target.path, target.strategy);
       if (result.updated) {
         console.log(`Updated ${path.basename(target.path)} version to ${result.newVersion}`);
-      } else if (result.error) {
+      }
+      else if (result.error) {
         if (!target.silent) {
           console.warn(`Warning: ${result.error} for ${path.basename(target.path)}`);
         }
-      } else {
+      }
+      else {
         console.log(`${path.basename(target.path)} version is already in sync.`);
       }
     }
-  } catch (error: any) {
-    console.error(error.message);
+  }
+  catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(message);
     process.exit(1);
   }
 }

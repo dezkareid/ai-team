@@ -7,13 +7,28 @@
     },
     "design-system": {
       "name": "design-system",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "description": "Authoritative design system context and tools"
     },
     "company-context": {
       "name": "company-context",
-      "version": "0.0.3",
+      "version": "0.1.1",
       "description": "Authoritative company context and tools"
+    },
+    "web-quality": {
+      "name": "web-quality",
+      "version": "0.0.1",
+      "description": "Skills for auditing and optimizing web quality (Performance, Accessibility, SEO, Core Web Vitals, Best Practices)"
+    },
+    "frontend-tools": {
+      "name": "frontend-tools",
+      "version": "0.0.2",
+      "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)"
+    },
+    "database-tools": {
+      "name": "database-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for database optimization and best practices"
     }
   },
   "commands": [
@@ -38,22 +53,76 @@
       "name": "audit-agents-file",
       "source": "skills/audit-agents-file/SKILL.md",
       "claude-plugin": "company-context"
+    },
+    {
+      "name": "performance",
+      "source": "skills/performance/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "accessibility",
+      "source": "skills/accessibility/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "seo",
+      "source": "skills/seo/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "core-web-vitals",
+      "source": "skills/core-web-vitals/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "best-practices",
+      "source": "skills/best-practices/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "web-quality-audit",
+      "source": "skills/web-quality-audit/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "react-best-practices",
+      "source": "skills/react-best-practices/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "next-best-practices",
+      "source": "skills/next-best-practices/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "supabase-postgres-best-practices",
+      "source": "skills/supabase-postgres-best-practices/SKILL.md",
+      "claude-plugin": "database-tools"
     }
   ],
+  "mainMcp": {
+    "claude-plugin": "company-context",
+    "version": "1.11.2",
+    "package": "@dezkareid/ai-team",
+    "command": "npx",
+    "args": [
+      "-y",
+      "${package}@${version}"
+    ],
+    "contextFiles": {
+      "get_enterprise_context": "context/enterprise.md",
+      "get_company_outcomes": "context/outcomes.md",
+      "get_architecture_principles": "context/architecture-principles.md"
+    }
+  },
   "mcpServers": {
-    "ai-team": {
-      "claude-plugin": "company-context",
-      "version": "1.4.6",
-      "package": "@dezkareid/ai-team",
+    "chrome-devtools": {
+      "claude-plugin": "frontend-tools",
       "command": "npx",
       "args": [
         "-y",
-        "${package}@${version}"
-      ],
-      "contextFiles": {
-        "get_company_outcomes": "context/outcomes.md",
-        "get_architecture_principles": "context/architecture-principles.md"
-      }
+        "chrome-devtools-mcp@latest"
+      ]
     }
   }
 }

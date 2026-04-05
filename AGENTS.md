@@ -43,6 +43,32 @@ Command content with {SCRIPT} and {{args}} placeholders.
 - **`plugins/`**: Claude Code plugins. Each subdirectory represents a plugin and contains exported versions of commands and skills in Markdown format.
 - **`.claude-plugin/`**: Metadata and configuration for Claude Code. The root folder contains the `marketplace.json`, while plugin folders contain their respective `plugin.json`.
 
+### AI Team MCP
+
+The `ai-team` MCP server provides authoritative business and architectural context.
+
+#### Available Tools
+
+| Tool | Description |
+|---|---|
+| `get_enterprise_context` | Retrieves the enterprise mission, strategic goals, and core architecture characteristics. |
+| `get_company_outcomes` | Retrieves the high-level business outcomes and key results. |
+| `get_architecture_principles` | Retrieves the technology-agnostic architecture principles. |
+| `search_product` | Dynamic tool to search for specific product characteristics. |
+
+#### Context Folder Structure
+
+```text
+context/
+├── enterprise.md              # Shared mission, goals, and core characteristics
+├── outcomes.md                # Shared strategic outcomes (OKRs)
+├── architecture-principles.md # Fundamental philosophy and standards
+└── products/                  # Product-specific characteristics
+    ├── personal-website.md
+    ├── collecstory.md
+    └── default.md             # Fallback for undocumented products
+```
+
 #### Project Configuration (`.agent-structurerc`)
 
 File `.agent-structurerc` is used to configure the project structure.
@@ -64,6 +90,21 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "company-context",
       "version": "0.0.3",
       "description": "Authoritative company context and tools"
+    },
+    "web-quality": {
+      "name": "web-quality",
+      "version": "0.0.1",
+      "description": "Skills for auditing and optimizing web quality (Performance, Accessibility, SEO, Core Web Vitals, Best Practices)"
+    },
+    "frontend-tools": {
+      "name": "frontend-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)"
+    },
+    "database-tools": {
+      "name": "database-tools",
+      "version": "0.0.1",
+      "description": "Expert procedural guidance for database optimization and best practices"
     }
   },
   "commands": [
@@ -83,27 +124,80 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "design-tokens",
       "source": "skills/design-tokens/SKILL.md",
       "claude-plugin": "design-system"
+    },
+    {
+      "name": "performance",
+      "source": "skills/performance/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "accessibility",
+      "source": "skills/accessibility/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "seo",
+      "source": "skills/seo/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "core-web-vitals",
+      "source": "skills/core-web-vitals/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "best-practices",
+      "source": "skills/best-practices/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "web-quality-audit",
+      "source": "skills/web-quality-audit/SKILL.md",
+      "claude-plugin": "web-quality"
+    },
+    {
+      "name": "react-best-practices",
+      "source": "skills/react-best-practices/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "next-best-practices",
+      "source": "skills/next-best-practices/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "supabase-postgres-best-practices",
+      "source": "skills/supabase-postgres-best-practices/SKILL.md",
+      "claude-plugin": "database-tools"
     }
   ],
+  "mainMcp": {
+    "claude-plugin": "company-context",
+    "version": "1.4.6",
+    "package": "@dezkareid/ai-team",
+    "command": "npx",
+    "args": [
+      "-y",
+      "${package}@${version}"
+    ],
+    "contextFiles": {
+      "get_enterprise_context": "context/enterprise.md",
+      "get_company_outcomes": "context/outcomes.md",
+      "get_architecture_principles": "context/architecture-principles.md"
+    }
+  },
   "mcpServers": {
-    "ai-team": {
-      "claude-plugin": "company-context",
-      "version": "1.4.6",
-      "package": "@dezkareid/ai-team",
+    "chrome-devtools": {
+      "claude-plugin": "frontend-tools",
       "command": "npx",
       "args": [
         "-y",
-        "${package}@${version}"
-      ],
-      "contextFiles": {
-        "get_company_outcomes": "context/outcomes.md",
-        "get_architecture_principles": "context/architecture-principles.md"
-      }
+        "chrome-devtools-mcp@latest"
+      ]
     }
   }
 }
 ```
-
 #### Claude Plugin Structure
 
 ```
@@ -157,7 +251,7 @@ graph TD
 
 > **Note**: You must run `pnpm run build` before executing these commands, as they rely on the compiled files in the `dist/` directory.
 
-1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version from `package.json` to `.agent-structurerc` (specifically `mcpServers`), `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
+1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version and name from `package.json` to `.agent-structurerc` (specifically `mainMcp`), `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
 2.  **Export to Claude**: Run `pnpm run export-claude` to process source files.
     -   **Commands**: Converts TOML source files to Markdown with Claude-compatible frontmatter and `$ARGUMENTS` placeholders.
     -   **Skills**: Symlinks `SKILL.md` and reference files into the `plugins/` directory.
@@ -165,6 +259,63 @@ graph TD
 3.  **Distribute MCP**: Run `pnpm run distribute-mcp` to resolve placeholders (like `${version}`) in MCP configurations defined in `.agent-structurerc`.
     -   Updates `gemini-extension.json` for Gemini CLI.
     -   Creates/updates `.mcp.json` in relevant plugin folders (e.g., `plugins/company-context/`) for Claude Code.
+
+### Versioning Skills and Plugins
+
+Skills and plugins are versioned independently using changeset files (powered by `@changesets/cli`).
+
+#### Version sources
+
+| Artifact | Where the version lives |
+|---|---|
+| **Skill** | `metadata.version` field in the skill's `SKILL.md` frontmatter |
+| **Plugin** | `version` field under `claude-plugins.<id>` in `.agent-structurerc` |
+
+#### Changeset file format
+
+Create a file inside `.changeset/` (any name, `.md` extension). The frontmatter lists one or more names and their bump type (`major`, `minor`, or `patch`). The same name can appear in both scripts — each one only acts on its own registry.
+
+```md
+---
+"design-tokens": minor
+"npm-tools": patch
+---
+
+Brief description of what changed.
+```
+
+Use `pnpm changeset` to generate the file interactively, or create it manually.
+
+#### Applying changesets
+
+```bash
+pnpm run build
+
+# Bump versions in SKILL.md files for any skill listed in pending changesets
+pnpm run apply-skill-changesets
+
+# Bump versions in .agent-structurerc for any plugin listed in pending changesets
+pnpm run apply-plugin-changesets
+```
+
+Each script reads all `.md` files in `.changeset/` (skipping `README.md`), applies the highest bump when a name appears in multiple files, writes the new version to its respective location, and deletes the consumed changeset files.
+
+#### Workflow diagram
+
+```mermaid
+graph TD
+    subgraph "Skill versioning"
+        CS1[.changeset/*.md] -- apply-skill-changesets --> SM[skills/**/SKILL.md\nmetadata.version]
+    end
+
+    subgraph "Plugin versioning"
+        CS2[.changeset/*.md] -- apply-plugin-changesets --> AS[.agent-structurerc\nclaude-plugins.version]
+        AS -- export-claude --> PJ[plugins/**/plugin.json]
+        PJ -- updates --> M[.claude-plugin/marketplace.json]
+    end
+```
+
+After bumping plugin versions, run `pnpm run export-claude` so the new versions are propagated to `plugin.json` and `marketplace.json`.
 
 ### Commit Rules
 

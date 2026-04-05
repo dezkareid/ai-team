@@ -1,6 +1,9 @@
 ---
 name: design-tokens
 description: "Authoritative context for the project's design tokens. Provides information on colors, spacing, and breakpoints using CSS custom properties."
+metadata:
+  version: "0.0.2"
+  author: "dezkareid"
 ---
 
 ## Overview

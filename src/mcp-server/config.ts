@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { AgentStructureSchema, McpServerConfig } from './config-schema.js';
+import { AgentStructureSchema, McpServerConfig, McpServerSchema } from './config-schema.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,11 +26,15 @@ export function loadConfig() {
 
 export function getMcpServerConfig(serverName: string): McpServerConfig {
   const config = loadConfig();
-  const serverConfig = config.mcpServers[serverName];
+  let serverConfig = (config.mcpServers || {})[serverName];
+
+  if (serverName === 'ai-team' && config.mainMcp) {
+    serverConfig = config.mainMcp;
+  }
 
   if (!serverConfig) {
     throw new Error(`MCP server configuration for "${serverName}" not found in .agent-structurerc`);
   }
 
-  return serverConfig;
+  return McpServerSchema.parse(serverConfig);
 }

@@ -78,9 +78,9 @@ ISC
 Perform the following steps for publishing:
 1. Check if the user is logged into npm by running `npm whoami`.
 2. If NOT logged in:
-   - Instruct the user to run `npm login`.
-   - **WAIT** for the user to confirm they have successfully logged in before continuing.
-3. Once the user is confirmed as logged in, navigate to the target directory and run `npm publish`.
+   - Instruct the user you will run `npm login` and he should follow the instructions to log in.
+   - Run `npm login` and wait until command completes.
+3. Once the user is logged in, navigate to the target directory and run `npm publish`.
 
 ## Post-Publishing
 Tell the user the package has been published: "https://www.npmjs.com/package/[package-name]" and provide the link to configure trusted publishers: "https://www.npmjs.com/package/[package-name]/access".
