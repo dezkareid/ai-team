@@ -1,3 +1,11 @@
+# [1.12.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.2...ai-team-v1.12.0) (2026-04-05)
+
+
+### Features
+
+* add references for audits on different environments ([12b7531](https://github.com/dezkareid/ai-team/commit/12b7531ec5b66e8c9f1e4647114023d160047cb5))
+* add skill to audit agent file ([e0434dc](https://github.com/dezkareid/ai-team/commit/e0434dc59e58cdb27d9d907183b289f03912a096))
+
 ## [1.11.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.1...ai-team-v1.11.2) (2026-04-03)
 
 
