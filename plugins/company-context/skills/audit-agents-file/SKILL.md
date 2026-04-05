@@ -1,1 +1,0 @@
-../../../../skills/audit-agents-file/SKILL.md
