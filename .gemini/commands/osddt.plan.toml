@@ -43,6 +43,16 @@ The plan should include:
 - **Risks & Mitigations**: Known risks and how to address them
 - **Out of Scope**: Explicitly what will not be built
 
+## Custom Context
+
+Run the following command and, if it returns content, use it as additional context before proceeding:
+
+```
+npx @dezkareid/osddt context plan
+```
+
+If the command returns no output, skip this section and continue.
+
 ## Arguments
 
 {{args}}
