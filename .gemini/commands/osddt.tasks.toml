@@ -34,6 +34,16 @@ The task list should include:
 - **Dependencies**: Note which tasks must complete before others
 - **Definition of Done**: Clear completion criteria per phase
 
+## Custom Context
+
+Run the following command and, if it returns content, use it as additional context before proceeding:
+
+```
+npx @dezkareid/osddt context tasks
+```
+
+If the command returns no output, skip this section and continue.
+
 ## Next Step
 
 Run the following command to start implementing tasks:
