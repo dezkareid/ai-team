@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.1...ai-team-v1.13.2) (2026-04-07)
+
+
+### Bug Fixes
+
+* remove block to invoke skill ([a5fe7d7](https://github.com/dezkareid/ai-team/commit/a5fe7d781c8843394d9d9a07c9f662e24151b63c))
+
 ## [1.13.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.0...ai-team-v1.13.1) (2026-04-07)
 
 
