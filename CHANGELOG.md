@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.12.0...ai-team-v1.13.0) (2026-04-07)
+
+
+### Features
+
+* add skills for react, styles and frontend architecture ([e82df86](https://github.com/dezkareid/ai-team/commit/e82df86305906da24fd8be5e00b7474d818544d9))
+
 # [1.12.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.11.2...ai-team-v1.12.0) (2026-04-05)
 
 

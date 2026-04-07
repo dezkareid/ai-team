@@ -1,0 +1,1 @@
+../../../../../skills/fsd-architecture/references/layers-definition.md

@@ -1,7 +1,7 @@
 ---
 metadata:
   name: "styles-methodology"
-  version: "1.0.0"
+  version: "1.0.1"
   description: "Standard methodology for writing and organizing styles using BEM and OOCSS"
 ---
 

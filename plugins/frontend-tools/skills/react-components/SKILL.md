@@ -1,0 +1,1 @@
+../../../../skills/react-components/SKILL.md

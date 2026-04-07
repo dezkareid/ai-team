@@ -1,0 +1,1 @@
+../../../../../skills/fsd-architecture/references/cross-layer-communication.md

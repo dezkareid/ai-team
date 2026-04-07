@@ -1,6 +1,6 @@
 {
   "name": "dezkareid-ai-team",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "mcpServers": {
     "chrome-devtools": {
       "command": "npx",
@@ -13,7 +13,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@dezkareid/ai-team@1.12.0"
+        "@dezkareid/ai-team@1.13.0"
       ]
     }
   }
