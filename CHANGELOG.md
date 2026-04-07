@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.0...ai-team-v1.13.1) (2026-04-07)
+
+
+### Bug Fixes
+
+* add structure for next 16 ([81d30c4](https://github.com/dezkareid/ai-team/commit/81d30c4dc3f210906d10239e7738990fe36c0654))
+
 # [1.13.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.12.0...ai-team-v1.13.0) (2026-04-07)
 
 
