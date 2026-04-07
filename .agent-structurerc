@@ -95,6 +95,21 @@
       "claude-plugin": "frontend-tools"
     },
     {
+      "name": "react-components",
+      "source": "skills/react-components/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "styles-methodology",
+      "source": "skills/styles-methodology/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
+      "name": "fsd-architecture",
+      "source": "skills/fsd-architecture/SKILL.md",
+      "claude-plugin": "frontend-tools"
+    },
+    {
       "name": "supabase-postgres-best-practices",
       "source": "skills/supabase-postgres-best-practices/SKILL.md",
       "claude-plugin": "database-tools"
