@@ -1,7 +1,7 @@
 ---
 metadata:
   name: "fsd-architecture"
-  version: "1.0.1"
+  version: "1.1.0"
   description: "Comprehensive guide for Feature-Sliced Design (FSD) architecture in frontend projects"
 ---
 

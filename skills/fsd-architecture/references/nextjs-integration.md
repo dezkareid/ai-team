@@ -1,21 +1,20 @@
-# Next.js Integration with FSD
+# Next.js 16 Integration with FSD
 
-Integrating Feature-Sliced Design (FSD) with Next.js requires careful planning to avoid naming conflicts between FSD layers and Next.js reserved file-system routing folders (like `app/`, `pages/`, or `api/`).
+Integrating Feature-Sliced Design (FSD) with Next.js 16 requires careful planning to avoid naming conflicts between FSD layers and Next.js reserved file-system routing folders (like `app/` or `api/`).
 
-## 1. Using the `src/` Directory
+## 1. Root-Based Structure
 
-The most effective way to avoid conflicts is to place all FSD layers inside a `src/` directory. This isolates your architectural layers from the configuration files in the root.
+In Next.js 16, the `app/` directory is located at the root of the project. To maintain FSD standardization, all FSD layers should also be placed at the root level. This provides direct access to all architectural components without the `src/` wrapper.
 
 ```text
 root/
+├── app/          (Next.js App Router + FSD App Layer)
+├── widgets/      (FSD Layer)
+├── features/     (FSD Layer)
+├── entities/     (FSD Layer)
+├── shared/       (FSD Layer)
+├── pages/        (FSD Layer - See Conflict section below)
 ├── public/
-├── src/
-│   ├── app/          (FSD Layer + Next.js App Router)
-│   ├── pages/        (FSD Layer)
-│   ├── widgets/      (FSD Layer)
-│   ├── features/     (FSD Layer)
-│   ├── entities/     (FSD Layer)
-│   └── shared/       (FSD Layer)
 ├── next.config.js
 └── package.json
 ```
@@ -25,34 +24,34 @@ root/
 Next.js App Router uses an `app/` directory for routing. FSD also has an `app` layer for global initialization.
 
 ### The Hybrid Approach
-In Next.js, the `src/app/` directory serves both as the **FSD App Layer** and the **Next.js Routing Entry Point**.
+The root `app/` directory serves both as the **FSD App Layer** and the **Next.js Routing Entry Point**.
 
 - **Next.js role**: Define `layout.tsx`, `page.tsx`, and error boundaries.
 - **FSD role**: Contain global styles, providers, and initialization logic.
 
 **Example Structure:**
 ```text
-src/app/
+app/
 ├── _providers/       (FSD: Global providers)
 ├── _styles/          (FSD: Global CSS)
 ├── layout.tsx        (Next.js: Root layout)
-├── page.tsx          (Next.js: Home route, imports from src/pages/home)
+├── page.tsx          (Next.js: Home route, imports from pages/home)
 └── ...
 ```
 *Note: Using an underscore prefix (like `_providers`) is a common way to indicate that a folder inside `app/` is not a route.*
 
 ## 3. Resolving the `pages/` Conflict
 
-FSD has a `pages` layer, but Next.js (Pages Router) also uses a `pages/` directory.
+FSD has a `pages` layer, but Next.js also uses a `pages/` directory if the Pages Router is enabled.
 
-- **If using App Router**: You can safely have a `src/pages/` directory as an FSD layer because Next.js only looks at `src/app/` for routing.
-- **If using Pages Router**: Use `src/shared/pages/` or rename the FSD layer to `views/` to avoid conflict with the root-level or `src/pages/` directory that Next.js uses for routing.
+- **If using App Router ONLY**: You can safely have a root `pages/` directory as an FSD layer because Next.js 16 prioritizes the `app/` directory for routing.
+- **If using Pages Router**: Rename the FSD layer to `views/` or place it inside `shared/pages/` to avoid conflict with the root-level `pages/` directory that Next.js uses for routing.
 
 ## 4. Routing Best Practice
 
 Next.js `page.tsx` files should be kept thin. They should simply import and render a component from the **FSD Pages Layer**.
 
-### Example `src/app/products/[id]/page.tsx` (Next.js)
+### Example `app/products/[id]/page.tsx` (Next.js)
 ```tsx
 import { ProductDetailsPage } from '@/pages/product-details';
 
@@ -64,11 +63,11 @@ export default function Page({ params }: { params: { id: string } }) {
 
 ## 5. Summary of Folder Mapping
 
-| FSD Layer | Next.js Location | Recommendation |
+| FSD Layer | Next.js 16 Location | Recommendation |
 | :--- | :--- | :--- |
-| **App** | `src/app/` | Use for layouts and global providers. |
-| **Pages** | `src/pages/` | Keep pure UI/Logic here; import into Next.js routes. |
-| **Widgets** | `src/widgets/` | Standard FSD placement. |
-| **Features** | `src/features/` | Standard FSD placement. |
-| **Entities** | `src/entities/` | Standard FSD placement. |
-| **Shared** | `src/shared/` | Standard FSD placement. |
+| **App** | `app/` | Use for layouts and global providers. |
+| **Pages** | `pages/` | Keep pure UI/Logic here; import into Next.js routes. |
+| **Widgets** | `widgets/` | Standard FSD placement at root. |
+| **Features** | `features/` | Standard FSD placement at root. |
+| **Entities** | `entities/` | Standard FSD placement at root. |
+| **Shared** | `shared/` | Standard FSD placement at root. |
