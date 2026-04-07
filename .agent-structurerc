@@ -22,7 +22,7 @@
     },
     "frontend-tools": {
       "name": "frontend-tools",
-      "version": "0.0.2",
+      "version": "0.1.0",
       "description": "Expert procedural guidance for frontend development (React, Next.js, etc.)"
     },
     "database-tools": {
