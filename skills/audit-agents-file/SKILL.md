@@ -1,7 +1,6 @@
 ---
 name: audit-agents-file
 description: "Evaluates the structure and health of context files (AGENTS.md, README.md, etc.) within the project."
-disable-model-invocation: true
 metadata:
   version: "0.1.1"
 ---
