@@ -4,7 +4,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@dezkareid/ai-team@1.13.3"
+        "@dezkareid/ai-team@1.14.0"
       ]
     }
   }

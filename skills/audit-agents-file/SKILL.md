@@ -2,7 +2,7 @@
 name: audit-agents-file
 description: "Evaluates the structure and health of context files (AGENTS.md, README.md, etc.) within the project."
 metadata:
-  version: "0.1.2"
+  version: "0.1.3"
 ---
 
 ## Overview

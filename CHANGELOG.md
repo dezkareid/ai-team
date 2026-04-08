@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.3...ai-team-v1.14.0) (2026-04-08)
+
+
+### Features
+
+* add development strategies for web applications ([37997ff](https://github.com/dezkareid/ai-team/commit/37997ffa2dfff2314fa31af3d68695729847c80b))
+
 ## [1.13.3](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.2...ai-team-v1.13.3) (2026-04-08)
 
 
