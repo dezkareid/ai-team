@@ -24,5 +24,15 @@ If the project is a web application (e.g., React, Next.js, Astro, Vue), the cont
 
 ### 5. Skills
 **Criteria:**
-- Must list the required skills or MCPs the AI needs to effectively work on the web project (e.g., `web-quality-audit`, `performance`, `accessibility`).
+- Must list the required skills the AI needs to effectively work on the web project (e.g., `performance`, `accessibility`, `seo`).
+- **Finding:** Report as **ERROR** if missing.
+
+### 6. MCPs
+**Criteria:**
+- Must list the required MCPs the AI needs to effectively work on the web project (e.g., `web-quality-audit`, `chrome-devtools`).
+- **Finding:** Report as **ERROR** if missing.
+
+### 7. Development Strategies
+**Criteria:**
+- Must define the development strategies and design approach (e.g., "Use mobile first design", "Use responsive design with breakpoints at 768px and 1024px").
 - **Finding:** Report as **ERROR** if missing.

@@ -271,6 +271,8 @@ Skills and plugins are versioned independently using changeset files (powered by
 | **Skill** | `metadata.version` field in the skill's `SKILL.md` frontmatter |
 | **Plugin** | `version` field under `claude-plugins.<id>` in `.agent-structurerc` |
 
+> **Important**: When a skill is modified, you MUST also bump the version of the plugin it belongs to in `.agent-structurerc` using a changeset. This ensures that the changes are propagated to the Claude plugin registry.
+
 #### Changeset file format
 
 Create a file inside `.changeset/` (any name, `.md` extension). The frontmatter lists one or more names and their bump type (`major`, `minor`, or `patch`). The same name can appear in both scripts — each one only acts on its own registry.
