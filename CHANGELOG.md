@@ -1,3 +1,10 @@
+## [1.13.3](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.2...ai-team-v1.13.3) (2026-04-08)
+
+
+### Bug Fixes
+
+* frontend plugin version ([60d8847](https://github.com/dezkareid/ai-team/commit/60d884728323d648b7f0b3deb358a1c63e514f50))
+
 ## [1.13.2](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.1...ai-team-v1.13.2) (2026-04-07)
 
 
