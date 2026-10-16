@@ -365,16 +365,16 @@ Always prefer use exact versions for dependencies. Do not use `^` or `~`.
 - **TypeScript**: `5.9.3`
 
 #### Build & Bundling Tools
-- **Rollup**: `4.56.0`
+- **Rollup**: `4.64.7`
 
 #### Testing Frameworks
-- **Vitest**: `4.0.18`
+- **Vitest**: `5.0.5`
 
 #### Linting & Formatting
-- **ESLint**: `9.39.2`
+- **ESLint**: `10.13.0`
 
 #### Type Definitions
-- **@types/node**: `25.0.10`
+- **@types/node**: `24.19.2`
 - **@types/fs-extra**: `11.0.4`
 
 ### Project Structure & Conventions
