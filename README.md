@@ -89,6 +89,14 @@ context/
 |---|---|
 | `supabase-postgres-best-practices` | Postgres performance optimization and best practices from Supabase. |
 
+#### `orca-tools` — Orca worktree, orchestration and repository setup skills
+
+| Skill | Description |
+|---|---|
+| `orca-cli` | Operate Orca worktrees, terminals, files and the embedded browser through the `orca` CLI (vendored from [stablyai/orca](https://github.com/stablyai/orca)). |
+| `orchestration` | Coordinate supervised Orca workers, tasks, gates and messages (vendored from [stablyai/orca](https://github.com/stablyai/orca)). |
+| `orca-setup` | Configure a pnpm repository with an `orca.yaml` so new worktrees copy env files from the main checkout and run `pnpm install`. |
+
 #### `project-management` — Skills for planning work with GitHub Projects, issues and epics
 
 | Skill | Description |
@@ -106,6 +114,7 @@ claude plugin install company-context
 claude plugin install web-quality
 claude plugin install frontend-tools
 claude plugin install database-tools
+claude plugin install orca-tools
 claude plugin install project-management
 ```
 
