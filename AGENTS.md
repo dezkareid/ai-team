@@ -110,6 +110,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "orca-tools",
       "version": "0.0.1",
       "description": "Orca worktree, orchestration and repository setup skills"
+    },
+    "project-management": {
+      "name": "project-management",
+      "version": "0.0.1",
+      "description": "Skills for planning work with GitHub Projects, issues and epics"
     }
   },
   "commands": [
@@ -189,6 +194,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "orca-setup",
       "source": "skills/orca-setup/SKILL.md",
       "claude-plugin": "orca-tools"
+    },
+    {
+      "name": "github-issues",
+      "source": "skills/github-issues/SKILL.md",
+      "claude-plugin": "project-management"
     }
   ],
   "mainMcp": {

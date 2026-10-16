@@ -97,6 +97,12 @@ context/
 | `orchestration` | Coordinate supervised Orca workers, tasks, gates and messages (vendored from [stablyai/orca](https://github.com/stablyai/orca)). |
 | `orca-setup` | Configure a pnpm repository with an `orca.yaml` so new worktrees copy env files from the main checkout and run `pnpm install`. |
 
+#### `project-management` — Skills for planning work with GitHub Projects, issues and epics
+
+| Skill | Description |
+|---|---|
+| `github-issues` | Creates, updates, assigns, moves, closes and deletes issues and epics on the "Dezkareid Enterprise" GitHub Project, categorizing them with Conventional Commits types. Requires `gh` with the `project` scope (`gh auth refresh -s project`). |
+
 ### Install a plugin
 
 Once the marketplace is added, install a plugin with:
@@ -109,6 +115,7 @@ claude plugin install web-quality
 claude plugin install frontend-tools
 claude plugin install database-tools
 claude plugin install orca-tools
+claude plugin install project-management
 ```
 
 ## Development
