@@ -105,6 +105,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "database-tools",
       "version": "0.0.1",
       "description": "Expert procedural guidance for database optimization and best practices"
+    },
+    "project-management": {
+      "name": "project-management",
+      "version": "0.0.1",
+      "description": "Skills for planning work with GitHub Projects, issues and epics"
     }
   },
   "commands": [
@@ -169,6 +174,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "supabase-postgres-best-practices",
       "source": "skills/supabase-postgres-best-practices/SKILL.md",
       "claude-plugin": "database-tools"
+    },
+    {
+      "name": "github-issues",
+      "source": "skills/github-issues/SKILL.md",
+      "claude-plugin": "project-management"
     }
   ],
   "mainMcp": {

@@ -89,6 +89,12 @@ context/
 |---|---|
 | `supabase-postgres-best-practices` | Postgres performance optimization and best practices from Supabase. |
 
+#### `project-management` — Skills for planning work with GitHub Projects, issues and epics
+
+| Skill | Description |
+|---|---|
+| `github-issues` | Creates, updates, assigns, moves, closes and deletes issues and epics on the "Dezkareid Enterprise" GitHub Project, categorizing them with Conventional Commits types. Requires `gh` with the `project` scope (`gh auth refresh -s project`). |
+
 ### Install a plugin
 
 Once the marketplace is added, install a plugin with:
@@ -100,6 +106,7 @@ claude plugin install company-context
 claude plugin install web-quality
 claude plugin install frontend-tools
 claude plugin install database-tools
+claude plugin install project-management
 ```
 
 ## Development
