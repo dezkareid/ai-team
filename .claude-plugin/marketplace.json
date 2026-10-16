@@ -45,6 +45,12 @@
       "version": "0.0.1",
       "description": "Expert procedural guidance for database optimization and best practices",
       "source": "./plugins/database-tools"
+    },
+    {
+      "name": "project-management",
+      "version": "0.0.1",
+      "description": "Skills for planning work with GitHub Projects, issues and epics",
+      "source": "./plugins/project-management"
     }
   ]
 }

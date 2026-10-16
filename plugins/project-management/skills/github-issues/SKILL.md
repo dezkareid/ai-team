@@ -1,0 +1,1 @@
+../../../../skills/github-issues/SKILL.md
