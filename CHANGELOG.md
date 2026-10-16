@@ -1,3 +1,17 @@
+# [2.0.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.16.0...ai-team-v2.0.0) (2026-10-16)
+
+
+* feat!: remove Gemini CLI support ([edee53d](https://github.com/dezkareid/ai-team/commit/edee53d6c2aa426c562ac5054d23f663727155f9))
+
+
+### BREAKING CHANGES
+
+* the Gemini CLI extension (gemini-extension.json) is no
+longer published or maintained. Claude Code marketplace plugins are the
+only supported target.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+
 # [1.16.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.15.0...ai-team-v1.16.0) (2026-10-16)
 
 
