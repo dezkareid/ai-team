@@ -1,14 +1,6 @@
 # ai-team
 
-Repository with AI tooling for teams — Gemini CLI extensions and Claude Code marketplace plugins.
-
-## Gemini CLI
-
-### Installation
-
-```bash
-gemini extensions install https://github.com/dezkareid/ai-team
-```
+Repository with AI tooling for teams — Claude Code marketplace plugins.
 
 ## Claude Code
 
@@ -122,14 +114,13 @@ claude plugin install project-management
 
 ### Workflow
 
-The project uses a structured workflow to keep versions, commands, and configurations in sync across Gemini and Claude platforms.
+The project uses a structured workflow to keep versions, commands, and configurations in sync for Claude Code.
 
 ```mermaid
 graph TD
     subgraph "Phase 1: Sync Version"
         P[package.json] -- sync-version --> AS[.agent-structurerc]
         P -- sync-version --> M[.claude-plugin/marketplace.json]
-        P -- sync-version --> GE[gemini-extension.json]
     end
 
     subgraph "Phase 2: Export to Claude"
@@ -140,16 +131,15 @@ graph TD
     end
 
     subgraph "Phase 3: Distribute MCP"
-        AS -- distribute-mcp --> GE
         AS -- distribute-mcp --> PM[plugins/company-context/.mcp.json]
     end
 ```
 
 > **Note**: You must run `pnpm run build` before executing these commands, as they rely on the compiled files in the `dist/` directory.
 
-1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version and name from `package.json` to `.agent-structurerc` (specifically `mainMcp`), `.claude-plugin/marketplace.json`, and `gemini-extension.json`.
+1.  **Sync Version**: Run `pnpm run sync-version` to propagate the version and name from `package.json` to `.agent-structurerc` (specifically `mainMcp`) and `.claude-plugin/marketplace.json`.
 2.  **Export to Claude**: Run `pnpm run export-claude` to process source files and update plugins.
-3.  **Distribute MCP**: Run `pnpm run distribute-mcp` to resolve placeholders and update platform-specific MCP configurations.
+3.  **Distribute MCP**: Run `pnpm run distribute-mcp` to resolve placeholders and update the plugin `.mcp.json` files.
 
 ### Versioning skills and plugins
 
@@ -183,7 +173,7 @@ After bumping plugin versions, run `pnpm run export-claude` to propagate the new
 
 ### Organization
 
-- **`commands/`**: Source command files in TOML format (Gemini CLI).
+- **`commands/`**: Source command files in TOML format, exported to Claude Code plugins as Markdown.
 - **`skills/`**: Source skill files (SKILL.md) for specialized AI knowledge.
 - **`plugins/`**: Exported Claude Code plugins.
 - **`.claude-plugin/`**: Claude marketplace and plugin metadata.

@@ -1,6 +1,6 @@
 {
   "repoType": "single",
   "agents": [
-    "gemini"
+    "claude"
   ]
 }
