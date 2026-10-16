@@ -1,3 +1,15 @@
+# [1.16.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.15.0...ai-team-v1.16.0) (2026-10-16)
+
+
+### Bug Fixes
+
+* **github-issues:** use Commit Type field name reserved-safe ([26609b1](https://github.com/dezkareid/ai-team/commit/26609b18ef539196960c9f6275cb4f3ab6d2ac97))
+
+
+### Features
+
+* **project-management:** add github-issues skill and plugin ([fb3607c](https://github.com/dezkareid/ai-team/commit/fb3607c91a5840677b838036b08f0080e5e7b785))
+
 # [1.15.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.14.0...ai-team-v1.15.0) (2026-10-16)
 
 
