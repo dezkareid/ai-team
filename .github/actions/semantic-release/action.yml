@@ -28,11 +28,15 @@ runs:
             {name: 'beta', prerelease: true},
             {name: 'alpha', prerelease: true}
           ]
+        # @visulima/yaml is not a plugin: it is an optional peer dependency of
+        # @visulima/fs (pulled in by @anolilab/semantic-release-pnpm) that npm
+        # does not install, but the plugin imports it unconditionally.
         extra_plugins: |
           @anolilab/semantic-release-pnpm@8.1.33
           @semantic-release/changelog@7.0.0
           @semantic-release/git@11.0.1
           @semantic-release/exec@7.1.0
+          @visulima/yaml@1.0.0
         working_directory: ${{ inputs.working-directory }}
         tag_format: ${{ inputs.tag-format }}
       env:
