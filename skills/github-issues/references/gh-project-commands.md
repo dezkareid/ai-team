@@ -118,10 +118,10 @@ gh project item-list "$PROJECT" --owner "$OWNER" --limit 500 --format json \
 
 # By type
 gh project item-list "$PROJECT" --owner "$OWNER" --limit 500 --format json \
-  --jq '.items[] | select(.type=="fix")'
+  --jq '.items[] | select(."commit Type"=="fix")'
 ```
 
-Custom single-select fields appear in item-list JSON as lowercase keys (`status`, `type`, `priority`, `product`, `size`). Verify key names on the first call if a filter returns nothing.
+Fields appear in item-list JSON keyed by name with only the first letter lowercased: `status`, `priority`, `product`, `size`, `"commit Type"`, `"target date"`. Fields without a value are omitted from the item.
 
 ## Body templates
 
@@ -158,7 +158,8 @@ The outcome this epic delivers.
 
 ```bash
 gh project create --owner dezkareid --title "Dezkareid Enterprise"
-gh project field-create "$PROJECT" --owner dezkareid --name Type --data-type SINGLE_SELECT \
+# "Type" is a reserved field name, hence "Commit Type"
+gh project field-create "$PROJECT" --owner dezkareid --name "Commit Type" --data-type SINGLE_SELECT \
   --single-select-options "feat,fix,docs,style,refactor,perf,test,build,ci,chore,revert"
 gh project field-create "$PROJECT" --owner dezkareid --name Priority --data-type SINGLE_SELECT --single-select-options "P0,P1,P2,P3"
 gh project field-create "$PROJECT" --owner dezkareid --name Product --data-type SINGLE_SELECT \

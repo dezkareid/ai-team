@@ -9,20 +9,22 @@ metadata:
 
 Company work is planned in a single GitHub Project (v2) owned by the user `dezkareid`, titled **Dezkareid Enterprise**. Issues live in their product repositories (e.g. `dezkareid/ai-team`) and are added to the project so all products share one board.
 
-Every issue is categorized with a **Conventional Commits type**. The type appears in three places that must stay in sync: the issue title prefix, a `type:<type>` label, and the project `Type` field. Keeping them aligned means the board can be filtered by type, and the eventual commits/PRs that close the issue naturally reuse the same type.
+Every issue is categorized with a **Conventional Commits type**. The type appears in three places that must stay in sync: the issue title prefix, a `type:<type>` label, and the project `Commit Type` field. Keeping them aligned means the board can be filtered by type, and the eventual commits/PRs that close the issue naturally reuse the same type.
 
-All operations use the `gh` CLI. Exact commands and GraphQL snippets live in `references/gh-project-commands.md`; type rules and examples live in `references/conventional-commits.md`. Read them when you need specifics.
+All operations use the `gh` CLI. The project lives at https://github.com/users/dezkareid/projects/2. Exact commands and GraphQL snippets live in `references/gh-project-commands.md`; type rules and examples live in `references/conventional-commits.md`. Read them when you need specifics.
 
 ## Project model
 
 | Field | Kind | Values |
 |---|---|---|
 | `Status` | single select | Backlog, Todo, In Progress, In Review, Done |
-| `Type` | single select | feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert |
+| `Commit Type` | single select | feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert |
 | `Priority` | single select | P0 (urgent), P1 (high), P2 (normal), P3 (low) |
 | `Product` | single select | personal-website, collecstory, ai-team, default |
 | `Size` | single select | XS, S, M, L, XL |
 | `Target date` | date | YYYY-MM-DD |
+
+GitHub reserves the field name `Type`, which is why the project uses `Commit Type`.
 
 Labels (per repo): `type:<type>` for each Conventional Commits type, `epic`, `breaking-change`.
 
@@ -54,13 +56,13 @@ Each operation below is a short sequence; commands are in `references/gh-project
 1. Derive type, scope, title, and body (use the issue template in the reference: context, acceptance criteria).
 2. `gh issue create` with labels `type:<type>` (+ `breaking-change` if `!`).
 3. `gh project item-add` to the project; capture the item ID.
-4. Set fields: `Status` = Backlog (or Todo if the user says it's ready), `Type`, and `Priority`/`Product`/`Size`/`Target date` when known. Default Priority is P2 if unstated.
+4. Set fields: `Status` = Backlog (or Todo if the user says it's ready), `Commit Type`, and `Priority`/`Product`/`Size`/`Target date` when known. Default Priority is P2 if unstated.
 5. If the user mentions an epic, attach it as a sub-issue (see Epics).
 6. Report back the issue URL and the fields that were set.
 
 ### Update an issue
 - Title/body/labels: `gh issue edit`.
-- Re-categorizing changes three things together: title prefix, swap the `type:*` label, and the `Type` field. Never update one without the others.
+- Re-categorizing changes three things together: title prefix, swap the `type:*` label, and the `Commit Type` field. Never update one without the others.
 - Field changes (priority, size, product, date): `gh project item-edit` with the item ID.
 
 ### Assign / unassign
@@ -84,7 +86,7 @@ Each operation below is a short sequence; commands are in `references/gh-project
 - Closing an epic while children are open: warn and list the open children first.
 
 ### List / query
-`gh project item-list --format json` then filter with `--jq` by status, type, assignee, product, or label. For "what's in progress?" group by Status; for a product, filter by `Product`. Keep output a compact table: number, title, status, assignee, priority.
+`gh project item-list --format json` then filter with `--jq` by status, commit type, assignee, product, or label. For "what's in progress?" group by Status; for a product, filter by `Product`. Keep output a compact table: number, title, status, assignee, priority.
 
 ## Safety
 
