@@ -105,6 +105,11 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "database-tools",
       "version": "0.0.1",
       "description": "Expert procedural guidance for database optimization and best practices"
+    },
+    "orca-tools": {
+      "name": "orca-tools",
+      "version": "0.0.1",
+      "description": "Orca worktree, orchestration and repository setup skills"
     }
   },
   "commands": [
@@ -169,6 +174,21 @@ File `.agent-structurerc` is used to configure the project structure.
       "name": "supabase-postgres-best-practices",
       "source": "skills/supabase-postgres-best-practices/SKILL.md",
       "claude-plugin": "database-tools"
+    },
+    {
+      "name": "orca-cli",
+      "source": "skills/orca-cli/SKILL.md",
+      "claude-plugin": "orca-tools"
+    },
+    {
+      "name": "orchestration",
+      "source": "skills/orchestration/SKILL.md",
+      "claude-plugin": "orca-tools"
+    },
+    {
+      "name": "orca-setup",
+      "source": "skills/orca-setup/SKILL.md",
+      "claude-plugin": "orca-tools"
     }
   ],
   "mainMcp": {
