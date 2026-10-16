@@ -137,7 +137,7 @@
   ],
   "mainMcp": {
     "claude-plugin": "company-context",
-    "version": "1.14.0",
+    "version": "1.15.0",
     "package": "@dezkareid/ai-team",
     "command": "npx",
     "args": [

@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.14.0...ai-team-v1.15.0) (2026-10-16)
+
+
+### Features
+
+* add orca-tools plugin with orca skills and setup ([e9f6079](https://github.com/dezkareid/ai-team/commit/e9f60790bba3fd91852041a8da9decfc98bef3e1))
+
 # [1.14.0](https://github.com/dezkareid/ai-team/compare/ai-team-v1.13.3...ai-team-v1.14.0) (2026-04-08)
 
 
