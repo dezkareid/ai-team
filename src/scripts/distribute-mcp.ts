@@ -30,29 +30,6 @@ interface ClaudePluginMcpConfig {
   mcpServers: Record<string, ResolvedMcpServer>;
 }
 
-function distributeToGemini(rootDir: string, mcpServers: Record<string, McpConfig>) {
-  const geminiPath = path.join(rootDir, 'gemini-extension.json');
-  if (!fs.existsSync(geminiPath)) return;
-
-  const gemini = JSON.parse(fs.readFileSync(geminiPath, 'utf8'));
-  const resolvedMcpServers: Record<string, ResolvedMcpServer> = {};
-
-  for (const [name, config] of Object.entries(mcpServers)) {
-    const vars: Record<string, string> = {};
-    if (config.package) vars.package = config.package;
-    if (config.version) vars.version = config.version;
-
-    resolvedMcpServers[name] = {
-      command: config.command,
-      args: config.args.map((arg: string) => resolvePlaceholders(arg, vars)),
-    };
-  }
-
-  gemini.mcpServers = resolvedMcpServers;
-  fs.writeFileSync(geminiPath, JSON.stringify(gemini, null, 2) + '\n');
-  console.log('Updated gemini-extension.json with MCP configurations');
-}
-
 function distributeToClaude(rootDir: string, mcpServers: Record<string, McpConfig>) {
   const pluginConfigs: Record<string, ClaudePluginMcpConfig> = {};
 
@@ -97,7 +74,6 @@ async function run() {
     mcpServers['ai-team'] = agentRc.mainMcp;
   }
 
-  distributeToGemini(rootDir, mcpServers);
   distributeToClaude(rootDir, mcpServers);
 }
 

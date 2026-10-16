@@ -24,7 +24,6 @@
   "files": [
     "README.md",
     "AGENTS.md",
-    "gemini-extension.json",
     "context",
     ".agent-structurerc"
   ],

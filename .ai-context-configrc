@@ -1,6 +1,5 @@
 {
   "strategies": [
-    "claude",
-    "gemini"
+    "claude"
   ]
 }

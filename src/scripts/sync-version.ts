@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export type SyncStrategy = 'gemini' | 'claude' | 'agent-structure' | 'marketplace';
+export type SyncStrategy = 'claude' | 'agent-structure' | 'marketplace';
 
 export interface FileSystem {
   existsSync(path: string): boolean;
@@ -33,13 +33,6 @@ function updateJsonVersion(json: unknown, packageJson: { version: string; name: 
     case 'marketplace':
       if (data.metadata && data.metadata.version !== version) {
         data.metadata.version = version;
-        return true;
-      }
-      break;
-
-    case 'gemini':
-      if (data.version !== version) {
-        data.version = version;
         return true;
       }
       break;
@@ -99,7 +92,6 @@ async function run() {
   const agentStructurePath = path.join(rootDir, '.agent-structurerc');
 
   const targets: Array<{ path: string; strategy: SyncStrategy; silent?: boolean }> = [
-    { path: path.join(rootDir, 'gemini-extension.json'), strategy: 'gemini' },
     { path: path.join(rootDir, '.claude-plugin/marketplace.json'), strategy: 'marketplace' },
     { path: agentStructurePath, strategy: 'agent-structure' },
   ];

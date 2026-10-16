@@ -22,42 +22,6 @@ function makeFs(files: Record<string, string>): MockFs {
 }
 
 describe('syncVersion', () => {
-  describe('gemini strategy', () => {
-    it('should update root version field when versions differ', () => {
-      // Given
-      const mockFs = makeFs({
-        [packagePath]: JSON.stringify({ version: '1.2.3', name: 'pkg' }),
-        [targetPath]: JSON.stringify({ version: '1.0.0' }),
-      });
-
-      // When
-      const result = syncVersion(packagePath, targetPath, 'gemini', mockFs);
-
-      // Then
-      expect(result.updated).toBe(true);
-      expect(result.newVersion).toBe('1.2.3');
-      expect(mockFs.writeFileSync).toHaveBeenCalledWith(
-        targetPath,
-        expect.stringContaining('"version": "1.2.3"'),
-      );
-    });
-
-    it('should not update when versions already match', () => {
-      // Given
-      const mockFs = makeFs({
-        [packagePath]: JSON.stringify({ version: '1.0.0', name: 'pkg' }),
-        [targetPath]: JSON.stringify({ version: '1.0.0' }),
-      });
-
-      // When
-      const result = syncVersion(packagePath, targetPath, 'gemini', mockFs);
-
-      // Then
-      expect(result.updated).toBe(false);
-      expect(mockFs.writeFileSync).not.toHaveBeenCalled();
-    });
-  });
-
   describe('claude strategy', () => {
     it('should update metadata.version when versions differ', () => {
       // Given
@@ -242,7 +206,7 @@ describe('syncVersion', () => {
     const mockFs = makeFs({ [packagePath]: JSON.stringify({ version: '1.0.0' }) });
 
     // When
-    const result = syncVersion(packagePath, targetPath, 'gemini', mockFs);
+    const result = syncVersion(packagePath, targetPath, 'marketplace', mockFs);
 
     // Then
     expect(result.updated).toBe(false);
@@ -258,6 +222,6 @@ describe('syncVersion', () => {
     };
 
     // When / Then
-    expect(() => syncVersion(packagePath, targetPath, 'gemini', mockFs)).toThrow('Read error');
+    expect(() => syncVersion(packagePath, targetPath, 'marketplace', mockFs)).toThrow('Read error');
   });
 });
