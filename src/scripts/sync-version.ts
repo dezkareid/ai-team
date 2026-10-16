@@ -89,7 +89,7 @@ export function syncVersion(
   }
   catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Error syncing versions for ${targetJsonPath}: ${message}`);
+    throw new Error(`Error syncing versions for ${targetJsonPath}: ${message}`, { cause: error });
   }
 }
 

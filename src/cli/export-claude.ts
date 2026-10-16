@@ -171,6 +171,9 @@ function processPluginSkills(pluginId: string, pluginDir: string, skills: AgentS
           fs.copyFileSync(tokensPkgSource, sourceTokensFile);
           console.log(`Updated source tokens at ${path.relative(rootDir, sourceTokensFile)}`);
         }
+        else {
+          console.warn(`Warning: tokens catalog not found at ${path.relative(rootDir, tokensPkgSource)}; keeping existing ${path.relative(rootDir, sourceTokensFile)}`);
+        }
       }
 
       const sourceRefsDir = path.join(sourceSkillDir, 'references');
