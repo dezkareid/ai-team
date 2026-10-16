@@ -2,6 +2,16 @@
 
 This catalog contains design tokens optimized for CSS usage.
 
+## Border-radius
+
+| CSS Variable | Value |
+| :--- | :--- |
+| `--border-radius-none` | `0` |
+| `--border-radius-small` | `0.25rem` |
+| `--border-radius-medium` | `0.5rem` |
+| `--border-radius-large` | `1rem` |
+| `--border-radius-pill` | `9999px` |
+
 ## Breakpoint
 
 | CSS Variable | Value |
@@ -21,6 +31,7 @@ This catalog contains design tokens optimized for CSS usage.
 | :--- | :--- |
 | `--color-base-blue-100` | `#dbeafe` |
 | `--color-base-blue-500` | `#3b82f6` |
+| `--color-base-blue-600` | `#2563eb` |
 | `--color-base-blue-900` | `#1e3a8a` |
 | `--color-base-green-100` | `#dcfce7` |
 | `--color-base-green-500` | `#22c55e` |
@@ -28,8 +39,13 @@ This catalog contains design tokens optimized for CSS usage.
 | `--color-base-red-100` | `#fee2e2` |
 | `--color-base-red-500` | `#ef4444` |
 | `--color-base-red-900` | `#7f1d1d` |
+| `--color-base-amber-600` | `#d97706` |
+| `--color-base-amber-900` | `#78350f` |
 | `--color-base-gray-100` | `#f3f4f6` |
+| `--color-base-gray-400` | `#9ca3af` |
 | `--color-base-gray-500` | `#6b7280` |
+| `--color-base-gray-600` | `#4b5563` |
+| `--color-base-gray-800` | `#1f2937` |
 | `--color-base-gray-900` | `#111827` |
 | `--color-base-white` | `#ffffff` |
 | `--color-base-black` | `#000000` |
@@ -57,6 +73,18 @@ This catalog contains design tokens optimized for CSS usage.
 | `--font-line-height-tight` | `1.25` |
 | `--font-line-height-normal` | `1.5` |
 | `--font-line-height-relaxed` | `1.75` |
+| `--font-letter-spacing-tight` | `-0.02em` |
+| `--font-letter-spacing-normal` | `0` |
+| `--font-letter-spacing-wide` | `0.08em` |
+
+## Shadow
+
+| CSS Variable | Value |
+| :--- | :--- |
+| `--shadow-none` | `none` |
+| `--shadow-subtle` | `0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06)` |
+| `--shadow-card` | `0 2px 8px rgba(0,0,0,0.08)` |
+| `--shadow-card-hover` | `0 2px 4px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.1)` |
 
 ## Spacing
 
@@ -83,12 +111,12 @@ The following semantic tokens are themed and support light/dark modes.
 | `--dark-color-background-primary` | `#000000` |
 | `--color-background-secondary` | `light-dark(var(--light-color-background-secondary), var(--dark-color-background-secondary))` |
 | `--light-color-background-secondary` | `#f3f4f6` |
-| `--dark-color-background-secondary` | `#6b7280` |
+| `--dark-color-background-secondary` | `#1f2937` |
 | `--color-danger` | `light-dark(var(--light-color-danger), var(--dark-color-danger))` |
 | `--light-color-danger` | `#ef4444` |
 | `--dark-color-danger` | `#7f1d1d` |
 | `--color-primary` | `light-dark(var(--light-color-primary), var(--dark-color-primary))` |
-| `--light-color-primary` | `#3b82f6` |
+| `--light-color-primary` | `#2563eb` |
 | `--dark-color-primary` | `#dbeafe` |
 | `--color-success` | `light-dark(var(--light-color-success), var(--dark-color-success))` |
 | `--light-color-success` | `#22c55e` |
@@ -99,4 +127,10 @@ The following semantic tokens are themed and support light/dark modes.
 | `--color-text-primary` | `light-dark(var(--light-color-text-primary), var(--dark-color-text-primary))` |
 | `--light-color-text-primary` | `#111827` |
 | `--dark-color-text-primary` | `#ffffff` |
+| `--color-text-secondary` | `light-dark(var(--light-color-text-secondary), var(--dark-color-text-secondary))` |
+| `--light-color-text-secondary` | `#4b5563` |
+| `--dark-color-text-secondary` | `#9ca3af` |
+| `--color-warning` | `light-dark(var(--light-color-warning), var(--dark-color-warning))` |
+| `--light-color-warning` | `#d97706` |
+| `--dark-color-warning` | `#78350f` |
 

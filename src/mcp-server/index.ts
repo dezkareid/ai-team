@@ -14,7 +14,7 @@ async function main() {
 
   const server = new McpServer({
     name: 'ai-team',
-    version: config.version,
+    version: config.version ?? '0.0.0',
   });
 
   // Register search_product tool

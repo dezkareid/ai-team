@@ -17,9 +17,9 @@ runs:
   using: "composite"
   steps:
     - name: Release
-      uses: cycjimmy/semantic-release-action@v6
+      uses: cycjimmy/semantic-release-action@v8
       with:
-        semantic_version: 25.0.3
+        semantic_version: 25.0.9
         branches: |
           [
             '+([0-9])?(.{+([0-9]),x}).x',
@@ -29,9 +29,9 @@ runs:
             {name: 'alpha', prerelease: true}
           ]
         extra_plugins: |
-          @anolilab/semantic-release-pnpm@5.0.0
-          @semantic-release/changelog@6.0.3
-          @semantic-release/git@10.0.1
+          @anolilab/semantic-release-pnpm@8.1.33
+          @semantic-release/changelog@7.0.0
+          @semantic-release/git@11.0.1
           @semantic-release/exec@7.1.0
         working_directory: ${{ inputs.working-directory }}
         tag_format: ${{ inputs.tag-format }}
